@@ -137,6 +137,7 @@ _CUTE_ () { # checks if USENAME is found in GNAMES and if it is an organization 
 		else
 			mapfile -t TYPE < <(curl "https://api.github.com/users/$USENAME")
 		fi
+		_RLREMING_
 		if [[ "${TYPE[1]}" == *\"message\":\ \"Not\ Found\"* ]]
 		then
 			printf "\\n%s\\n\\n" "Could not find a GitHub login with $USENAME:  Exiting..."
@@ -306,6 +307,7 @@ _MAINGITHUB_ () {
 		_CKAT_ 
 	done
 	_PRINTJD_
+	_RLREMING_
 	_ANDB_ 
 	_APKBC_
 	. "$RDR"/scripts/bash/shlibs/buildAPKs/bnchn.bash bch.gt 
@@ -336,6 +338,15 @@ _PRINTJD_ () {
 
 _PRINTJS_ () {
 	printf "\\n\\e[1;34mSearching for Java, Javascript, Kotlin and Shell language repositories: "'\033]2;Searching for Java, Javascript, Kotlin and Shell language repositories: OK\007'
+}
+
+_RLREMING_ () {
+	RATEARRAY=($(curl -is https://api.github.com/rate_limit | grep Rate)) # get rate information https://developer.github.com/v3/rate_limit/ from Github without incurring an API hit.
+	printf "%s\\n" "Github rate limit information:"
+	printf "\\e[2;7;38;5;144m%s\\e[0m\\n" "${RATEARRAY[0]} ${RATEARRAY[1]}" # print rate information
+	printf "\\e[2;7;38;5;146m%s\\e[0m\\n" "${RATEARRAY[2]} ${RATEARRAY[3]}" # print rate information
+	printf "\\e[2;7;38;5;148m%s\\e[0m\\n" "${RATEARRAY[4]} ${RATEARRAY[5]}" # print rate information
+
 }
 
 _SIGNAL_ () {
