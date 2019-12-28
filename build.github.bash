@@ -266,7 +266,7 @@ _MAINGITHUB_ () {
 	. "$RDR"/scripts/sh/shlibs/mkdirs.sh
 	_MKRDIRS_ "opt"
 	_MKDIRS_ "db" "cache/lib" "cache/lib/res-appcompat" "cache/lib/res-cardview" "cache/lib/res-design" "cache/lib/res-recyclerview" "cache/stash" "cache/tarballs" "db" "db/log" "log/messages"
-	_MKFILES_ "db/ANAMES" "db/BNAMES" "db/B10NAMES" "db/B100NAMES" "db/CNAMES" "db/GNAMES" "db/ONAMES" "db/QNAMES" "db/RNAMES" "db/XNAMES" "db/ZNAMES" "db/log/BNAMES" "db/log/B10NAMES" "db/log/B100NAMES" "db/log/GNAMES"
+	_MKFILES_ "db/ANAMES" "db/BNAMES" "db/B10NAMES" "db/B100NAMES" "db/GNAMES" "db/ONAMES" "db/QNAMES" "db/RNAMES" "db/XNAMES" "db/ZNAMES" "db/log/BNAMES" "db/log/B10NAMES" "db/log/B100NAMES" "db/log/GNAMES"
 	if grep -Hiw "$USENAME" "$RDR"/var/db/[PRXZ]NAMES
 	then	# create null directory, profile, repos files, and exit
 		if grep -iw "$USENAME" "$RDR"/var/db/ONAMES 1>/dev/null
@@ -292,7 +292,7 @@ _MAINGITHUB_ () {
 	_PRINTJD_
 	if [[ "${JARR[@]}" == *ERROR* ]]
 	then
-		_NAMESMAINBLOCK_ CNAMES ZNAMES
+		_NAMESMAINBLOCK_ ZNAMES
 		_SIGNAL_ "404" "search for Java, JavaScript, Shell and Kotlin language repositories" "4"
 	fi
 	F1AR=($(find "$JDR" -maxdepth 1 -type d)) # creates array of JDR contents 
