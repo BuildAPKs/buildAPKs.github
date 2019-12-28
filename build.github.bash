@@ -259,8 +259,8 @@ _MAINGITHUB_ () {
 	export WRAMES=0
 	printf "\\n\\e[1;38;5;116m%s\\n\\e[0m" "${0##*/}: Beginning BuildAPKs with build.github.bash $@:"
 	. "$RDR"/scripts/bash/shlibs/buildAPKs/fandm.bash
-	. "$RDR"/scripts/bash/shlibs/buildAPKs/fapks.bash
 	. "$RDR"/scripts/bash/shlibs/buildAPKs/prep.bash
+	. "$RDR"/scripts/sh/shlibs/buildAPKs/fapks.sh
 	. "$RDR"/scripts/sh/shlibs/buildAPKs/names.sh 0
 	. "$RDR"/scripts/sh/shlibs/mkfiles.sh
 	. "$RDR"/scripts/sh/shlibs/mkdirs.sh
