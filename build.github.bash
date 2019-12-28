@@ -16,7 +16,7 @@ _AND_ () { # writes configuration file for git repository tarball if AndroidMani
 	else
 		printf "%s\\n" "Found AndroidManifest.xml file in Java, Javascript, Kotlin or Shell language repository $USER ${NAME##*/} ${COMMIT::7}:  Downloading ${NAME##*/} tarball and writing ~/${RDR##*/}/sources/github/${JDR##*/}/var/conf/$USER.${NAME##*/}.${COMMIT::7}.ck file for git repository ${NAME##*/}."
 	fi
-	_NAMESMAINBLOCK_ CNAMES QNAMES
+	_NAMESMAINBLOCK_ QNAMES
 }
 
 _ATT_ () {
