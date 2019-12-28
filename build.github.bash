@@ -265,7 +265,7 @@ _MAINGITHUB_ () {
 	. "$RDR"/scripts/sh/shlibs/mkfiles.sh
 	. "$RDR"/scripts/sh/shlibs/mkdirs.sh
 	_MKRDIRS_ "opt"
-	_MKDIRS_ "cache/lib" "cache/lib/res-appcompat" "cache/lib/res-cardview" "cache/lib/res-design" "cache/lib/res-recyclerview" "cache/stash" "cache/tarballs" "db" "db/log" "log/messages"
+	_MKDIRS_ "db" "cache/lib" "cache/lib/res-appcompat" "cache/lib/res-cardview" "cache/lib/res-design" "cache/lib/res-recyclerview" "cache/stash" "cache/tarballs" "db" "db/log" "log/messages"
 	_MKFILES_ "db/ANAMES" "db/BNAMES" "db/B10NAMES" "db/B100NAMES" "db/CNAMES" "db/GNAMES" "db/ONAMES" "db/QNAMES" "db/RNAMES" "db/XNAMES" "db/ZNAMES" "db/log/BNAMES" "db/log/B10NAMES" "db/log/B100NAMES" "db/log/GNAMES"
 	if grep -Hiw "$USENAME" "$RDR"/var/db/[PRXZ]NAMES
 	then	# create null directory, profile, repos files, and exit
@@ -364,7 +364,7 @@ _SIGNAL_ () {
 
 if [[ -z "${1:-}" ]] # no argument is given
 then	# print message and exit
-	printf "\\e[1;7;38;5;204m%s\\e[1;7;38;5;201m%s\\e[1;7;38;5;204m%s\\e[1;7;38;5;201m%s\\e[1;7;38;5;204m%s\\e[1;7;38;5;201m%s\\e[1;7;38;5;204m%s\\n\\e[0m\\n" "GitHub username must be provided;  See " "~/${RDR##*/}/var/db/UNAMES" " for usernames that build APKs on device with BuildAPKs!  To build all the usernames contained in this file run " "for NAME in \$(cat ~/${RDR##*/}/var/db/UNAMES) ; do ~/${RDR##*/}/scripts/bash/build/${0##*/} \$NAME ; done" ".  File " "~/${RDR##*/}/.conf/GAUTH" " has important information should you choose to run this command regarding bandwidth supplied by GitHub. "
+	printf "\\e[1;7;38;5;204m%s\\e[1;7;38;5;201m%s\\e[1;7;38;5;204m%s\\e[1;7;38;5;201m%s\\e[1;7;38;5;204m%s\\e[1;7;38;5;201m%s\\e[1;7;38;5;204m%s\\n\\e[0m\\n" "GitHub username must be provided;  See " "~/${RDR##*/}/opt/db/UNAMES" " for usernames that build APKs on device with BuildAPKs!  To build all the usernames contained in this file run " "for NAME in \$(cat ~/${RDR##*/}/opt/db/UNAMES) ; do ~/${RDR##*/}/scripts/bash/github/${0##*/} \$NAME ; done" ".  File " "~/${RDR##*/}/.conf/GAUTH" " has information should you choose to run this for loop command regarding bandwidth supplied by GitHub. "
 	exit 68
 fi
 export UONE="${1%/}" # https://www.gnu.org/software/bash/manual/bash.html#Shell-Parameter-Expansion
