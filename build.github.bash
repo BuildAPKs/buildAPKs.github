@@ -168,7 +168,7 @@ _CUTE_ () { # checks if USENAME is found in GNAMES and if it is an organization 
 		fi
 		printf "%s\\n" "${TYPE[@]}" > "$JDR"/profile
 		_MKJDC_ 
-		_NAMESMAINBLOCK_ CNAMES GNAMES log/GNAMES
+		_NAMESMAINBLOCK_ GNAMES log/GNAMES
 		unset NAPKS
 	fi
 	printf "%s\\n" "Processing $USENAME:"
