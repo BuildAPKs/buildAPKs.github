@@ -56,7 +56,7 @@ _ATT_ () {
 		then
 			_AND_
 			_FJDX_ 
-		elif [[ -f "${NAME##*/}.${COMMIT::7}.tar.gz" ]] && [[ "${F1AR[@]}" =~ "${NAME##*/}" ]] # tarfile and directory exists
+		elif [[ -f "${NAME##*/}.${COMMIT::7}.tar.gz" ]] && [[ "${F1AR[@]}" =~ "${NAME##*/}" ]] # tarfile and directory exist
 		then
 			_AND_
 			export SFX="$(tar tf "${NAME##*/}.${COMMIT::7}.tar.gz" | awk 'NR==1' )" || _SIGNAL_ "24" "_ATT_ SFX"
@@ -364,13 +364,13 @@ _SIGNAL_ () {
 
 if [[ -z "${1:-}" ]] # no argument is given
 then	# print message and exit
-	printf "\\e[1;7;38;5;204m%s\\e[1;7;38;5;201m%s\\e[1;7;38;5;204m%s\\e[1;7;38;5;201m%s\\e[1;7;38;5;204m%s\\e[1;7;38;5;201m%s\\e[1;7;38;5;204m%s\\n\\e[0m\\n" "GitHub username must be provided;  File " "~/${RDR##*/}/opt/db/UNAMES" " lists usernames that build APKs on device with BuildAPKs!  To build all the usernames contained in this file run " "for NAME in \$(cat ~/${RDR##*/}/opt/db/UNAMES) ; do ~/${RDR##*/}/scripts/bash/github/${0##*/} \$NAME ; done" ".  File " "~/${RDR##*/}/.conf/GAUTH" " has information should you choose to run this for loop command regarding bandwidth supplied by GitHub. "
+	printf "\\e[1;7;38;5;204m%s\\e[1;7;38;5;201m%s\\e[1;7;38;5;204m%s\\e[1;7;38;5;201m%s\\e[1;7;38;5;204m%s\\e[1;7;38;5;201m%s\\e[1;7;38;5;204m%s\\n\\e[0m\\n" "GitHub username must be provided;  File " "~/${RDR##*/}/opt/db/UNAMES" " lists usernames that build APKs on device with BuildAPKs!  To attempt to build all the usernames contained in this file run " "for NAME in \$(cat ~/${RDR##*/}/opt/db/UNAMES) ; do ~/${RDR##*/}/scripts/bash/github/${0##*/} \$NAME ; done" ".  File " "~/${RDR##*/}/.conf/GAUTH" " has information should you choose to run this for loop command regarding bandwidth supplied by GitHub. "
 	exit 68
 fi
 export UONE="${1%/}" # https://www.gnu.org/software/bash/manual/bash.html#Shell-Parameter-Expansion
 if [[ ! -z "${2:-}" ]] # a second argument is given
 then	# check if the second argument begins with these letter combinations: [[c|ct] rate] limit download transmission rate for curl.
-	if [[ "${2//-}" = [Cc]* ]] || [[ "${2//-}" = [Cc][Tt]* ]] # the second argument begins with these letters
+	if [[ "${2//-}" = [Cc]* ]] # the second argument begins with the letter c
 	then	# the third argument is required, e.g. [512] [1024] [2048]
 		if [[ ! -z "${3:-}" ]] # third argument is defined
 		then	# use argument $3 and limit download transmission rate for curl
