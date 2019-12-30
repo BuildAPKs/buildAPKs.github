@@ -369,19 +369,22 @@ then	# print message and exit
 fi
 export UONE="${1%/}" # https://www.gnu.org/software/bash/manual/bash.html#Shell-Parameter-Expansion
 if [[ ! -z "${2:-}" ]] # a second argument is given
-then	# check if the second argument begins with these letter combinations: [[c|ct] rate] limit download transmission rate for curl.
+then	# check if the second argument begins with with the letter c: [[c]url rate] limit download transmission rate for curl.
 	if [[ "${2//-}" = [Cc]* ]] # the second argument begins with the letter c
 	then	# the third argument is required, e.g. [512] [1024] [2048]
-		if [[ ! -z "${3:-}" ]] # third argument is defined
+		if [[ ! -z "${3:-}" ]] && ! [[ "$3" =~ [^[:digit:]] ]] # third argument is defined and is composed of only digits
 		then	# use argument $3 and limit download transmission rate for curl
-			CULR="$3"
-			_MAINGITHUB_ "$*"
+ 			CULR="$3"
+ 			_MAINGITHUB_ "$*"
 		else	# print message and exit
 			printf "\\e[0;31m%s\\e[1;31m%s\\e[0;31m%s\\e[1;31m%s\\e[0;31m%s\\e[7;31m%s\\e[0m\\n" "Add a numerical rate limit to " "${0##*/} $1 $2 " "as the third argument to continue with curl --rate-limit, i.e. " "${0##*/} $1 $2 16384" ":" " Exiting..."
 			exit 64
 		fi
+	else	# print message and exit
+		printf "\\e[0;31m%s\\e[1;31m%s\\e[0;31m%s\\e[1;31m%s\\e[0;31m%s\\e[7;31m%s\\e[0m\\n" "To use curl with rate limiting add a numerical rate limit to " "${0##*/} $1 curl " "as the third argument to continue with curl --rate-limit, i.e. " "${0##*/} $1 curl 16384" ":" " Exiting..."
+		exit 66
 	fi
 else
-	_MAINGITHUB_ "$*"
+ 	_MAINGITHUB_ "$*"
 fi
 # build.github.bash OEF
