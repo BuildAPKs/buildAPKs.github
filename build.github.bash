@@ -348,7 +348,7 @@ _RLREMING_ () {
 		printf "\\e[2;7;38;5;144m%s\\e[0m\\n" "${RATEARRAY[0]} ${RATEARRAY[1]}" # print rate information
 		printf "\\e[2;7;38;5;146m%s\\e[0m\\n" "${RATEARRAY[2]} ${RATEARRAY[3]}" # print rate information
 		printf "\\e[2;7;38;5;148m%s\\e[0m\\n" "${RATEARRAY[4]} ${RATEARRAY[5]}" # print rate information
-		printf "\\e[2;7;38;5;150m%s\\e[0m\\n\\n" "File ~/${RDR##*/}/.conf/LIBAUTH more information." # print information the about ~/${RDR##*/}/.conf/LIBAUTH file	 
+		printf "\\e[2;7;38;5;150m%s\\e[0m\\n\\n" "File ~/${RDR##*/}/.conf/LIBAUTH has more information about X-RateLimit." # print information the about ~/${RDR##*/}/.conf/LIBAUTH file	 
 	fi
 }
 
