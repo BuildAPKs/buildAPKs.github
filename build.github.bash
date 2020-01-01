@@ -341,12 +341,14 @@ _PRINTJS_ () {
 }
 
 _RLREMING_ () {
-	RATEARRAY=($(curl -is https://api.github.com/rate_limit | grep Rate)) # get rate information https://developer.github.com/v3/rate_limit/ from Github without incurring an API hit.
-	printf "%s\\n" "Github rate limit information:"
-	printf "\\e[2;7;38;5;144m%s\\e[0m\\n" "${RATEARRAY[0]} ${RATEARRAY[1]}" # print rate information
-	printf "\\e[2;7;38;5;146m%s\\e[0m\\n" "${RATEARRAY[2]} ${RATEARRAY[3]}" # print rate information
-	printf "\\e[2;7;38;5;148m%s\\e[0m\\n" "${RATEARRAY[4]} ${RATEARRAY[5]}" # print rate information
-
+	RATEARRAY=($(curl -is https://api.github.com/rate_limit | grep Rate)) ||: # get rate information https://developer.github.com/v3/rate_limit/ from Github without incurring an API hit
+	if [[ ! -z "${RATEARRAY:-}" ]] # if RATEARRAY is defined
+	then	# print Github rate limit information to screen
+		printf "%s\\n" "Github rate limit information:"
+		printf "\\e[2;7;38;5;144m%s\\e[0m\\n" "${RATEARRAY[0]} ${RATEARRAY[1]}" # print rate information
+		printf "\\e[2;7;38;5;146m%s\\e[0m\\n" "${RATEARRAY[2]} ${RATEARRAY[3]}" # print rate information
+		printf "\\e[2;7;38;5;148m%s\\e[0m\\n" "${RATEARRAY[4]} ${RATEARRAY[5]}" # print rate information
+	fi
 }
 
 _SIGNAL_ () {
