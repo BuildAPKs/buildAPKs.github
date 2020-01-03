@@ -341,7 +341,7 @@ _PRINTJS_ () {
 }
 
 _RLREMING_ () { # if connection is available, print Github rate limit limit
-	RATEARRAY=($(curl -is https://api.github.com/rate_limit | grep Rate)) ||: # get rate information https://developer.github.com/v3/rate_limit/ from Github without incurring an API hit
+	RATEARRAY=($(curl -is https://api.github.com/rate_limit | grep Rate)) || printf "\\e[2;7;38;5;51m%s\\e[0m\\n\\n" "The Internet connection is not available; Continuing..." # get rate information https://developer.github.com/v3/rate_limit/ from Github without incurring an API hit
 	if [[ ! -z "${RATEARRAY:-}" ]] # if RATEARRAY is defined
 	then	# print Github rate limit information to screen
 		printf "%s\\n" "Github rate limit information:"
