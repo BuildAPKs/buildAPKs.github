@@ -340,7 +340,7 @@ _PRINTJS_ () {
 	printf "\\n\\e[1;34mSearching for Java, Javascript, Kotlin and Shell language repositories: "'\033]2;Searching for Java, Javascript, Kotlin and Shell language repositories: OK\007'
 }
 
-_RLREMING_ () {
+_RLREMING_ () { # if connection is available, print Github rate limit limit
 	RATEARRAY=($(curl -is https://api.github.com/rate_limit | grep Rate)) ||: # get rate information https://developer.github.com/v3/rate_limit/ from Github without incurring an API hit
 	if [[ ! -z "${RATEARRAY:-}" ]] # if RATEARRAY is defined
 	then	# print Github rate limit information to screen
