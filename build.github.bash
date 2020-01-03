@@ -345,9 +345,9 @@ _RLREMING_ () { # if connection is available, print Github rate limit limit
 	if [[ ! -z "${RATEARRAY:-}" ]] # if RATEARRAY is defined
 	then	# print Github rate limit information to screen
 		printf "%s\\n" "Github rate limit information:"
-		printf "\\e[2;7;38;5;144m%s\\e[0m\\n" "${RATEARRAY[0]} ${RATEARRAY[1]}" # print rate information
-		printf "\\e[2;7;38;5;146m%s\\e[0m\\n" "${RATEARRAY[2]} ${RATEARRAY[3]}" # print rate information
-		printf "\\e[2;7;38;5;148m%s\\e[0m\\n" "${RATEARRAY[4]} ${RATEARRAY[5]}" # print rate information
+		printf "\\e[2;7;38;5;144m%s\\e[0m\\n" "${RATEARRAY[0]} ${RATEARRAY[1]}" # print X-RateLimit-Limit information
+		printf "\\e[2;7;38;5;146m%s\\e[0m\\n" "${RATEARRAY[2]} ${RATEARRAY[3]}" # print X-RateLimit-Remaining information
+		printf "\\e[2;7;38;5;148m%s\\e[0m\\n" "${RATEARRAY[4]} ${RATEARRAY[5]}" # print X-RateLimit-Reset information
 		printf "\\e[2;7;38;5;150m%s\\e[0m\\n\\n" "File ~/${RDR##*/}/.conf/LIBAUTH has more information about X-RateLimit; Continuing..." # print information the about ~/${RDR##*/}/.conf/LIBAUTH file	 
 	fi
 }
