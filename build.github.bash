@@ -51,8 +51,8 @@ _ATT_ () {
 					_NAND_
 				fi
 			fi
-		# check if bash array contains a value
-		elif [[ -f "${NAME##*/}.${COMMIT::7}.tar.gz" ]] && [[ ! "${F1AR[@]}" =~ "${NAME##*/}" ]] # tarfile exists and directory does not exist
+		# check if bash array F1AR contains value NAME
+		elif [[ -f "${NAME##*/}.${COMMIT::7}.tar.gz" ]] && [[ ! "${F1AR[@]}" =~ "${NAME##*/}" ]] # tarfile exists and directory does NOT exist
 		then
 			_AND_
 			_FJDX_ 
@@ -114,41 +114,42 @@ _CKAT_ () {
  	fi
 }
 
-_CUTE_ () { # checks if USENAME is found in GNAMES and if it is an organization or a user
+_CUTE_ () { # check if USENAME is an organization or a user
 	. "$RDR"/scripts/bash/shlibs/buildAPKs/bnchn.bash bch.st 
-	if [[ $(grep -iw "$USENAME" "$RDR/var/db/log/GNAMES" | awk '{print $2}') == User ]] && [[ -f "$RDR/sources/github/users/$USER/profile" ]] && [[ -f "$RDR/sources/github/users/$USER/repos" ]]
-	then 
+	if [[ $(grep -iw "$USENAME" "$RDR/var/db/log/GNAMES" | awk '{print $2}') == User ]] && [[ -f "$RDR/sources/github/users/$USER/profile" ]] && [[ -f "$RDR/sources/github/users/$USER/repos" ]] # found in GNAMES and is a user and files exist
+	then	# assign user attributes to USENAME 
 		export ISUSER=users
 		export ISOTUR=users
 		export USENAME="$(grep -iw "$USENAME" "$RDR/var/db/log/GNAMES" | awk '{print $1}')"
 		export JDR="$RDR/sources/github/$ISOTUR/$USER"
 		export JID="github.$ISOTUR.$USER"
-	elif [[ $(grep -iw "$USENAME" "$RDR/var/db/log/GNAMES" | awk '{print $2}') == Organization ]] && [[ -f "$RDR/sources/github/orgs/$USER/profile" ]] && [[ -f "$RDR/sources/github/orgs/$USER/repos" ]]
-	then 
+	elif [[ $(grep -iw "$USENAME" "$RDR/var/db/log/GNAMES" | awk '{print $2}') == Organization ]] && [[ -f "$RDR/sources/github/orgs/$USER/profile" ]] && [[ -f "$RDR/sources/github/orgs/$USER/repos" ]] # found in GNAMES and is an organization and files exist
+	then 	# assign organization attributes to USENAME 
 		export ISUSER=users
 		export ISOTUR=orgs
 		export USENAME="$(grep -iw "$USENAME" "$RDR/var/db/log/GNAMES" | awk '{print $1}')"
 		export JDR="$RDR/sources/github/$ISOTUR/$USER"
 		export JID="github.$ISOTUR.$USER"
 	else	# get login and type of login from GitHub
-		if [[ "$OAUT" != "" ]] # see .conf/GAUTH file for information 
-		then
+		if [[ "$OAUT" != "" ]] # see file .conf/GAUTH file for information 
+		then	# create array TYPE
 			mapfile -t TYPE < <(curl -u "$OAUT" "https://api.github.com/users/$USENAME")
 		else
 			mapfile -t TYPE < <(curl "https://api.github.com/users/$USENAME")
 		fi
 		_RLREMING_
-		if [[ "${TYPE[1]}" == *\"message\":\ \"Not\ Found\"* ]]
-		then
+		# test if array TYPE contains profile information
+		if [[ "${TYPE[1]}" == *\"message\":\ \"Not\ Found\"* ]] # array TYPE contains string message\":\ \"Not\ Found
+		then	# print message and exit
 			printf "\\n%s\\n\\n" "Could not find a GitHub login with $USENAME:  Exiting..."
 			exit 44
 		fi
+		# array TYPE is undefined
 		(if [[ -z "${TYPE[17]}" ]] 
-		then
+		then	# echo array TYPE, print message and exit
 			echo "${TYPE[@]}"  
 			_SIGNAL_ "68" "${TYPE[17]} undefined!" "68"
-			exit 34
-		fi) || (echo "${TYPE[@]}" && _SIGNAL_ "70" "TYPE[17]: unbound variable" "70")
+		fi) || (echo "${TYPE[@]}" && _SIGNAL_ "70" "TYPE[17]: unbound variable" "70") # or echo array TYPE, print message and exit
 		export USENAME="$(printf "%s" "${TYPE[1]}" | sed 's/"//g' | sed 's/,//g' | awk '{print $2}')" || _SIGNAL_ "71" "_CUTE_ \$USENAME"
 		export GHUID="$(printf "%s" "${TYPE[2]}" | sed 's/"//g' | sed 's/,//g' | awk '{print $2}')" || _SIGNAL_ "72" "_CUTE_ \$USENAME"
 		NAPKS="$(printf "%s" "${TYPE[17]}" | sed 's/"//g' | sed 's/,//g' | awk '{print $2}')" || (_SIGNAL_ "74" "_CUTE_ \$NAPKS: create \$NAPKS failed; Exiting..." 24)
@@ -348,7 +349,7 @@ _RLREMING_ () { # if connection is available, print Github rate limit limit
 		printf "\\e[2;7;38;5;144m%s\\e[0m\\n" "${RATEARRAY[0]} ${RATEARRAY[1]}" # print X-RateLimit-Limit information
 		printf "\\e[2;7;38;5;146m%s\\e[0m\\n" "${RATEARRAY[2]} ${RATEARRAY[3]}" # print X-RateLimit-Remaining information
 		printf "\\e[2;7;38;5;148m%s\\e[0m\\n" "${RATEARRAY[4]} ${RATEARRAY[5]}" # print X-RateLimit-Reset information
-		printf "\\e[2;7;38;5;150m%s\\e[0m\\n\\n" "File ~/${RDR##*/}/.conf/GAUTH has more information about X-RateLimit; Continuing..." # print information the about the .conf/GAUTH file	 
+		[ "$OAUT" != "" ] || printf "\\e[2;7;38;5;150m%s\\e[0m\\n\\n" "File ~/${RDR##*/}/.conf/GAUTH has more information about X-RateLimit; Continuing..." # print information the about the .conf/GAUTH file	 
 	fi
 }
 
@@ -359,7 +360,7 @@ _SIGNAL_ () {
 		printf "\\e[2;7;38;5;210m%s\\e[0m" "$STRING" 
 	else
 		SG=$3
-		STRING="EXIT SIGNAL $1 recieved in $2 ${0##*/} build.github.bash!  Exiting..."
+		STRING="EXIT SIGNAL $SG recieved in $2 ${0##*/} build.github.bash!  Exiting with signal $SG..."
 		printf "\\e[2;7;38;5;210m%s\\e[0m" "$STRING" 
 		exit $SG
 	fi
