@@ -218,12 +218,12 @@ _GETREPOS_() {
 	fi
 }
 
-_MKJDC_ () { 
-	if [[ ! -d "$JDR/var/conf" ]] 
+_MKJDC_ () { # create JDR/var/conf directory contains query for \` AndroidManifest.xml \` files in GitHub USENAME repositores results. 
+	if [ ! -d "$JDR/var/conf" ]
 	then
 		mkdir -p "$JDR/var/conf"
 	fi
-	if [[ ! -d "$JDR/var/conf" ]] 
+	if [ ! -d "$JDR/var/conf" ]
 	then
 	printf "%s\\n\\n" "This directory contains query for \` AndroidManifest.xml \` files in GitHub $USENAME repositores results.  The following files are created in ${USENAME,,}/var/conf and their purpose is outlined here:
 	| file name | purpose |
