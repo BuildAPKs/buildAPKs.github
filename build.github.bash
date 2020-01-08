@@ -289,7 +289,7 @@ _MAINGITHUB_ () {
 	_WAKELOCK_
 	_GETREPOS_
 	_PRINTJS_
-	JARR=($(grep -B 5 -e "\"Java" -e "\"Objective-C" -e "\"C\"" -e "\"C#\"" -e "\"C++\"" -e "\"Kotlin"\" -e "\"Pearl"\" -e "\"Python"\" -e "\"Shell\"" "$JDR/repos" | grep svn_url | awk -v x=2 '{print $x}' | sed 's/\,//g' | sed 's/\"//g')) || _SIGNAL_ "402" "create JARR ${0##*/} build.github.bash"  # create array of Java, JavaScript, Shell and Kotlin Java language repositories	
+	JARR=($(grep -B 5 -e "\"Java" -e "\"Objective-C" -e "\"R" -e "\"C\"" -e "\"C#\"" -e "\"C++\"" -e "\"Kotlin"\" -e "\"Pearl"\" -e "\"Python"\" -e "\"Shell\"" "$JDR/repos" | grep svn_url | awk -v x=2 '{print $x}' | sed 's/\,//g' | sed 's/\"//g')) || _SIGNAL_ "402" "create JARR ${0##*/} build.github.bash"  # create array of Java, JavaScript, Shell and Kotlin Java language repositories	
 	_PRINTJD_
 	if [[ "${JARR[@]}" == *ERROR* ]]
 	then
@@ -338,7 +338,7 @@ _PRINTJD_ () {
 }
 
 _PRINTJS_ () {
-	printf "\\n\\e[1;34mSearching for C* Java* Kotlin Objective-C* Pearl Python and Shell language repositories: "'\033]2;Searching for C* Java* Kotlin Objective-C* Pearl Python and Shell language repositories: OK\007'
+	printf "\\n\\e[1;34mSearching for C* Java* Kotlin Objective-C* Pearl Python R* and Shell language repositories: "'\033]2;Searching for C* Java* Kotlin Objective-C* Pearl Python R* and Shell language repositories: OK\007'
 }
 
 _RLREMING_ () { # if connection is available, print Github rate limit limit
