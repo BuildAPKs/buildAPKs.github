@@ -289,12 +289,12 @@ _MAINGITHUB_ () {
 	_WAKELOCK_
 	_GETREPOS_
 	_PRINTJS_
-	JARR=($(grep -B 5 -e "\"Java" -e "\"Objective-C" -e "\"C\"" -e "\"C#\"" -e "\"C++\"" -e "\"Shell\"" -e "\"Kotlin"\" -e "\"Pearl"\" -e "\"Python"\" "$JDR/repos" | grep svn_url | awk -v x=2 '{print $x}' | sed 's/\,//g' | sed 's/\"//g')) ||: # create array of Java, JavaScript, Shell and Kotlin Java language repositories	
+	JARR=($(grep -B 5 -e "\"Java" -e "\"Objective-C" -e "\"C\"" -e "\"C#\"" -e "\"C++\"" -e "\"Kotlin"\" -e "\"Pearl"\" -e "\"Python"\" -e "\"Shell\"" "$JDR/repos" | grep svn_url | awk -v x=2 '{print $x}' | sed 's/\,//g' | sed 's/\"//g')) || _SIGNAL_ "402" "create JARR ${0##*/} build.github.bash"  # create array of Java, JavaScript, Shell and Kotlin Java language repositories	
 	_PRINTJD_
 	if [[ "${JARR[@]}" == *ERROR* ]]
 	then
 		_NAMESMAINBLOCK_ ZNAMES
-		_SIGNAL_ "404" "search for Java, JavaScript, Shell and Kotlin language repositories" "4"
+		_SIGNAL_ "404" "search for ERROR in JARR ${0##*/} build.github.bash" "4"
 	fi
 	F1AR=($(find "$JDR" -maxdepth 1 -type d)) # creates array of JDR contents 
 	cd "$JDR"
@@ -338,7 +338,7 @@ _PRINTJD_ () {
 }
 
 _PRINTJS_ () {
-	printf "\\n\\e[1;34mSearching for Java, Javascript, Kotlin and Shell language repositories: "'\033]2;Searching for Java, Javascript, Kotlin and Shell language repositories: OK\007'
+	printf "\\n\\e[1;34mSearching for C* Java* Kotlin Objective-C* Pearl Python and Shell language repositories: "'\033]2;Searching for C* Java* Kotlin Objective-C* Pearl Python and Shell language repositories: OK\007'
 }
 
 _RLREMING_ () { # if connection is available, print Github rate limit limit
