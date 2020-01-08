@@ -1,0 +1,2 @@
+curl -i -u $GITHUB_TOKEN https://api.github.com/user/repos/stargazers
+curl -i -u $GITHUB_TOKEN https://api.github.com/user/repos/stars

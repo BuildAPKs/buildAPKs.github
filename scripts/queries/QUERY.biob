@@ -1,0 +1,8 @@
+  query {
+    viewer {
+      login
+    bio
+    location
+    isBountyHunter
+    }
+  }
