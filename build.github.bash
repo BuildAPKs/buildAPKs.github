@@ -12,9 +12,9 @@ _AND_ () { # write configuration file for git repository tarball if AndroidManif
 	printf "%s\\n" "0" >> "$JDR/var/conf/$USER.${NAME##*/}.${COMMIT::7}.ck"
 	if [[ -z "${1:-}" ]] 
 	then
-		printf "%s\\n" "Found AndroidManifest.xml file in Java, Javascript, Kotlin or Shell language repository $USER ${NAME##*/} ${COMMIT::7}:  Writing ~/${RDR##*/}/sources/github/${JDR##*/}/var/conf/$USER.${NAME##*/}.${COMMIT::7}.ck file for git repository ${NAME##*/}."
+		printf "%s\\n" "Found AndroidManifest.xml file in C* Java* Kotlin Objective-C* Pearl Python R* or Shell language repository $USER ${NAME##*/} ${COMMIT::7}:  Writing ~/${RDR##*/}/sources/github/${JDR##*/}/var/conf/$USER.${NAME##*/}.${COMMIT::7}.ck file for git repository ${NAME##*/}."
 	else
-		printf "%s\\n" "Found AndroidManifest.xml file in Java, Javascript, Kotlin or Shell language repository $USER ${NAME##*/} ${COMMIT::7}:  Downloading ${NAME##*/} tarball and writing ~/${RDR##*/}/sources/github/${JDR##*/}/var/conf/$USER.${NAME##*/}.${COMMIT::7}.ck file for git repository ${NAME##*/}."
+		printf "%s\\n" "Found AndroidManifest.xml file in C* Java* Kotlin Objective-C* Pearl Python R* or Shell language repository $USER ${NAME##*/} ${COMMIT::7}:  Downloading ${NAME##*/} tarball and writing ~/${RDR##*/}/sources/github/${JDR##*/}/var/conf/$USER.${NAME##*/}.${COMMIT::7}.ck file for git repository ${NAME##*/}."
 	fi
 	_NAMESMAINBLOCK_ QNAMES
 }
@@ -289,7 +289,7 @@ _MAINGITHUB_ () {
 	_WAKELOCK_
 	_GETREPOS_
 	_PRINTJS_
-	JARR=($(grep -B 5 -e "\"Java" -e "\"Objective-C" -e "\"R" -e "\"C\"" -e "\"C#\"" -e "\"C++\"" -e "\"Kotlin"\" -e "\"Pearl"\" -e "\"Python"\" -e "\"Shell\"" "$JDR/repos" | grep svn_url | awk -v x=2 '{print $x}' | sed 's/\,//g' | sed 's/\"//g')) || _SIGNAL_ "402" "create JARR ${0##*/} build.github.bash"  # create array of Java, JavaScript, Shell and Kotlin Java language repositories	
+	JARR=($(grep -B 5 -e "\"Java" -e "\"Objective-C" -e "\"R" -e "\"C\"" -e "\"C#\"" -e "\"C++\"" -e "\"Kotlin"\" -e "\"Pearl"\" -e "\"Python"\" -e "\"Shell\"" "$JDR/repos" | grep svn_url | awk -v x=2 '{print $x}' | sed 's/\,//g' | sed 's/\"//g')) || _SIGNAL_ "402" "create JARR ${0##*/} build.github.bash"  # create array of C* Java* Kotlin Objective-C* Pearl Python R* and Shell language repositories	
 	_PRINTJD_
 	if [[ "${JARR[@]}" == *ERROR* ]]
 	then
@@ -304,7 +304,7 @@ _MAINGITHUB_ () {
 		# To populate a partially downloaded JDR folder without deleting everything that was downloaded remove the ~/buildAPKs/sources/github/{orgs,users}/JDR/var directory which this script creates.  The unpacked tarball directories which correspond to individual repositories can be deleted to reset a JDR directory as well.  This can be accomplished with one find command ` find . -maxdepth 1 -type d -exec rm -rf {} \; ` issued in the JDR folder.  Checking the integity of multiple tarballs is automated with ` ~/buildAPKs/scripts/maintenance/delete.corrupt.tars.sh ls ` which should be excecuted in the same JDR directory to check for tarball errors.  If a corrupt tarball is found by ` delete.corrupt.tars.sh `, it will be deleted.  
 		# Run ` build.github.bash login [curl rate] ` and the logins you are trying to download might download easier if you are encountering difficulties downloading.  This information regards extremely fast and very slow connections, i.e. slower than 14400 baud and 4G at max speed.  Rate limiting is also effective on very high speed connections.  See ` grep -hrC 4 sleep ~/buildAPKs/scripts ` to view how buildAPKs handles device and network latency.  Excessive latency breaks downloads. 
 		# If you have trouble while downloading APK source code repositories, better results might be found downloading the many files ` build.github.bash ` can request when searching for source code and downloading source code tarball files with rate limiting enabled than without rate limiting.
-		# An example is provided for convenience; ` build.github.bash https://github.com/BuildAPKs c 33600 ` will throttle the download rate for ` curl ` to 33600.  It will take a long time to attempt to download everything that is written in Java and has an AndroidManifest.xml file from BuildAPKs at GitHub at this speed as some of the repositories are quite large.  Experimenting with the rate limit speed is recommended as devices, connections and the time of day are all fairly unique and factors for a successful download and build on device.
+		# An example is provided for convenience; ` build.github.bash https://github.com/BuildAPKs c 33600 ` will throttle the download rate for ` curl ` to 33600.  It will take a long time to attempt to download everything that has an AndroidManifest.xml file from BuildAPKs at GitHub at this speed as some of the repositories are quite large.  Experimenting with the rate limit speed is recommended as devices, connections and the time of day are all fairly unique and factors for a successful download and build on device.
 		_CKAT_ 
 	done
 	_PRINTJD_
@@ -317,7 +317,7 @@ _MAINGITHUB_ () {
 _NAND_ () { # write configuration file for repository if AndroidManifest.xml file is NOT found in git repository
 	printf "%s\\n" "$COMMIT" > "$JDR/var/conf/$USER.${NAME##*/}.${COMMIT::7}.ck"
 	printf "%s\\n" "1" >> "$JDR/var/conf/$USER.${NAME##*/}.${COMMIT::7}.ck"
-	printf "\\n%s\\n\\n" "Could not find an AndroidManifest.xml file in Java, Javascript, Kotlin or Shell language repository $USER ${NAME##*/} ${COMMIT::7}:  NOT downloading ${NAME##*/} tarball."
+	printf "\\n%s\\n\\n" "Could not find an AndroidManifest.xml file in C* Java* Kotlin Objective-C* Pearl Python R* or Shell language repository $USER ${NAME##*/} ${COMMIT::7}:  NOT downloading ${NAME##*/} tarball."
 }
 
 _PRINTAS_ () {
