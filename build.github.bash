@@ -341,11 +341,11 @@ _PRINTJS_ () {
 	printf "\\n\\e[1;34mSearching for C C# C++ Java* Kotlin Objective-C* Pearl Python R* and Shell language repositories: "'\033]2;Searching for C C# C++ Java* Kotlin Objective-C* Pearl Python R* and Shell language repositories: OK\007'
 }
 
-_RLREMING_ () { # if connection is available, print Github rate limit limit
-	RATEARRAY=($(curl -is https://api.github.com/rate_limit | grep Rate)) || printf "\\e[2;7;38;5;51m%s\\e[0m\\n\\n" "The Internet connection is not available; Continuing..." # create array with get rate information https://developer.github.com/v3/rate_limit/ from Github without incurring an API hit
+_RLREMING_ () { # if connection is available, print GitHub rate limit limit
+	RATEARRAY=($(curl -is https://api.github.com/rate_limit | grep Rate)) || printf "\\e[2;7;38;5;51m%s\\e[0m\\n\\n" "The Internet connection is not available; Continuing..." # create array with get rate information https://developer.github.com/v3/rate_limit/ from GitHub without incurring an API hit
 	if [[ ! -z "${RATEARRAY:-}" ]] # if RATEARRAY is defined
-	then	# print Github rate limit information to screen
-		printf "%s\\n" "Github rate limit information:"
+	then	# print GitHub rate limit information to screen
+		printf "%s\\n" "GitHub rate limit information:"
 		printf "\\e[2;7;38;5;144m%s\\e[0m\\n" "${RATEARRAY[0]} ${RATEARRAY[1]}" # print X-RateLimit-Limit information
 		printf "\\e[2;7;38;5;146m%s\\e[0m\\n" "${RATEARRAY[2]} ${RATEARRAY[3]}" # print X-RateLimit-Remaining information
 		printf "\\e[2;7;38;5;148m%s\\e[0m\\n" "${RATEARRAY[4]} ${RATEARRAY[5]}" # print X-RateLimit-Reset information
@@ -368,7 +368,7 @@ _SIGNAL_ () {
 
 if [[ -z "${1:-}" ]] # no argument is given
 then	# print message and exit
-	printf "\\e[1;7;38;5;204m%s\\e[1;7;38;5;201m%s\\e[1;7;38;5;204m%s\\e[1;7;38;5;201m%s\\e[1;7;38;5;204m%s\\e[1;7;38;5;201m%s\\e[1;7;38;5;204m%s\\n\\e[0m\\n" "GitHub username must be provided;  File " "~/${RDR##*/}/opt/db/UNAMES" " lists usernames that build APKs on device with BuildAPKs!  To attempt to build all the usernames contained in this file run " "for NAME in \$(cat ~/${RDR##*/}/opt/db/UNAMES) ; do ~/${RDR##*/}/scripts/bash/github/${0##*/} \$NAME ; done" ".  File " "~/${RDR##*/}/.conf/GAUTH" " has information should this for loop command be run regarding bandwidth supplied by GitHub. "
+	printf "\\e[1;7;38;5;204m%s\\e[1;7;38;5;201m%s\\e[1;7;38;5;204m%s\\e[1;7;38;5;201m%s\\e[1;7;38;5;204m%s\\e[1;7;38;5;201m%s\\e[1;7;38;5;204m%s\\n\\e[0m\\n" "GitHub username must be provided;  File " "~/${RDR##*/}/opt/db/UNAMES" " lists usernames that build APKs on device with BuildAPKs!  To attempt to build all the usernames contained in this file run " "for NAME in \$(cat ~/${RDR##*/}/opt/db/UNAMES) ; do ~/${RDR##*/}/${0##*/} \$NAME ; done" ".  File " "~/${RDR##*/}/.conf/GAUTH" " has information about bandwidth supplied by GitHub should this for loop command be run. "
 	exit 68
 fi
 export UONE="${1%/}" # https://www.gnu.org/software/bash/manual/bash.html#Shell-Parameter-Expansion
@@ -388,7 +388,7 @@ then	# check if the second argument begins with with the letter c: [[c]url rate]
 		printf "\\e[0;31m%s\\e[1;31m%s\\e[0;31m%s\\e[1;31m%s\\e[0;31m%s\\e[7;31m%s\\e[0m\\n" "To use curl with rate limiting add a numerical rate limit to " "${0##*/} $1 curl " "as the third argument to continue with curl --rate-limit, i.e. " "${0##*/} $1 curl 16384" ":" " Exiting..."
 		exit 66
 	fi
-else	# process Github login
+else	# process GitHub login
  	_MAINGITHUB_ "$*"
 fi
 # build.github.bash OEF
