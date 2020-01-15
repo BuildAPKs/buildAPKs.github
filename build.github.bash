@@ -350,10 +350,6 @@ _RLREMING_ () { # if connection is available, print GitHub rate limit limit
 		printf "\\e[2;7;38;5;146m%s\\e[0m\\n" "${RATEARRAY[2]} ${RATEARRAY[3]}"
 		printf "\\e[2;7;38;5;148m%s\\e[0m\\n" "${RATEARRAY[4]} ${RATEARRAY[5]}"
 		[ "$OAUT" != "" ]  && printf "\\e[1;7;38;5;185m%s\\e[0m\\n\\n" "OAUTH token $OAUT is enabled; Continuing..." || printf "\\e[2;7;38;5;150m%s\\e[0m\\n\\n" "File ~/${RDR##*/}/.conf/GAUTH has more information about X-RateLimit; Continuing..."	# print information about the .conf/GAUTH file
-		if (( ${RATEARRAY[3]} > 0 )) 	# X-RateLimit-Remaining = 0
-		then	# print signal and exit
-			_SIGNAL_ "668" "\${RATEARRAY[3]} _RLREMING_" "68"
-		fi
 	fi
 	unset RATEARRAY
 }
