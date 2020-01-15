@@ -12,9 +12,9 @@ _AND_ () { # write configuration file for git repository tarball if AndroidManif
 	printf "%s\\n" "0" >> "$JDR/var/conf/$USER.${NAME##*/}.${COMMIT::7}.ck"
 	if [[ -z "${1:-}" ]] 
 	then
-		printf "%s\\n" "Found AndroidManifest.xml file in C C# C++ Java* Haskell Lua Kotlin Objective-C* Pearl Python R* and/or Shell language repository $USER ${NAME##*/} ${COMMIT::7}:  Writing ~/${RDR##*/}/sources/github/${JDR##*/}/var/conf/$USER.${NAME##*/}.${COMMIT::7}.ck file for git repository ${NAME##*/}."
+		printf "\\e[1;38;5;148m%s\\e[0m\\n" "Found AndroidManifest.xml file in C C# C++ Java* Haskell Lua Kotlin Objective-C* Pearl Python R* and/or Shell language repository $USER ${NAME##*/} ${COMMIT::7}:  Writing ~/${RDR##*/}/sources/github/${JDR##*/}/var/conf/$USER.${NAME##*/}.${COMMIT::7}.ck file for git repository ${NAME##*/}."
 	else
-		printf "%s\\n" "Found AndroidManifest.xml file in C C# C++ Java* Haskell Lua Kotlin Objective-C* Pearl Python R* and/or Shell language repository $USER ${NAME##*/} ${COMMIT::7}:  Downloading ${NAME##*/} tarball and writing ~/${RDR##*/}/sources/github/${JDR##*/}/var/conf/$USER.${NAME##*/}.${COMMIT::7}.ck file for git repository ${NAME##*/}."
+		printf "\\e[1;38;5;148m%s\\e[0m\\n" "Found AndroidManifest.xml file in C C# C++ Java* Haskell Lua Kotlin Objective-C* Pearl Python R* and/or Shell language repository $USER ${NAME##*/} ${COMMIT::7}:  Downloading ${NAME##*/} tarball and writing ~/${RDR##*/}/sources/github/${JDR##*/}/var/conf/$USER.${NAME##*/}.${COMMIT::7}.ck file for git repository ${NAME##*/}."
 	fi
 	_NAMESMAINBLOCK_ QNAMES
 }
@@ -141,7 +141,7 @@ _CUTE_ () { # check if USENAME is an organization or a user
 		# test if array TYPE contains profile information
 		if [[ "${TYPE[1]}" == *\"message\":\ \"Not\ Found\"* ]] # array TYPE contains string message\":\ \"Not\ Found
 		then	# print message and exit
-			printf "\\n%s\\n\\n" "Could not find a GitHub login with $USENAME:  Exiting..."
+			printf "\\n\\e[1;38;5;185m%s\\e[0m\\n\\n" "Could not find a GitHub login with $USENAME:  Exiting..."
 			exit 44
 		fi
 		# array TYPE is undefined
@@ -317,7 +317,7 @@ _MAINGITHUB_ () {
 _NAND_ () { # write configuration file for repository if AndroidManifest.xml file is NOT found in git repository
 	printf "%s\\n" "$COMMIT" > "$JDR/var/conf/$USER.${NAME##*/}.${COMMIT::7}.ck"
 	printf "%s\\n" "1" >> "$JDR/var/conf/$USER.${NAME##*/}.${COMMIT::7}.ck"
-	printf "\\n%s\\n\\n" "Could not find an AndroidManifest.xml file in C C# C++ Java* Haskell Lua Kotlin Objective-C* Pearl Python R* and/or Shell language repository $USER ${NAME##*/} ${COMMIT::7}:  NOT downloading ${NAME##*/} tarball."
+	printf "\\n\\e[1;38;5;185m%s\\e[0m\\n\\n" "Could not find an AndroidManifest.xml file in C C# C++ Java* Haskell Lua Kotlin Objective-C* Pearl Python R* and/or Shell language repository $USER ${NAME##*/} ${COMMIT::7}:  NOT downloading ${NAME##*/} tarball."
 }
 
 _PRINTAS_ () {
