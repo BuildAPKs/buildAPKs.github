@@ -70,16 +70,16 @@ _BUILDAPKS_ () { # https://developer.github.com/v3/repos/commits/
 	then
 		if [[ "$OAUT" != "" ]] # see .conf/GAUTH file 
 		then
-			curl --fail --retry 2 -u "$OAUT" -L "$NAME/tarball/$COMMIT" -o "${NAME##*/}.${COMMIT::7}.tar.gz" || _SIGNAL_ "40" "_BUILDAPKS_"
+			curl --fail --retry 2 -u "$OAUT" -L "$NAME/tarball/$COMMIT" -o "${NAME##*/}.${COMMIT::7}.tar.gz" || _SIGNAL_ "40" "_BUILDAPKS_ curl"
 		else
-			curl --fail --retry 2 -L "$NAME/tarball/$COMMIT" -o "${NAME##*/}.${COMMIT::7}.tar.gz" || _SIGNAL_ "42" "_BUILDAPKS_"
+			curl --fail --retry 2 -L "$NAME/tarball/$COMMIT" -o "${NAME##*/}.${COMMIT::7}.tar.gz" || _SIGNAL_ "42" "_BUILDAPKS_ curl"
 		fi
 	else
 		if [[ "$OAUT" != "" ]] # see .conf/GAUTH file 
 		then
-			curl --fail --retry 2 --limit-rate "$CULR" -u "$OAUT" -L "$NAME/tarball/$COMMIT" -o "${NAME##*/}.${COMMIT::7}.tar.gz" || _SIGNAL_ "40" "_BUILDAPKS_"
+			curl --fail --retry 2 --limit-rate "$CULR" -u "$OAUT" -L "$NAME/tarball/$COMMIT" -o "${NAME##*/}.${COMMIT::7}.tar.gz" || _SIGNAL_ "40" "_BUILDAPKS_ curl"
 		else
-			curl --fail --retry 2 --limit-rate "$CULR" -L "$NAME/tarball/$COMMIT" -o "${NAME##*/}.${COMMIT::7}.tar.gz" || _SIGNAL_ "42" "_BUILDAPKS_"
+			curl --fail --retry 2 --limit-rate "$CULR" -L "$NAME/tarball/$COMMIT" -o "${NAME##*/}.${COMMIT::7}.tar.gz" || _SIGNAL_ "42" "_BUILDAPKS_ curl"
 		fi
 	fi
 	_FJDX_ 
@@ -357,11 +357,11 @@ _RLREMING_ () { # if connection is available, print GitHub rate limit limit
 _SIGNAL_ () {
  	if [[ -z ${3:-} ]]
 	then
-		STRING="SIGNAL $1 in $2 ${0##*/} build.github.bash!  Continuing..."
+		STRING="SIGNAL $1 in $2 ${0##*/} build.github.bash; Continuing...  "
 		printf "\\e[2;7;38;5;210m%s\\e[0m" "$STRING" 
 	else
 		SG="$3"
-		STRING="EXIT SIGNAL $SG recieved in $2 ${0##*/} build.github.bash!  Exiting with signal $SG..."
+		STRING="EXIT SIGNAL $SG recieved in $2 ${0##*/} build.github.bash; Exiting with signal $SG...  "
 		printf "\\e[2;7;38;5;210m%s\\e[0m" "$STRING" 
 		exit "$SG"
 	fi
