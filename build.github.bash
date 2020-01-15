@@ -357,7 +357,7 @@ _RLREMING_ () { # if connection is available, print GitHub rate limit limit
 _SIGNAL_ () {
  	if [[ -z ${3:-} ]]
 	then
-		STRING="SIGNAL $1 found in $2 ${0##*/} build.github.bash!  Continuing..."
+		STRING="SIGNAL $1 in $2 ${0##*/} build.github.bash!  Continuing..."
 		printf "\\e[2;7;38;5;210m%s\\e[0m" "$STRING" 
 	else
 		SG="$3"
