@@ -100,7 +100,7 @@ _CKAT_ () {
 		  		COMMIT="$(_GC_)" ||:
 		 		printf "%s\\n" "Found ${COMMIT::7}; Continuing..."
 		 		_ATT_ 
-				sleep 0.${RANDOM::4} # eases network latency
+				sleep 0.$(shuf -i 24-72 -n 1)	# eases network latency
 		 	else # load configuration information from file 
 		 		printf "%s" "Loading $USENAME $REPO config from $CKFILE:  "
 		 		COMMIT=$(head -n 1 "$NPCK") || _SIGNAL_ "62" "_CKAT_ COMMIT"
