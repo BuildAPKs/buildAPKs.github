@@ -98,7 +98,7 @@ _CKAT_ () {
 		 	then
 		 		printf "%s" "Checking $USENAME $REPO for last commit:  " 
 		  		COMMIT="$(_GC_)" ||:
-				printf "%s\\e[1;38;5;142m%s\\e[0m%s\\n" "Found " "${COMMIT::7}" "; Continuing..."
+				printf "%s\\e[1;38;5;142m%s\\e[0m%s\\n" "Found commit " "${COMMIT::7}" "; Continuing..."
 		 		_ATT_ 
 				sleep 0.$(shuf -i 24-72 -n 1)	# eases network latency
 		 	else # load configuration information from file 
