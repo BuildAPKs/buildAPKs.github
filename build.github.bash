@@ -97,7 +97,7 @@ _CKAT_ () {
 		 	if [[ $CKFILE = "" ]] # configuration file is not found
 		 	then
 		 		printf "%s" "Checking $USENAME $REPO for last commit:  " 
-		  		COMMIT="$(_GC_)" || _SIGNAL_ "58" "_CKAT_ COMMIT"
+		  		COMMIT="$(_GC_)" ||:
 				printf "%s\\e[1;38;5;142m%s\\e[0m%s\\n" "Found commit " "${COMMIT::7}" "; Continuing..."
 		 		_ATT_ || _SIGNAL_ "60" "_CKAT_ _ATT_"
 				sleep 0.$(shuf -i 24-72 -n 1)	# eases network latency
