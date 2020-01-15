@@ -354,19 +354,6 @@ _RLREMING_ () { # if connection is available, print GitHub rate limit limit
 	unset RATEARRAY
 }
 
-_SIGNAL_ () {
- 	if [[ -z ${3:-} ]]
-	then
-		STRING="SIGNAL $1 in $2 ${0##*/} build.github.bash; Continuing...  "
-		printf "\\e[2;7;38;5;210m%s\\e[0m" "$STRING" 
-	else
-		SG="$3"
-		STRING="EXIT SIGNAL $SG recieved in $2 ${0##*/} build.github.bash; Exiting with signal $SG...  "
-		printf "\\e[2;7;38;5;210m%s\\e[0m" "$STRING" 
-		exit "$SG"
-	fi
-}
-
 if [[ -z "${1:-}" ]] # no argument is given
 then	# print message and exit
 	printf "\\e[1;7;38;5;204m%s\\e[1;7;38;5;201m%s\\e[1;7;38;5;204m%s\\e[1;7;38;5;201m%s\\e[1;7;38;5;204m%s\\e[1;7;38;5;201m%s\\e[1;7;38;5;204m%s\\n\\e[0m\\n" "GitHub username must be provided;  File " "~/${RDR##*/}/opt/db/UNAMES" " lists usernames that build APKs on device with BuildAPKs!  To attempt to build all the usernames contained in this file run " "for NAME in \$(cat ~/${RDR##*/}/opt/db/UNAMES) ; do ~/${RDR##*/}/${0##*/} \$NAME ; done" ".  File " "~/${RDR##*/}/.conf/GAUTH" " has information about bandwidth supplied by GitHub should this for loop command be run. "
