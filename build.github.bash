@@ -116,6 +116,7 @@ _CKAT_ () {
 
 _CUTE_ () { # check if USENAME is an organization or a user
 	. "$RDR"/scripts/bash/shlibs/buildAPKs/bnchn.bash bch.st 
+	_RLREMING_
 	if [[ $(grep -iw "$USENAME" "$RDR/var/db/log/GNAMES" | awk '{print $2}') == User ]] && [[ -f "$RDR/sources/github/users/$USER/profile" ]] && [[ -f "$RDR/sources/github/users/$USER/repos" ]] # found in GNAMES and is a user and files exist
 	then	# assign user attributes to USENAME 
 		export ISUSER=users
@@ -137,7 +138,6 @@ _CUTE_ () { # check if USENAME is an organization or a user
 		else
 			mapfile -t TYPE < <(curl "https://api.github.com/users/$USENAME")
 		fi
-		_RLREMING_
 		# test if array TYPE contains profile information
 		if [[ "${TYPE[1]}" == *\"message\":\ \"Not\ Found\"* ]] # array TYPE contains string message\":\ \"Not\ Found
 		then	# print message and exit
@@ -343,14 +343,19 @@ _PRINTJS_ () {
 
 _RLREMING_ () { # if connection is available, print GitHub rate limit limit
 	RATEARRAY=($(curl -is https://api.github.com/rate_limit | grep Rate)) || printf "\\e[2;7;38;5;51m%s\\e[0m\\n\\n" "The Internet connection is not available; Continuing..." # create array with get rate information https://developer.github.com/v3/rate_limit/ from GitHub without incurring an API hit
-	if [[ ! -z "${RATEARRAY:-}" ]] # if RATEARRAY is defined
-	then	# print GitHub rate limit information to screen
+	if [[ ! -z "${RATEARRAY:-}" ]] # if RATEARRAY is set
+	then	# print GitHub X-RateLimit-Limit information to screen
 		printf "%s\\n" "GitHub rate limit information:"
-		printf "\\e[2;7;38;5;144m%s\\e[0m\\n" "${RATEARRAY[0]} ${RATEARRAY[1]}" # print X-RateLimit-Limit information
-		printf "\\e[2;7;38;5;146m%s\\e[0m\\n" "${RATEARRAY[2]} ${RATEARRAY[3]}" # print X-RateLimit-Remaining information
-		printf "\\e[2;7;38;5;148m%s\\e[0m\\n" "${RATEARRAY[4]} ${RATEARRAY[5]}" # print X-RateLimit-Reset information
-		[ "$OAUT" != "" ]  && printf "\\e[1;7;38;5;185m%s\\e[0m\\n\\n" "OAUTH token $OAUT is enabled; Continuing..." || printf "\\e[2;7;38;5;150m%s\\e[0m\\n\\n" "File ~/${RDR##*/}/.conf/GAUTH has more information about X-RateLimit; Continuing..." # print information the about the .conf/GAUTH file	 
+		printf "\\e[2;7;38;5;144m%s\\e[0m\\n" "${RATEARRAY[0]} ${RATEARRAY[1]}"
+		printf "\\e[2;7;38;5;146m%s\\e[0m\\n" "${RATEARRAY[2]} ${RATEARRAY[3]}"
+		printf "\\e[2;7;38;5;148m%s\\e[0m\\n" "${RATEARRAY[4]} ${RATEARRAY[5]}"
+		[ "$OAUT" != "" ]  && printf "\\e[1;7;38;5;185m%s\\e[0m\\n\\n" "OAUTH token $OAUT is enabled; Continuing..." || printf "\\e[2;7;38;5;150m%s\\e[0m\\n\\n" "File ~/${RDR##*/}/.conf/GAUTH has more information about X-RateLimit; Continuing..."	# print information about the .conf/GAUTH file
+		if (( ${RATEARRAY[3]} > 0 )) 	# X-RateLimit-Remaining = 0
+		then	# print signal and exit
+			_SIGNAL_ "668" "\${RATEARRAY[3]} _RLREMING_" "68"
+		fi
 	fi
+	unset RATEARRAY
 }
 
 _SIGNAL_ () {
@@ -359,10 +364,10 @@ _SIGNAL_ () {
 		STRING="SIGNAL $1 found in $2 ${0##*/} build.github.bash!  Continuing..."
 		printf "\\e[2;7;38;5;210m%s\\e[0m" "$STRING" 
 	else
-		SG=$3
+		SG="$3"
 		STRING="EXIT SIGNAL $SG recieved in $2 ${0##*/} build.github.bash!  Exiting with signal $SG..."
 		printf "\\e[2;7;38;5;210m%s\\e[0m" "$STRING" 
-		exit $SG
+		exit "$SG"
 	fi
 }
 
