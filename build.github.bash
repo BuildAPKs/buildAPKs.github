@@ -70,9 +70,9 @@ _BUILDAPKS_ () { # https://developer.github.com/v3/repos/commits/
 	then
 		if [[ "$OAUT" != "" ]] # see .conf/GAUTH file 
 		then
-			curl --fail --retry 2 -u "$OAUT" -L "$NAME/tarball/$COMMIT" -o "${NAME##*/}.${COMMIT::7}.tar.gz" || _SIGNAL_ "40" "_BUILDAPKS_ curl"
+			curl --fail --retry 2 -u "$OAUT" -L "$NAME/tarball/$COMMIT" -o "${NAME##*/}.${COMMIT::7}.tar.gz" || _SIGNAL_ "30" "_BUILDAPKS_ curl"
 		else
-			curl --fail --retry 2 -L "$NAME/tarball/$COMMIT" -o "${NAME##*/}.${COMMIT::7}.tar.gz" || _SIGNAL_ "42" "_BUILDAPKS_ curl"
+			curl --fail --retry 2 -L "$NAME/tarball/$COMMIT" -o "${NAME##*/}.${COMMIT::7}.tar.gz" || _SIGNAL_ "32" "_BUILDAPKS_ curl"
 		fi
 	else
 		if [[ "$OAUT" != "" ]] # see .conf/GAUTH file 
@@ -237,7 +237,7 @@ _MKJDC_ () { # create JDR/var/conf directory contains query for \` AndroidManife
 
 _FJDX_ () { 
 	export SFX="$(tar tf "${NAME##*/}.${COMMIT::7}.tar.gz" | awk 'NR==1' )" || _SIGNAL_ "82" "_FJDX_"
-	(tar xvf "${NAME##*/}.${COMMIT::7}.tar.gz" | grep AndroidManifest.xml || _SIGNAL_ "84" "_FJDX_") ; _IAR_ "$JDR/$SFX" || _SIGNAL_ "86" "_FJDX_"
+	(tar xvf "${NAME##*/}.${COMMIT::7}.tar.gz" | grep AndroidManifest.xml || _SIGNAL_ "84" "_FJDX_") ; _IAR_ "$JDR/$SFX" || _SIGNAL_ "84" "_FJDX_"
 }
 
 _GC_ () { 
@@ -280,7 +280,7 @@ _MAINGITHUB_ () {
 		touch "$JDR"/profile # create null profile file 
 		touch "$JDR"/repos # create null repos file 
 		printf "\\e[7;38;5;204mUsername %s is found in %s: NOT processing download and build for username %s!  Remove the login from the corresponding file(s) and the account's build directory in %s if an empty directory was created to process %s.  Then run \` %s \` again to attempt to build %s's APK projects, if any.  File %s has more information:\\e[0m\\n" "$USENAME" "~/${RDR##*/}/var/db/[PRXZ]NAMES" "$USENAME" "~/${RDR##*/}/sources/github/{orgs,users}" "$USENAME" "${0##*/} $USENAME" "$USENAME" "~/${RDR##*/}/var/db/README.md" 
-		awk 'NR>=16 && NR<=44' "$RDR/opt/db/README.md" || printf "\\e[7;38;5;203m%s\\e[0m\\n" "Running \` awk 'NR>=16 && NR<=42' $RDR/opt/db/README.md \` failed; Continuing...  "
+		awk 'NR>=16 && NR<=44' "$RDR/opt/db/README.md" || _SIGNAL_ "86" "\` awk 'NR>=16 && NR<=42' $RDR/opt/db/README.md \` _MAINGITHUB_"
 		printf "\\e[7;38;5;203m%s is found in %s: NOT processing download and build for username %s!  Remove the username from the corresponding file(s) and the account's build directory in %s if an empty directory was created to process %s.  Then run \` %s \` again to attempt to build %s's APK projects, if any.  Scroll up to read information from the %s file.\\e[0m\\n" "$USENAME" "$(grep -Hiw "$USENAME" "$RDR"/var/db/[PRXZ]NAMES)" "$USENAME" "~/${RDR##*/}/sources/github/{orgs,users}" "$USENAME" "${0##*/} $USENAME" "$USENAME" "~/${RDR##*/}/var/db/README.md" 
 		exit 0 # and exit
 	else	# check whether login is a user or an organization
@@ -289,12 +289,12 @@ _MAINGITHUB_ () {
 	_WAKELOCK_
 	_GETREPOS_
 	_PRINTJS_
-	JARR=($(grep -B 5 -e "\"\:\ \"Java" -e "\"\:\ \"Objective-C" -e "\"\:\ \"R" -e "\"\:\ \"C\"" -e "\"\:\ \"C#\"" -e "\"\:\ \"C++\"" -e "\"\:\ \"Haskell"\" -e "\"\:\ \"Lus"\" -e "\"\:\ \"Kotlin"\" -e "\"\:\ \"Pearl"\" -e "\"\:\ \"Python"\" -e "\"\:\ \"Shell\"" "$JDR/repos" | grep svn_url | awk -v x=2 '{print $x}' | sed 's/\,//g' | sed 's/\"//g')) || _SIGNAL_ "402" "create JARR ${0##*/} build.github.bash" # create array of C C# C++ Java* Haskell Lua Kotlin Objective-C* Pearl Python R* and Shell language repositories
+	JARR=($(grep -B 5 -e "\"\:\ \"Java" -e "\"\:\ \"Objective-C" -e "\"\:\ \"R" -e "\"\:\ \"C\"" -e "\"\:\ \"C#\"" -e "\"\:\ \"C++\"" -e "\"\:\ \"Haskell"\" -e "\"\:\ \"Lus"\" -e "\"\:\ \"Kotlin"\" -e "\"\:\ \"Pearl"\" -e "\"\:\ \"Python"\" -e "\"\:\ \"Shell\"" "$JDR/repos" | grep svn_url | awk -v x=2 '{print $x}' | sed 's/\,//g' | sed 's/\"//g')) || _SIGNAL_ "88" "create JARR ${0##*/} build.github.bash" # create array of C C# C++ Java* Haskell Lua Kotlin Objective-C* Pearl Python R* and Shell language repositories
 	_PRINTJD_
 	if [[ "${JARR[@]}" == *ERROR* ]]
 	then
 		_NAMESMAINBLOCK_ ZNAMES
-		_SIGNAL_ "404" "search for ERROR in JARR ${0##*/} build.github.bash" "4"
+		_SIGNAL_ "90" "search for ERROR in JARR ${0##*/} build.github.bash" "4"
 	fi
 	F1AR=($(find "$JDR" -maxdepth 1 -type d)) # creates array of JDR contents 
 	cd "$JDR"
