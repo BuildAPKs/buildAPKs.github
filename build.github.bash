@@ -327,9 +327,9 @@ _PRINTAS_ () {
 _PRINTCK_ () {
 	if [[ "$CK" = 1 ]]
 	then
-		printf "%s\\n\\n" "WARNING AndroidManifest.xml file not found!"
+		printf "\\e[1;38;5;185m%s\\e[0m\\n\\n" "WARNING AndroidManifest.xml file not found; Continuing..."
 	else
-		printf "%s\\n\\n" "Continuing..."
+		printf "\\e[1;38;5;148m%s\\e[0m\\n\\n" "File AndroidManifest.xml found; Continuing..."
 	fi
 }
 
