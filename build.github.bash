@@ -12,9 +12,9 @@ _AND_ () { # write configuration file for git repository tarball if AndroidManif
 	printf "%s\\n" "0" >> "$JDR/var/conf/$USER.${NAME##*/}.${COMMIT::7}.ck"
 	if [[ -z "${1:-}" ]] 
 	then
-		printf "\\e[1;38;5;148m%s\\e[0m\\n" "Found AndroidManifest.xml file in C C# C++ Haskell Java* Kotlin Lua Objective-C* Octave Pearl Python R* and/or Shell language repository $USER ${NAME##*/} ${COMMIT::7}:  Writing ~/${RDR##*/}/sources/github/${JDR##*/}/var/conf/$USER.${NAME##*/}.${COMMIT::7}.ck file for git repository ${NAME##*/}:"
+		printf "\\n\\e[1;38;5;148m%s\\e[0m\\n" "Found AndroidManifest.xml file in C C# C++ Haskell Java* Kotlin Lua Objective-C* Octave Pearl Python R* and/or Shell language repository $USER ${NAME##*/} ${COMMIT::7}:  Writing ~/${RDR##*/}/sources/github/${JDR##*/}/var/conf/$USER.${NAME##*/}.${COMMIT::7}.ck file for git repository ${NAME##*/}:"
 	else
-		printf "\\e[1;38;5;148m%s\\e[0m\\n" "Found AndroidManifest.xml file in C C# C++ Haskell Java* Kotlin Lua Objective-C* Octave Pearl Python R* and/or Shell language repository $USER ${NAME##*/} ${COMMIT::7}:  Downloading ${NAME##*/} tarball and writing ~/${RDR##*/}/sources/github/${JDR##*/}/var/conf/$USER.${NAME##*/}.${COMMIT::7}.ck file for git repository ${NAME##*/}:"
+		printf "\\n\\e[1;38;5;148m%s\\e[0m\\n" "Found AndroidManifest.xml file in C C# C++ Haskell Java* Kotlin Lua Objective-C* Octave Pearl Python R* and/or Shell language repository $USER ${NAME##*/} ${COMMIT::7}:  Downloading ${NAME##*/} tarball and writing ~/${RDR##*/}/sources/github/${JDR##*/}/var/conf/$USER.${NAME##*/}.${COMMIT::7}.ck file for git repository ${NAME##*/}:"
 	fi
 	_NAMESMAINBLOCK_ QNAMES
 }
