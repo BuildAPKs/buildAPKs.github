@@ -237,6 +237,7 @@ _MKJDC_ () { # create JDR/var/conf directory contains query for \` AndroidManife
 
 _FJDX_ () { 
 	export SFX="$(tar tf "${NAME##*/}.${COMMIT::7}.tar.gz" | awk 'NR==1' )" || _SIGNAL_ "82" "_FJDX_"
+	printf "\\e[1;38;5;148m%s\\e[0m\\n" "Running \` tar xvf ${NAME##*/}.${COMMIT::7}.tar.gz | grep AndroidManifest.xml \`:"
 	(tar xvf "${NAME##*/}.${COMMIT::7}.tar.gz" | grep AndroidManifest.xml || _SIGNAL_ "84" "_FJDX_") ; _IAR_ "$JDR/$SFX" || _SIGNAL_ "84" "_FJDX_"
 }
 
