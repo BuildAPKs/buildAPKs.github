@@ -229,7 +229,7 @@ _MKJDC_ () { # create JDR/var/conf directory contains query for \` AndroidManife
 	| file name | purpose |
 	-----------------------
 	| *.ck      | results from query for commit and AndroidManifest.xml file(s) | 
-	| NAMES.db  | var/db/*NAMES* files processedthrough var/db/*NAMES;  Remove this file to reprocess login through var/db/*NAMES upon susequent build. | 
+	| NAMES.db  | var/db/*NAMES* files processed through var/db/*NAMES;  Remove this file to reprocess login through var/db/*NAMES upon susequent build. | 
 	| NAMFS.db  | The number of AndroidManifest.xml files that were found at login https://github.com/$USENAME. | 
 	| NAPKS.db  | The number of APKs that were built on device with BuildAPKs. |  " > "$JDR/var/conf/README.md" 
 	fi
@@ -269,7 +269,7 @@ _MAINGITHUB_ () {
 	_MKRDIRS_ "opt"
 	_MKDIRS_ "db" "cache/lib" "cache/lib/res-appcompat" "cache/lib/res-cardview" "cache/lib/res-design" "cache/lib/res-recyclerview" "cache/stash" "cache/tarballs" "db" "db/log" "log/messages"
 	_MKFILES_ "db/ANAMES" "db/BNAMES" "db/B10NAMES" "db/B100NAMES" "db/GNAMES" "db/ONAMES" "db/QNAMES" "db/RNAMES" "db/XNAMES" "db/YNAMES" "db/ZNAMES" "db/log/BNAMES" "db/log/B10NAMES" "db/log/B100NAMES" "db/log/GNAMES"
-	if grep -Hiw "$USENAME" "$RDR"/var/db/[PRXZ]NAMES
+	if grep -Hiw "$USENAME" "$RDR"/var/db/[PRXYZ]NAMES
 	then	# create null directory, profile, repos files, and exit
 		if grep -iw "$USENAME" "$RDR"/var/db/ONAMES 1>/dev/null
 		then
@@ -280,9 +280,9 @@ _MAINGITHUB_ () {
 		mkdir -p "$JDR" # create null directory
 		touch "$JDR"/profile # create null profile file 
 		touch "$JDR"/repos # create null repos file 
-		printf "\\e[7;38;5;204mUsername %s is found in %s: NOT processing download and build for username %s!  Remove the login from the corresponding file(s) and the account's build directory in %s if an empty directory was created to process %s.  Then run \` %s \` again to attempt to build %s's APK projects, if any.  File %s has more information:\\e[0m\\n" "$USENAME" "~/${RDR##*/}/var/db/[PRXZ]NAMES" "$USENAME" "~/${RDR##*/}/sources/github/{orgs,users}" "$USENAME" "${0##*/} $USENAME" "$USENAME" "~/${RDR##*/}/var/db/README.md" 
+		printf "\\e[7;38;5;204mUsername %s is found in %s: NOT processing download and build for username %s!  Remove the login from the corresponding file(s) and the account's build directory in %s if an empty directory was created to process %s.  Then run \` %s \` again to attempt to build %s's APK projects, if any.  File %s has more information:\\e[0m\\n" "$USENAME" "~/${RDR##*/}/var/db/[PRXYZ]NAMES" "$USENAME" "~/${RDR##*/}/sources/github/{orgs,users}" "$USENAME" "${0##*/} $USENAME" "$USENAME" "~/${RDR##*/}/var/db/README.md" 
 		awk 'NR>=16 && NR<=44' "$RDR/opt/db/README.md" || _SIGNAL_ "86" "\` awk 'NR>=16 && NR<=42' $RDR/opt/db/README.md \` _MAINGITHUB_"
-		printf "\\e[7;38;5;203m%s is found in %s: NOT processing download and build for username %s!  Remove the username from the corresponding file(s) and the account's build directory in %s if an empty directory was created to process %s.  Then run \` %s \` again to attempt to build %s's APK projects, if any.  Scroll up to read information from the %s file.\\e[0m\\n" "$USENAME" "$(grep -Hiw "$USENAME" "$RDR"/var/db/[PRXZ]NAMES)" "$USENAME" "~/${RDR##*/}/sources/github/{orgs,users}" "$USENAME" "${0##*/} $USENAME" "$USENAME" "~/${RDR##*/}/var/db/README.md" 
+		printf "\\e[7;38;5;203m%s is found in %s: NOT processing download and build for username %s!  Remove the username from the corresponding file(s) and the account's build directory in %s if an empty directory was created to process %s.  Then run \` %s \` again to attempt to build %s's APK projects, if any.  Scroll up to read information from the %s file.\\e[0m\\n" "$USENAME" "$(grep -Hiw "$USENAME" "$RDR"/var/db/[PRXYZ]NAMES)" "$USENAME" "~/${RDR##*/}/sources/github/{orgs,users}" "$USENAME" "${0##*/} $USENAME" "$USENAME" "~/${RDR##*/}/var/db/README.md" 
 		exit 0 # and exit
 	else	# check whether login is a user or an organization
 		_CUTE_
