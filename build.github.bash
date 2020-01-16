@@ -12,9 +12,9 @@ _AND_ () { # write configuration file for git repository tarball if AndroidManif
 	printf "%s\\n" "0" >> "$JDR/var/conf/$USER.${NAME##*/}.${COMMIT::7}.ck"
 	if [[ -z "${1:-}" ]] 
 	then
-		printf "\\e[1;38;5;148m%s\\e[0m\\n" "Found AndroidManifest.xml file in C C# C++ Java* Haskell Lua Kotlin Objective-C* Pearl Python R* and/or Shell language repository $USER ${NAME##*/} ${COMMIT::7}:  Writing ~/${RDR##*/}/sources/github/${JDR##*/}/var/conf/$USER.${NAME##*/}.${COMMIT::7}.ck file for git repository ${NAME##*/}:"
+		printf "\\e[1;38;5;148m%s\\e[0m\\n" "Found AndroidManifest.xml file in C C# C++ Haskell Java* Kotlin Lua Objective-C* Octave Pearl Python R* and/or Shell language repository $USER ${NAME##*/} ${COMMIT::7}:  Writing ~/${RDR##*/}/sources/github/${JDR##*/}/var/conf/$USER.${NAME##*/}.${COMMIT::7}.ck file for git repository ${NAME##*/}:"
 	else
-		printf "\\e[1;38;5;148m%s\\e[0m\\n" "Found AndroidManifest.xml file in C C# C++ Java* Haskell Lua Kotlin Objective-C* Pearl Python R* and/or Shell language repository $USER ${NAME##*/} ${COMMIT::7}:  Downloading ${NAME##*/} tarball and writing ~/${RDR##*/}/sources/github/${JDR##*/}/var/conf/$USER.${NAME##*/}.${COMMIT::7}.ck file for git repository ${NAME##*/}:"
+		printf "\\e[1;38;5;148m%s\\e[0m\\n" "Found AndroidManifest.xml file in C C# C++ Haskell Java* Kotlin Lua Objective-C* Octave Pearl Python R* and/or Shell language repository $USER ${NAME##*/} ${COMMIT::7}:  Downloading ${NAME##*/} tarball and writing ~/${RDR##*/}/sources/github/${JDR##*/}/var/conf/$USER.${NAME##*/}.${COMMIT::7}.ck file for git repository ${NAME##*/}:"
 	fi
 	_NAMESMAINBLOCK_ QNAMES
 }
@@ -289,7 +289,7 @@ _MAINGITHUB_ () {
 	_WAKELOCK_
 	_GETREPOS_
 	_PRINTJS_
-	JARR=($(grep -B 5 -e "\"\:\ \"Java" -e "\"\:\ \"Objective-C" -e "\"\:\ \"R" -e "\"\:\ \"C\"" -e "\"\:\ \"C#\"" -e "\"\:\ \"C++\"" -e "\"\:\ \"Haskell"\" -e "\"\:\ \"Lus"\" -e "\"\:\ \"Kotlin"\" -e "\"\:\ \"Pearl"\" -e "\"\:\ \"Python"\" -e "\"\:\ \"Shell\"" "$JDR/repos" | grep svn_url | awk -v x=2 '{print $x}' | sed 's/\,//g' | sed 's/\"//g')) || _SIGNAL_ "88" "create JARR ${0##*/} build.github.bash" # create array of C C# C++ Java* Haskell Lua Kotlin Objective-C* Pearl Python R* and Shell language repositories
+	JARR=($(grep -B 5 -e "\"\:\ \"Java" -e "\"\:\ \"Objective-C" -e "\"\:\ \"R" -e "\"\:\ \"C\"" -e "\"\:\ \"C#\"" -e "\"\:\ \"C++\"" -e "\"\:\ \"Haskell"\" -e "\"\:\ \"Kotlin"\" -e "\"\:\ \"Lua"\" -e "\"\:\ \"Octave"\" -e "\"\:\ \"Pearl"\" -e "\"\:\ \"Python"\" -e "\"\:\ \"Shell\"" "$JDR/repos" | grep svn_url | awk -v x=2 '{print $x}' | sed 's/\,//g' | sed 's/\"//g')) || _SIGNAL_ "88" "create JARR ${0##*/} build.github.bash" # create array of C C# C++ Haskell Java* Kotlin Lua Objective-C* Octave Pearl Python R* and Shell language repositories
 	_PRINTJD_
 	if [[ "${JARR[@]}" == *ERROR* ]]
 	then
@@ -317,7 +317,7 @@ _MAINGITHUB_ () {
 _NAND_ () { # write configuration file for repository if AndroidManifest.xml file is NOT found in git repository
 	printf "%s\\n" "$COMMIT" > "$JDR/var/conf/$USER.${NAME##*/}.${COMMIT::7}.ck"
 	printf "%s\\n" "1" >> "$JDR/var/conf/$USER.${NAME##*/}.${COMMIT::7}.ck"
-	printf "\\n\\e[1;38;5;185m%s\\e[0m\\n\\n" "Could not find an AndroidManifest.xml file in C C# C++ Java* Haskell Lua Kotlin Objective-C* Pearl Python R* and/or Shell language repository $USER ${NAME##*/} ${COMMIT::7}:  NOT downloading ${NAME##*/} tarball."
+	printf "\\n\\e[1;38;5;185m%s\\e[0m\\n\\n" "Could not find an AndroidManifest.xml file in C C# C++ Haskell Java* Kotlin Lua Objective-C* Octave Pearl Python R* and/or Shell language repository $USER ${NAME##*/} ${COMMIT::7}:  NOT downloading ${NAME##*/} tarball."
 }
 
 _PRINTAS_ () {
@@ -338,7 +338,7 @@ _PRINTJD_ () {
 }
 
 _PRINTJS_ () {
-	printf "\\n\\e[1;34mSearching for C C# C++ Java* Haskell Lua Kotlin Objective-C* Pearl Python R* and Shell language repositories: "'\033]2;Searching for C C# C++ Java* Haskell Lua Kotlin Objective-C* Pearl Python R* and Shell language repositories: OK\007'
+	printf "\\n\\e[1;34mSearching for C C# C++ Haskell Java* Kotlin Lua Objective-C* Octave Pearl Python R* and Shell language repositories: "'\033]2;Searching for C C# C++ Haskell Java* Kotlin Lua Objective-C* Octave Pearl Python R* and Shell language repositories: OK\007'
 }
 
 _RLREMING_ () { # if connection is available, print GitHub rate limit limit
