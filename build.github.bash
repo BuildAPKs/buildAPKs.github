@@ -268,7 +268,7 @@ _MAINGITHUB_ () {
 	. "$RDR"/scripts/sh/shlibs/mkdirs.sh
 	_MKRDIRS_ "opt"
 	_MKDIRS_ "db" "cache/lib" "cache/lib/res-appcompat" "cache/lib/res-cardview" "cache/lib/res-design" "cache/lib/res-recyclerview" "cache/stash" "cache/tarballs" "db" "db/log" "log/messages"
-	_MKFILES_ "db/ANAMES" "db/BNAMES" "db/B10NAMES" "db/B100NAMES" "db/GNAMES" "db/ONAMES" "db/QNAMES" "db/RNAMES" "db/XNAMES" "db/ZNAMES" "db/log/BNAMES" "db/log/B10NAMES" "db/log/B100NAMES" "db/log/GNAMES"
+	_MKFILES_ "db/ANAMES" "db/BNAMES" "db/B10NAMES" "db/B100NAMES" "db/GNAMES" "db/ONAMES" "db/QNAMES" "db/RNAMES" "db/XNAMES" "db/YNAMES" "db/ZNAMES" "db/log/BNAMES" "db/log/B10NAMES" "db/log/B100NAMES" "db/log/GNAMES"
 	if grep -Hiw "$USENAME" "$RDR"/var/db/[PRXZ]NAMES
 	then	# create null directory, profile, repos files, and exit
 		if grep -iw "$USENAME" "$RDR"/var/db/ONAMES 1>/dev/null
