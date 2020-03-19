@@ -20,7 +20,7 @@ _AND_ () { # write configuration file for git repository tarball if AndroidManif
 }
 
 _ATT_ () {
-	if [[ "$CK" != 1 ]]
+	if [[ "$TCK" != 1 ]]
 	then
 		if [[ ! -f "${NAME##*/}.${COMMIT::7}.tar.gz" ]] # tar file does not exist
 		then 
@@ -52,6 +52,10 @@ _ATT_ () {
 				fi
 			fi
 		# check if bash array F1AR contains value NAME
+		elif [[ ! -f "${NAME##*/}.${COMMIT::7}.tar.gz" ]] && [[ "${F1AR[@]}" =~ "${NAME##*/}" ]] # tarfile does NOT exist and directory exists 
+		then
+			_AND_
+			_BUILDAPKS_
 		elif [[ -f "${NAME##*/}.${COMMIT::7}.tar.gz" ]] && [[ ! "${F1AR[@]}" =~ "${NAME##*/}" ]] # tarfile exists and directory does NOT exist
 		then
 			_AND_
@@ -87,7 +91,7 @@ _BUILDAPKS_ () { # https://developer.github.com/v3/repos/commits/
 
 _CKAT_ () {
 	_MKJDC_ 
-	CK=0
+	TCK=0
 	REPO=$(awk -F/ '{print $NF}' <<< "$NAME") # redirect output to a variable 
 	if ! grep -iw "$REPO" "$RDR"/var/db/ANAMES # repository name is not found in ANAMES file
 	then	# process copy and build repository 
@@ -104,10 +108,10 @@ _CKAT_ () {
 		 	else # load configuration information from file 
 		 		printf "%s" "Loading $USENAME $REPO config from $CKFILE:  "
 		 		COMMIT=$(head -n 1 "$NPCK") || _SIGNAL_ "62" "_CKAT_ COMMIT"
-		  		CK=$(tail -n 1  "$NPCK") || _SIGNAL_ "64" "_CKAT_ CK"
+		  		TCK=$(tail -n 1  "$NPCK") || _SIGNAL_ "64" "_CKAT_ TCK"
 				_PRINTCK_ 
 		 	fi
-			export CK=0
+			export TCK=0
 		done
 	else
 		printf "%s" "Not processing $REPO; listing found in ~/"${RDR##*/}"/var/db/ANAMES file. " 
@@ -295,7 +299,7 @@ _MAINGITHUB_ () {
 	if [[ "${JARR[@]}" == *ERROR* ]]
 	then
 		_NAMESMAINBLOCK_ ZNAMES
-		_SIGNAL_ "90" "search for ERROR in JARR ${0##*/} build.github.bash" "4"
+		_SIGNAL_ "90" "search for ERROR in JARR ${0##*/} build.github.bash" "90"
 	fi
 	F1AR=($(find "$JDR" -maxdepth 1 -type d)) # creates array of JDR contents 
 	cd "$JDR"
@@ -326,7 +330,7 @@ _PRINTAS_ () {
 }
 
 _PRINTCK_ () {
-	if [[ "$CK" = 1 ]]
+	if [[ "$TCK" = 1 ]]
 	then
 		printf "\\e[1;38;5;185m%s\\e[0m\\n\\n" "WARNING AndroidManifest.xml file not found; Continuing..."
 	else
