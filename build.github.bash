@@ -110,7 +110,7 @@ _CKAT_ () {
 		 		COMMIT=$(head -n 1 "$NPCK") || _SIGNAL_ "62" "_CKAT_ COMMIT"
 		  		TCK=$(tail -n 1  "$NPCK") || _SIGNAL_ "64" "_CKAT_ TCK"
 				_PRINTCK_ 
-		 		_BUILDAPKS_ || _SIGNAL_ "62" "_BUILDAPKS_ _ATT_"
+		 		_ATT_ || _SIGNAL_ "62" "_CKAT_ _ATT_"
 		 	fi
 		done
 	else
