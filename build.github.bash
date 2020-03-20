@@ -110,8 +110,8 @@ _CKAT_ () {
 		 		COMMIT=$(head -n 1 "$NPCK") || _SIGNAL_ "62" "_CKAT_ COMMIT"
 		  		TCK=$(tail -n 1  "$NPCK") || _SIGNAL_ "64" "_CKAT_ TCK"
 				_PRINTCK_ 
+		 		_ATT_ || _SIGNAL_ "62" "_CKAT_ _ATT_"
 		 	fi
-			export TCK=0
 		done
 	else
 		printf "%s" "Not processing $REPO; listing found in ~/"${RDR##*/}"/var/db/ANAMES file. " 
