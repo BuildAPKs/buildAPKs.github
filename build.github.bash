@@ -22,7 +22,11 @@ _AND_ () { # write configuration file for git repository tarball if AndroidManif
 _ATT_ () {
 	if [[ "$TCK" != 1 ]]
 	then
-		if [[ ! -f "${NAME##*/}.${COMMIT::7}.tar.gz" ]] # tar file does not exist
+		if [[ ! -f "${NAME##*/}.${COMMIT::7}.tar.gz" ]] && [[ "${F1AR[@]}" =~ "${NAME##*/}" ]] # tarfile does NOT exist and directory exists 
+		then
+			_AND_
+			_BUILDAPKS_
+		elif 	[[ ! -f "${NAME##*/}.${COMMIT::7}.tar.gz" ]] # tar file does not exist
 		then 
 			printf "%s\\n" "Querying $USENAME $REPO ${COMMIT::7} for AndroidManifest.xml file:"
 			if [[ "$COMMIT" != "" ]] 
@@ -52,10 +56,6 @@ _ATT_ () {
 				fi
 			fi
 		# check if bash array F1AR contains value NAME
-		elif [[ ! -f "${NAME##*/}.${COMMIT::7}.tar.gz" ]] && [[ "${F1AR[@]}" =~ "${NAME##*/}" ]] # tarfile does NOT exist and directory exists 
-		then
-			_AND_
-			_BUILDAPKS_
 		elif [[ -f "${NAME##*/}.${COMMIT::7}.tar.gz" ]] && [[ ! "${F1AR[@]}" =~ "${NAME##*/}" ]] # tarfile exists and directory does NOT exist
 		then
 			_AND_
@@ -222,18 +222,16 @@ _GETREPOS_() {
 	fi
 }
 
-_MKJDC_ () { # create JDR/var/conf directory contains query for \` AndroidManifest.xml \` files in GitHub USENAME repositores results. 
+_MKJDC_ () { # create JDR/var/conf directory which contains query for \` AndroidManifest.xml \` files at GitHub USENAME repositores results. 
 	if [ ! -d "$JDR/var/conf" ]
 	then
 		mkdir -p "$JDR/var/conf"
-	fi
-	if [ ! -d "$JDR/var/conf" ]
-	then
-	printf "%s\\n\\n" "This directory contains query for \` AndroidManifest.xml \` files in GitHub $USENAME repositores results.  The following files are created in ${USENAME,,}/var/conf and their purpose is outlined here:
+		printf "%s\\n\\n" "This directory contains query for \` AndroidManifest.xml \` files in GitHub $USENAME repositores results.  The following files are created in ${USENAME,,}/var/conf and their purpose is outlined here:
 	| file name | purpose |
 	-----------------------
-	| *.ck      | results from query for commit and AndroidManifest.xml file(s) | 
-	| NAMES.db  | var/db/*NAMES* files processed through var/db/*NAMES;  Remove this file to reprocess login through var/db/*NAMES upon susequent build. | 
+	| *.ck      | Results from query for commit and AndroidManifest.xml file. | 
+	| APKSN.db  | The names of the APKs that were built on device with BuildAPKs. | 
+	| NAMES.db  | *NAMES files processed in ~/buildAPKs/var/db/*NAMES;  Remove this file to reprocess login through var/db/*NAMES upon susequent builds. | 
 	| NAMFS.db  | The number of AndroidManifest.xml files that were found at login https://github.com/$USENAME. | 
 	| NAPKS.db  | The number of APKs that were built on device with BuildAPKs. |  " > "$JDR/var/conf/README.md" 
 	fi
