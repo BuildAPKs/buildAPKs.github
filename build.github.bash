@@ -90,7 +90,6 @@ _BUILDAPKS_ () { # https://developer.github.com/v3/repos/commits/
 }
 
 _CKAT_ () {
-	_MKJDC_ 
 	TCK=0
 	REPO=$(awk -F/ '{print $NF}' <<< "$NAME") # redirect output to a variable 
 	if ! grep -iw "$REPO" "$RDR"/var/db/ANAMES # repository name is not found in ANAMES file
@@ -189,6 +188,7 @@ _CUTE_ () { # check if USENAME is an organization or a user
 	then	# add one more page to total reqest
 		RPCT="$(($RPCT+1))"
 	fi
+	_MKJDC_ 
 }
 
 _GETREPOS_() {
