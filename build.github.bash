@@ -226,8 +226,10 @@ _MKJDC_ () { # create JDR/var/conf directory which contains query for \` Android
 	if [ ! -d "$JDR/var/conf" ]
 	then
 		mkdir -p "$JDR/var/conf"
-		printf "%s\\n" "README.md for $JDR/var/conf
+		printf "%s\\n" "	README.md for $JDR/var/conf
+
 	This directory contains results for query for \` AndroidManifest.xml \` files at GitHub $USENAME repositores.  The following files are created in $JDR/var/conf and their purpose is outlined here:
+
 	| File Name | Purpose |
 	-----------------------
 	| *.ck      | Results from query for commit and AndroidManifest.xml file. | 
