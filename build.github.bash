@@ -375,7 +375,7 @@ then	# check if the second argument begins with with the letter c: [[c]url rate]
 		if [[ ! -z "${3:-}" ]] && ! [[ "$3" =~ [^[:digit:]] ]] # the third argument is defined and is composed of only digits
 		then	# use argument $3 and limit download transmission rate for curl
  			CULR="$3"
- 			_MAINGITHUB_ "$*"
+ 			_MAINGITHUB_ "$@"
 		else	# print numerical message and exit
 			printf "\\e[0;31m%s\\e[1;31m%s\\e[0;31m%s\\e[1;31m%s\\e[0;31m%s\\e[7;31m%s\\e[0m\\n" "Add a numerical rate limit to " "${0##*/} $1 $2 " "as the third argument to continue with curl --rate-limit, i.e. " "${0##*/} $1 $2 16384" ":" " Exiting..."
 			exit 64
@@ -385,6 +385,6 @@ then	# check if the second argument begins with with the letter c: [[c]url rate]
 		exit 66
 	fi
 else	# process GitHub login
- 	_MAINGITHUB_ "$*"
+ 	_MAINGITHUB_ "$@"
 fi
 # build.github.bash OEF
