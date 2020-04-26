@@ -350,7 +350,7 @@ _PRINTJS_ () {
 }
 
 _RLREMING_ () { # if connection is available, print GitHub rate limit 
-	if [[ $(awk 'NR==1' "$RDR/.conf/RLIM") == "true" ]]
+	if [[ $(awk 'NR==1' "$RDR/.conf/DRLIM") == "true" ]]
 	then
 		RATEARRAY=($(curl -is https://api.github.com/rate_limit | grep Rate)) || printf "\\e[2;7;38;5;51m%s\\e[0m\\n\\n" "The Internet connection is not available; Continuing..." # create array with get rate information https://developer.github.com/v3/rate_limit/ from GitHub without incurring an API hit
 		if [[ ! -z "${RATEARRAY:-}" ]] # if RATEARRAY is set
