@@ -7,7 +7,7 @@ shopt -s nullglob globstar
 export RDR="$HOME/buildAPKs"
 . "$RDR/scripts/bash/init/ushlibs.bash"
 . "$RDR/scripts/bash/shlibs/trap.bash" 67 68 69 "${0##*/} build.github.bash"
-_AND_ () { # write configuration file for git repository tarball if AndroidManifest.xml file is found in git repository
+_AND_ () { # write configuration file for git repository tarball if an AndroidManifest.xml file is found in git repository
 	printf "%s\\n" "$COMMIT" > "$JDR/var/conf/$USER.${NAME##*/}.${COMMIT::7}.ck"
 	printf "%s\\n" "0" >> "$JDR/var/conf/$USER.${NAME##*/}.${COMMIT::7}.ck"
 	if [[ -z "${1:-}" ]] 
@@ -264,7 +264,7 @@ _MAINGITHUB_ () {
 	fi
 	export USENAME="${UONE##*/}"
 	export USER="${USENAME,,}"
-	export OAUT="$(cat "$RDR/.conf/GAUTH" | awk 'NR==1')" # load login:token key from .conf/GAUTH file, see the GAUTH file for more information to enable OAUTH authentication
+	export OAUT="$(awk 'NR==1' "$RDR/.conf/GAUTH")" # load login:token key from .conf/GAUTH file, see the GAUTH file for more information to enable OAUTH authentication
 	export WRAMES=0
 	printf "\\n\\e[1;38;5;116m%s\\n\\e[0m" "${0##*/}: Beginning BuildAPKs with build.github.bash $@:"
 	. "$RDR"/scripts/bash/shlibs/buildAPKs/fandm.bash
@@ -349,17 +349,20 @@ _PRINTJS_ () {
 	printf "\\n\\e[1;34mSearching for C C# C++ Haskell Java* Kotlin Lua Objective-C* Octave Pearl Python R* and Shell language repositories: "'\033]2;Searching for C C# C++ Haskell Java* Kotlin Lua Objective-C* Octave Pearl Python R* and Shell language repositories: OK\007'
 }
 
-_RLREMING_ () { # if connection is available, print GitHub rate limit limit
-	RATEARRAY=($(curl -is https://api.github.com/rate_limit | grep Rate)) || printf "\\e[2;7;38;5;51m%s\\e[0m\\n\\n" "The Internet connection is not available; Continuing..." # create array with get rate information https://developer.github.com/v3/rate_limit/ from GitHub without incurring an API hit
-	if [[ ! -z "${RATEARRAY:-}" ]] # if RATEARRAY is set
-	then	# print GitHub X-RateLimit-Limit information to screen
-		printf "%s\\n" "GitHub rate limit information:"
-		printf "\\e[2;7;38;5;144m%s\\e[0m\\n" "${RATEARRAY[0]} ${RATEARRAY[1]}"
-		printf "\\e[2;7;38;5;146m%s\\e[0m\\n" "${RATEARRAY[2]} ${RATEARRAY[3]}"
-		printf "\\e[2;7;38;5;148m%s\\e[0m\\n" "${RATEARRAY[4]} ${RATEARRAY[5]}"
-		[ "$OAUT" != "" ]  && printf "\\e[1;7;38;5;185m%s\\e[0m\\n\\n" "OAUTH token $OAUT is enabled; Continuing..." || printf "\\e[2;7;38;5;150m%s\\e[0m\\n\\n" "File ~/${RDR##*/}/.conf/GAUTH has more information about X-RateLimit; Continuing..."	# print information about the .conf/GAUTH file
+_RLREMING_ () { # if connection is available, print GitHub rate limit 
+	if [[ $(awk 'NR==1' "$RDR/.conf/RLIM") == "true" ]]
+	then
+		RATEARRAY=($(curl -is https://api.github.com/rate_limit | grep Rate)) || printf "\\e[2;7;38;5;51m%s\\e[0m\\n\\n" "The Internet connection is not available; Continuing..." # create array with get rate information https://developer.github.com/v3/rate_limit/ from GitHub without incurring an API hit
+		if [[ ! -z "${RATEARRAY:-}" ]] # if RATEARRAY is set
+		then	# print GitHub X-RateLimit-Limit information to screen
+			printf "%s\\n" "GitHub rate limit information:"
+			printf "\\e[2;7;38;5;144m%s\\e[0m\\n" "${RATEARRAY[0]} ${RATEARRAY[1]}"
+			printf "\\e[2;7;38;5;146m%s\\e[0m\\n" "${RATEARRAY[2]} ${RATEARRAY[3]}"
+			printf "\\e[2;7;38;5;148m%s\\e[0m\\n" "${RATEARRAY[4]} ${RATEARRAY[5]}"
+			[ "$OAUT" != "" ]  && printf "\\e[1;7;38;5;185m%s\\e[0m\\n\\n" "OAUTH token $OAUT is enabled; Continuing..." || printf "\\e[2;7;38;5;150m%s\\e[0m\\n\\n" "File ~/${RDR##*/}/.conf/GAUTH has more information about X-RateLimit; Continuing..."	# print information about the .conf/GAUTH file
+		unset RATEARRAY
+		fi
 	fi
-	unset RATEARRAY
 }
 
 if [[ -z "${1:-}" ]] # no argument is given
