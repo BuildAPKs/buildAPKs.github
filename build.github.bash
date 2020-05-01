@@ -24,7 +24,6 @@ _ATT_ () {
 	then
 		if [[ ! -f "${NAME##*/}.${COMMIT::7}.tar.gz" ]] && [[ "${F1AR[@]}" =~ "${NAME##*/}" ]] # tarfile does NOT exist and directory exists 
 		then
-			_AND_
 			_BUILDAPKS_
 		elif 	[[ ! -f "${NAME##*/}.${COMMIT::7}.tar.gz" ]] # tar file does not exist
 		then 
