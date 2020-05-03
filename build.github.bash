@@ -101,15 +101,15 @@ _CKAT_ () {
 		 		printf "%s" "Checking $USENAME $REPO for last commit:  " 
 		  		COMMIT="$(_GC_)" ||:
 
-				if [[ ! -z "${COMMIT:-}" ]]
+				if [[ -z "${COMMIT:-}" ]]
 				then
+					printf "\\e[1;38;5;214m%s\\e[0m%s\\n" "Could NOT find a commit; " "Continuing..."
+					COMMIT="NCOMMIT"
+					_NAND_
+				else
 					printf "%s\\e[1;38;5;142m%s\\e[0m%s\\n" "Found commit " "${COMMIT::7}" "; Continuing..."
 			 		_ATT_ || _SIGNAL_ "60" "_CKAT_ _ATT_"
 					sleep 0."$(shuf -i 24-72 -n 1)"	# eases network latency
-				else
-					printf "\\e[1;38;5;214m%s\\e[0m\\n" "Could NOT find a commit; Continuing..."
-					COMMIT="NCOMMIT"
-					_NAND_
 				fi
 		 	else # load configuration information from file 
 		 		printf "%s" "Loading $USENAME $REPO config from $CKFILE:  "
