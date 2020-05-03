@@ -100,9 +100,17 @@ _CKAT_ () {
 		 	then
 		 		printf "%s" "Checking $USENAME $REPO for last commit:  " 
 		  		COMMIT="$(_GC_)" ||:
-				printf "%s\\e[1;38;5;142m%s\\e[0m%s\\n" "Found commit " "${COMMIT::7}" "; Continuing..."
-		 		_ATT_ || _SIGNAL_ "60" "_CKAT_ _ATT_"
-				sleep 0."$(shuf -i 24-72 -n 1)"	# eases network latency
+
+				if [[ ! -z "${COMMIT:-}" ]]
+				then
+					printf "%s\\e[1;38;5;142m%s\\e[0m%s\\n" "Found commit " "${COMMIT::7}" "; Continuing..."
+			 		_ATT_ || _SIGNAL_ "60" "_CKAT_ _ATT_"
+					sleep 0."$(shuf -i 24-72 -n 1)"	# eases network latency
+				else
+					printf "%s\\e[1;38;5;214m%s\\e[0m%s\\n" "Could NOT find a commit; Continuing..."
+					COMMIT="NCOMMIT"
+					_NAND_
+				fi
 		 	else # load configuration information from file 
 		 		printf "%s" "Loading $USENAME $REPO config from $CKFILE:  "
 		 		COMMIT=$(head -n 1 "$NPCK") || _SIGNAL_ "62" "_CKAT_ COMMIT"
@@ -189,6 +197,21 @@ _CUTE_ () { # check if USENAME is an organization or a user
 	_MKJDC_ 
 }
 
+_FJDX_ () { 
+	export SFX="$(tar tf "${NAME##*/}.${COMMIT::7}.tar.gz" | awk 'NR==1' )" || _SIGNAL_ "82" "_FJDX_"
+	printf "\\e[1;38;5;148m%s\\e[0m\\n" "Running \` tar xvf ${NAME##*/}.${COMMIT::7}.tar.gz | grep AndroidManifest.xml \`:"
+	(tar xvf "${NAME##*/}.${COMMIT::7}.tar.gz" | grep AndroidManifest.xml || _SIGNAL_ "84" "_FJDX_") ; _IAR_ "$JDR/$SFX" || _SIGNAL_ "84" "_FJDX_"
+}
+
+_GC_ () { 
+	if [[ "$OAUT" != "" ]] # see .conf/GAUTH file for information  
+	then # download only first few bytes of a source page
+	 	curl --fail --retry 2 -u "$OAUT" https://api.github.com/repos/"$USER/$REPO"/commits -s 2>&1 | head -n 3 | tail -n 1 | awk '{ print $2 }' | sed 's/"//g' | sed 's/,//g' 
+	else
+	 	curl --fail --retry 2 https://api.github.com/repos/"$USER/$REPO"/commits -s 2>&1 | head -n 3 | tail -n 1 | awk '{ print $2 }' | sed 's/"//g' | sed 's/,//g' 
+	fi
+}
+
 _GETREPOS_() {
 	if [[ ! -f "$JDR/repos" ]] # file repos does not exist 
 	then	# get repository information
@@ -218,41 +241,6 @@ _GETREPOS_() {
 			rm -f "$JDR"/var/conf/repos.tmp
 			RPCT="$(($RPCT-1))"
 		done
-	fi
-}
-
-_MKJDC_ () { # create JDR/var/conf directory which contains query for \` AndroidManifest.xml \` files at GitHub USENAME repositores results. 
-	if [ ! -d "$JDR/var/conf" ]
-	then
-		mkdir -p "$JDR/var/conf"
-		printf "%s\\n" "	README.md for $JDR/var/conf
-
-	This directory contains results for query for \` AndroidManifest.xml \` files at GitHub $USENAME repositores.  The following files are created in $JDR/var/conf and their purpose is outlined here:
-
-	| File Name | Purpose |
-	-----------------------
-	| *.ck      | Results from query for commit and AndroidManifest.xml file. | 
-	| APKSN.db  | The names of the APKs that were built on device with BuildAPKs. | 
-	| NAMES.db  | *NAMES files processed in ~/buildAPKs/var/db/*NAMES;  Remove this file to reprocess login through ~/buildAPKs/var/db/*NAMES upon subsequent builds. | 
-	| NAMFS.db  | The number of AndroidManifest.xml files that were found at login https://github.com/$USENAME. | 
-	| NAPKS.db  | The number of APKs that were built on device with BuildAPKs. | 
-
-<!-- README.md EOF -->" > "$JDR/var/conf/README.md" 
-	fi
-}
-
-_FJDX_ () { 
-	export SFX="$(tar tf "${NAME##*/}.${COMMIT::7}.tar.gz" | awk 'NR==1' )" || _SIGNAL_ "82" "_FJDX_"
-	printf "\\e[1;38;5;148m%s\\e[0m\\n" "Running \` tar xvf ${NAME##*/}.${COMMIT::7}.tar.gz | grep AndroidManifest.xml \`:"
-	(tar xvf "${NAME##*/}.${COMMIT::7}.tar.gz" | grep AndroidManifest.xml || _SIGNAL_ "84" "_FJDX_") ; _IAR_ "$JDR/$SFX" || _SIGNAL_ "84" "_FJDX_"
-}
-
-_GC_ () { 
-	if [[ "$OAUT" != "" ]] # see .conf/GAUTH file for information  
-	then # download only first few bytes of a source page
-	 	curl --fail --retry 2 -u "$OAUT" https://api.github.com/repos/"$USER/$REPO"/commits -s 2>&1 | head -n 3 | tail -n 1 | awk '{ print $2 }' | sed 's/"//g' | sed 's/,//g' 
-	else
-	 	curl --fail --retry 2 https://api.github.com/repos/"$USER/$REPO"/commits -s 2>&1 | head -n 3 | tail -n 1 | awk '{ print $2 }' | sed 's/"//g' | sed 's/,//g' 
 	fi
 }
 
@@ -319,6 +307,26 @@ _MAINGITHUB_ () {
 	_ANDB_ 
 	_APKBC_
 	. "$RDR"/scripts/bash/shlibs/buildAPKs/bnchn.bash bch.gt 
+}
+
+_MKJDC_ () { # create JDR/var/conf directory which contains query for \` AndroidManifest.xml \` files at GitHub USENAME repositores results. 
+	if [ ! -d "$JDR/var/conf" ]
+	then
+		mkdir -p "$JDR/var/conf"
+		printf "%s\\n" "	README.md for $JDR/var/conf
+
+	This directory contains results for query for \` AndroidManifest.xml \` files at GitHub $USENAME repositores.  The following files are created in $JDR/var/conf and their purpose is outlined here:
+
+	| File Name | Purpose |
+	-----------------------
+	| *.ck      | Results from query for commit and AndroidManifest.xml file. | 
+	| APKSN.db  | The names of the APKs that were built on device with BuildAPKs. | 
+	| NAMES.db  | *NAMES files processed in ~/buildAPKs/var/db/*NAMES;  Remove this file to reprocess login through ~/buildAPKs/var/db/*NAMES upon subsequent builds. | 
+	| NAMFS.db  | The number of AndroidManifest.xml files that were found at login https://github.com/$USENAME. | 
+	| NAPKS.db  | The number of APKs that were built on device with BuildAPKs. | 
+
+<!-- README.md EOF -->" > "$JDR/var/conf/README.md" 
+	fi
 }
 
 _NAND_ () { # write configuration file for repository if AndroidManifest.xml file is NOT found in git repository
