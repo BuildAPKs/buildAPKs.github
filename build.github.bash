@@ -5,9 +5,9 @@
 set -Eeuo pipefail
 shopt -s nullglob globstar
 export RDR="$HOME/buildAPKs"
-. "$RDR/scripts/bash/init/ushlibs.bash"
 . "$RDR/scripts/bash/shlibs/trap.bash" 67 68 69 "${0##*/} build.github.bash"
-_AND_ () { # write configuration file for git repository tarball if an AndroidManifest.xml file is found in git repository
+. "$RDR/scripts/bash/init/ushlibs.bash"
+_AND_ () { # write configuration file for git repository tarball if an AndroidManifest.xml file is found in a git repository
 	printf "%s\\n" "$COMMIT" > "$JDR/var/conf/$USER.${NAME##*/}.${COMMIT::7}.ck"
 	printf "%s\\n" "0" >> "$JDR/var/conf/$USER.${NAME##*/}.${COMMIT::7}.ck"
 	if [[ -z "${1:-}" ]] 
@@ -24,7 +24,7 @@ _ATT_ () {
 	then
 		if [[ ! -f "${NAME##*/}.${COMMIT::7}.tar.gz" ]] && [[ "${F1AR[@]}" =~ "${NAME##*/}" ]] # tarfile does NOT exist and directory exists 
 		then
-			_BUILDAPKS_
+			_GTGF_
 		elif 	[[ ! -f "${NAME##*/}.${COMMIT::7}.tar.gz" ]] # tar file does not exist
 		then 
 			printf "%s\\n" "Querying $USENAME $REPO ${COMMIT::7} for AndroidManifest.xml file:"
@@ -49,7 +49,7 @@ _ATT_ () {
 			 	if grep AndroidManifest.xml <<< "$ISAND" 
 				then
 					_AND_ 0
-					_BUILDAPKS_
+					_GTGF_
 				else
 					_NAND_
 				fi
@@ -65,27 +65,6 @@ _ATT_ () {
 			export SFX="$(tar tf "${NAME##*/}.${COMMIT::7}.tar.gz" | awk 'NR==1' )" || _SIGNAL_ "24" "_ATT_ SFX"
 		fi
 	fi
-}
-
-_BUILDAPKS_ () { # https://developer.github.com/v3/repos/commits/
-	printf "\\n%s\\n" "Getting $NAME/tarball/$COMMIT -o ${NAME##*/}.${COMMIT::7}.tar.gz:"
-	if [[ -z "${CULR:-}" ]]
-	then
-		if [[ "$OAUT" != "" ]] # see .conf/GAUTH file 
-		then
-			curl --fail --retry 2 -u "$OAUT" -L "$NAME/tarball/$COMMIT" -o "${NAME##*/}.${COMMIT::7}.tar.gz" || _SIGNAL_ "30" "_BUILDAPKS_ curl"
-		else
-			curl --fail --retry 2 -L "$NAME/tarball/$COMMIT" -o "${NAME##*/}.${COMMIT::7}.tar.gz" || _SIGNAL_ "32" "_BUILDAPKS_ curl"
-		fi
-	else
-		if [[ "$OAUT" != "" ]] # see .conf/GAUTH file 
-		then
-			curl --fail --retry 2 --limit-rate "$CULR" -u "$OAUT" -L "$NAME/tarball/$COMMIT" -o "${NAME##*/}.${COMMIT::7}.tar.gz" || _SIGNAL_ "40" "_BUILDAPKS_ curl"
-		else
-			curl --fail --retry 2 --limit-rate "$CULR" -L "$NAME/tarball/$COMMIT" -o "${NAME##*/}.${COMMIT::7}.tar.gz" || _SIGNAL_ "42" "_BUILDAPKS_ curl"
-		fi
-	fi
-	_FJDX_ 
 }
 
 _CKAT_ () {
@@ -242,6 +221,27 @@ _GETREPOS_() {
 			RPCT="$(($RPCT-1))"
 		done
 	fi
+}
+
+_GTGF_ () { # https://developer.github.com/v3/repos/commits/
+	printf "\\n%s\\n" "Getting $NAME/tarball/$COMMIT -o ${NAME##*/}.${COMMIT::7}.tar.gz:"
+	if [[ -z "${CULR:-}" ]]
+	then
+		if [[ "$OAUT" != "" ]] # see .conf/GAUTH file 
+		then
+			curl --fail --retry 2 -u "$OAUT" -L "$NAME/tarball/$COMMIT" -o "${NAME##*/}.${COMMIT::7}.tar.gz" || _SIGNAL_ "30" "_GTGF_ curl"
+		else
+			curl --fail --retry 2 -L "$NAME/tarball/$COMMIT" -o "${NAME##*/}.${COMMIT::7}.tar.gz" || _SIGNAL_ "32" "_GTGF_ curl"
+		fi
+	else
+		if [[ "$OAUT" != "" ]] # see .conf/GAUTH file 
+		then
+			curl --fail --retry 2 --limit-rate "$CULR" -u "$OAUT" -L "$NAME/tarball/$COMMIT" -o "${NAME##*/}.${COMMIT::7}.tar.gz" || _SIGNAL_ "40" "_GTGF_ curl"
+		else
+			curl --fail --retry 2 --limit-rate "$CULR" -L "$NAME/tarball/$COMMIT" -o "${NAME##*/}.${COMMIT::7}.tar.gz" || _SIGNAL_ "42" "_GTGF_ curl"
+		fi
+	fi
+	_FJDX_ 
 }
 
 _MAINGITHUB_ () {
