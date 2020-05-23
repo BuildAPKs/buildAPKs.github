@@ -7,7 +7,7 @@ shopt -s nullglob globstar
 export RDR="$HOME/buildAPKs"
 . "$RDR"/scripts/bash/init/ushlibs.bash
 . "$RDR"/scripts/bash/shlibs/trap.bash 77 78 79 "${0##*/}"
-[ -z "${1:-}" ] && printf "\\e[1;7;38;5;203m%s\\e[1;7;38;5;201m%s\\e[1;7;38;5;203m%s\\e[1;7;38;5;201m%s\\e[1;7;38;5;203m%s\\e[1;7;38;5;201m%s\\e[1;7;38;5;203m%s\\n\\e[0m\\n" "GitHub topic name must be provided;  See " "~/${RDR##*/}/var/conf/TNAMES" " for topic names that build APKs on device with BuildAPKs!  To build all the topic names contained in this file run " "for NAME in \$(cat ~/${RDR##*/}/var/conf/TNAMES) ; do ~/${RDR##*/}/scripts/bash/build/${0##*/} \$NAME ; done" ".  File " "~/${RDR##*/}/var/conf/GAUTH" " has important information should you choose to run this command regarding bandwidth supplied by GitHub. " && exit 4
+[ -z "${1:-}" ] && printf "\\e[1;7;38;5;203m%s\\e[1;7;38;5;201m%s\\e[1;7;38;5;203m%s\\e[1;7;38;5;201m%s\\e[1;7;38;5;203m%s\\e[1;7;38;5;201m%s\\e[1;7;38;5;203m%s\\n\\e[0m\\n" "GitHub topic name must be provided;  See " "~/${RDR##*/}/var/conf/TNAMES" " for topic names that build APKs on device with BuildAPKs!  To build all the topic names contained in this file run " "for NAME in \$(cat ~/${RDR##*/}/var/conf/TNAMES) ; do ~/${RDR##*/}/scripts/bash/github/${0##*/} \$NAME ; done" ".  File " "~/${RDR##*/}/var/conf/GAUTH" " has important information should you choose to run this command regarding bandwidth supplied by GitHub. " && exit 4
 [ -z "${NUM:-}" ] && export NUM="$(date +%s)"
 . "$RDR"/scripts/bash/shlibs/lock.bash wake.lock 
 . "$RDR"/scripts/bash/shlibs/buildAPKs/bnchn.bash bch.st 
@@ -68,7 +68,7 @@ fi
 TARR=($(grep -B 5 -e Java -e JavaScript -e Shell -e Kotlin "$JDR/topic" | grep svn_url | awk -v x=2 '{print $x}' | sed 's/\,//g' | sed 's/\"//g' | sed 's/https\:\/\/github.com\///g' | cut -d\/ -f1)) ||: # create array of Java, JavaScript, Shell and Kotlin Java language repositories	
 for NAME in "${TARR[@]}" 
 do 
- 	"$RDR"/scripts/bash/build/build.github.bash "$NAME"
+ 	"$RDR"/build.github.bash "$NAME"
 done
 . "$RDR"/scripts/bash/shlibs/lock.bash wake.stop
 . "$RDR"/scripts/bash/shlibs/buildAPKs/bnchn.bash bch.gt 
