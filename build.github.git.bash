@@ -385,4 +385,4 @@ then	# check if the second argument begins with with the letter c: [[c]url rate]
 else	# process GitHub login
  	_MAINGITHUB_ "$@"
 fi
-# build.github.bash OEF
+# build.github.git.bash OEF
