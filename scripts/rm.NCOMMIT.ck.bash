@@ -3,6 +3,12 @@
 # Removes *.ck files that have an NCOMMIT flag.
 ################################################################################
 set -eu 
+
+_PRNT_ () {	# print message with one trialing newline
+	printf "%s\\n" "$1"
+}
+
+_PRNT_ "Script ${0##*/} rm.NCOMMIT.ck.bash: STARTED..."
 ARR=("$(find ./var/conf/*.ck)")
 for i in $ARR
 do
@@ -11,4 +17,5 @@ do
 		rm -f "$i" 
 	fi
 done
+_PRNT_ "Script ${0##*/} rm.NCOMMIT.ck.bash: DONE"
 # rm.NCOMMIT.ck.bash EOF
