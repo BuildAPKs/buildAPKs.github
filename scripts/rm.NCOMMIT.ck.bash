@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Copyright 2019-2020 (c) all rights reserved by BuildAPKs, see LICENSE  
+# Copyright 2020 (c) all rights reserved by BuildAPKs, see LICENSE  
 # Removes *.ck files that have an NCOMMIT flag.
 ################################################################################
 set -eu 
