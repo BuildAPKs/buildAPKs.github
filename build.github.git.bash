@@ -22,7 +22,15 @@ _AND_ () { # write configuration file for git repository tarball if an AndroidMa
 _ATT_ () {
 	if [[ "$TCK" != 1 ]]
 	then
-		if [[ ! -f "${NAME##*/}.${COMMIT::7}.tar.gz" ]] && [[ "${F1AR[@]}" =~ "${NAME##*/}" ]] # tarfile does NOT exist and directory exists 
+		if [[ "${F1AR[@]}" =~ "${NAME##*/}" ]] # directory exists 
+		then
+			if grep "${NAME##*/}" "${NAME##*/}"/.git/config 1>/dev/null 
+			then
+				:
+			else
+				_GTGF_
+			fi
+		elif [[ ! -f "${NAME##*/}.${COMMIT::7}.tar.gz" ]] && [[ "${F1AR[@]}" =~ "${NAME##*/}" ]] # tarfile does NOT exist and directory exists 
 		then
 			_GTGF_
 		elif 	[[ ! -f "${NAME##*/}.${COMMIT::7}.tar.gz" ]] # tar file does not exist
