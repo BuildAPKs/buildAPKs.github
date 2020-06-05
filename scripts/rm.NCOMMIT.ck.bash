@@ -8,7 +8,7 @@ _PRNT_ () {	# print message with one trialing newline
 	printf "%s\\n" "$1"
 }
 
-_PRNT_ "Script ${0##*/} rm.NCOMMIT.ck.bash: STARTED; Please be patient..."
+_PRNT_ "Script ${0##*/}: STARTED; Please be patient..."
 ARR=("$(find ./var/conf/*.ck)")
 for i in $ARR
 do
@@ -17,5 +17,5 @@ do
 		rm -f "$i" 
 	fi
 done
-_PRNT_ "Script ${0##*/} rm.NCOMMIT.ck.bash: DONE"
+_PRNT_ "Script ${0##*/}: DONE"
 # rm.NCOMMIT.ck.bash EOF
