@@ -6,7 +6,7 @@ set -eu
 ARR=("$(find ./var/conf/*.ck)")
 for i in $ARR
 do
-	if grep NCOMMIT "$i" 
+	if grep NCOMMIT "$i" 1>/dev/null
 	then
 		rm -f "$i" 
 	fi
