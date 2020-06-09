@@ -286,7 +286,7 @@ _MAINGITHUB_ () {
 		_NAMESMAINBLOCK_ ZNAMES
 		_SIGNAL_ "90" "search for ERROR in JARR ${0##*/} build.github.bash" "90"
 	fi
-	F1AR=($(find "$JDR" -maxdepth 1 -type d)) # creates array of JDR contents 
+	F1AR=($(find "$JDR" -maxdepth 1 -type d)) # create array of JDR contents 
 	cd "$JDR"
 	_PRINTAS_
 	for NAME in "${JARR[@]}" # lets you delete partial downloads and repopulates a JDR directory from remote source.  Directories can be deleted, too.  They are repopulated from the downloaded tarballs.  
