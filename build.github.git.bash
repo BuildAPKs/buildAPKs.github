@@ -2,7 +2,7 @@
 # Copyright 2019-2020 (c) all rights reserved by BuildAPKs; see LICENSE
 # https://buildapks.github.io published courtesy https://pages.github.com
 ################################################################################
-set -Eeuo pipefail
+set -Eeuxo pipefail
 shopt -s nullglob globstar
 export RDR="$HOME/buildAPKs"
 . "$RDR/scripts/bash/shlibs/trap.bash" 67 68 69 "${0##*/} build.github.bash"
@@ -23,17 +23,15 @@ _ATT_ () {
 	if [[ "$TCK" != 1 ]]
 	then
 		if [[ "${F1AR[@]}" =~ "${NAME##*/}" ]] # directory exists 
-		then
+		then	# check if config file exits
 			if grep "${NAME##*/}" "${NAME##*/}"/.git/config 1>/dev/null 
 			then
-				:
+				:	# do nothing
 			else
+				# get repository
 				_GTGF_
 			fi
-		elif [[ ! -f "${NAME##*/}.${COMMIT::7}.tar.gz" ]] && [[ "${F1AR[@]}" =~ "${NAME##*/}" ]] # tarfile does NOT exist and directory exists 
-		then
-			_GTGF_
-		elif 	[[ ! -f "${NAME##*/}.${COMMIT::7}.tar.gz" ]] # tar file does not exist
+		elif ! [[ "${F1AR[@]}" =~ "${NAME##*/}" ]] # directory does not exist
 		then 
 			printf "%s\\n" "Querying $USENAME $REPO ${COMMIT::7} for AndroidManifest.xml file:"
 			if [[ "$COMMIT" != "" ]] 
@@ -62,15 +60,26 @@ _ATT_ () {
 					_NAND_
 				fi
 			fi
-		# check if bash array F1AR contains value NAME
-		elif [[ -f "${NAME##*/}.${COMMIT::7}.tar.gz" ]] && [[ ! "${F1AR[@]}" =~ "${NAME##*/}" ]] # tarfile exists and directory does NOT exist
-		then
-			_AND_
-			_FJDX_ 
-		elif [[ -f "${NAME##*/}.${COMMIT::7}.tar.gz" ]] && [[ "${F1AR[@]}" =~ "${NAME##*/}" ]] # tarfile and directory exist
-		then
-			_AND_
-			export SFX="$(tar tf "${NAME##*/}.${COMMIT::7}.tar.gz" | awk 'NR==1' )" || _SIGNAL_ "24" "_ATT_ SFX"
+		fi
+	fi
+}
+
+_ATTG_ () {
+	if [[ "$TCK" != 1 ]]
+	then
+		if [[ "${F1AR[@]}" =~ "${NAME##*/}" ]] # directory exists 
+		then	# check if config file is correct
+			if grep "${NAME##*/}" "${NAME##*/}"/.git/config 1>/dev/null 
+			then
+				:	# do nothing
+			else
+				# get git repository
+				_GTGF_
+			fi
+		elif ! [[ "${F1AR[@]}" =~ "${NAME##*/}" ]] # directory does not exist
+		then 
+			# get git repository
+			_GTGF_
 		fi
 	fi
 }
@@ -103,7 +112,7 @@ _CKAT_ () {
 		 		COMMIT=$(head -n 1 "$NPCK") || _SIGNAL_ "62" "_CKAT_ COMMIT"
 		  		TCK=$(tail -n 1  "$NPCK") || _SIGNAL_ "64" "_CKAT_ TCK"
 				_PRINTCK_ 
-		 		_ATT_ || _SIGNAL_ "62" "_CKAT_ _ATT_"
+		 		_ATTG_ || _SIGNAL_ "62" "_CKAT_ _ATTG_"
 		 	fi
 		done
 	else
@@ -233,6 +242,7 @@ _GETREPOS_() {
 
 _GTGF_ () { # get git repository
 	NAME="${NAME/#https/git}"
+	printf "%s\\n" "Getting $USENAME $REPO:"
 	printf "%s\\n" "$NAME"
 	RBRANCH="$(git remote show $NAME | grep "HEAD branch" | cut -d ":" -f 2)"
 	printf "%s\\n" "Found branch $RBRANCH"
