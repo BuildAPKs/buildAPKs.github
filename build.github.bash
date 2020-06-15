@@ -22,10 +22,16 @@ _AND_ () { # write configuration file for git repository tarball if an AndroidMa
 _ATT_ () {
 	if [[ "$TCK" != 1 ]]
 	then
-		if [[ ! -f "${NAME##*/}.${COMMIT::7}.tar.gz" ]] && [[ "${F1AR[@]}" =~ "${NAME##*/}" ]] # tarfile does NOT exist and directory exists 
-		then
-			_GTGF_
-		elif 	[[ ! -f "${NAME##*/}.${COMMIT::7}.tar.gz" ]] # tar file does not exist
+		if [[ "${F1AR[@]}" =~ "${NAME##*/}" ]] # directory exists 
+		then	# check if config file exits
+			if grep "${NAME##*/}" "${NAME##*/}"/.git/config 1>/dev/null 
+			then
+				:	# do nothing
+			else
+				# get repository
+				_GTGF_
+			fi
+		elif ! [[ "${F1AR[@]}" =~ "${NAME##*/}" ]] # directory does not exist
 		then 
 			printf "%s\\n" "Querying $USENAME $REPO ${COMMIT::7} for AndroidManifest.xml file:"
 			if [[ "$COMMIT" != "" ]] 
@@ -54,15 +60,26 @@ _ATT_ () {
 					_NAND_
 				fi
 			fi
-		# check if bash array F1AR contains value NAME
-		elif [[ -f "${NAME##*/}.${COMMIT::7}.tar.gz" ]] && [[ ! "${F1AR[@]}" =~ "${NAME##*/}" ]] # tarfile exists and directory does NOT exist
-		then
-			_AND_
-			_FJDX_ 
-		elif [[ -f "${NAME##*/}.${COMMIT::7}.tar.gz" ]] && [[ "${F1AR[@]}" =~ "${NAME##*/}" ]] # tarfile and directory exist
-		then
-			_AND_
-			export SFX="$(tar tf "${NAME##*/}.${COMMIT::7}.tar.gz" | awk 'NR==1' )" || _SIGNAL_ "24" "_ATT_ SFX"
+		fi
+	fi
+}
+
+_ATTG_ () {
+	if [[ "$TCK" != 1 ]]
+	then
+		if [[ "${F1AR[@]}" =~ "${NAME##*/}" ]] # directory exists 
+		then	# check if config file is correct
+			if grep "${NAME##*/}" "${NAME##*/}"/.git/config 1>/dev/null 
+			then
+				:	# do nothing
+			else
+				# get git repository
+				_GTGF_
+			fi
+		elif ! [[ "${F1AR[@]}" =~ "${NAME##*/}" ]] # directory does not exist
+		then 
+			# get git repository
+			_GTGF_
 		fi
 	fi
 }
@@ -95,7 +112,7 @@ _CKAT_ () {
 		 		COMMIT=$(head -n 1 "$NPCK") || _SIGNAL_ "62" "_CKAT_ COMMIT"
 		  		TCK=$(tail -n 1  "$NPCK") || _SIGNAL_ "64" "_CKAT_ TCK"
 				_PRINTCK_ 
-		 		_ATT_ || _SIGNAL_ "62" "_CKAT_ _ATT_"
+		 		_ATTG_ || _SIGNAL_ "62" "_CKAT_ _ATTG_"
 		 	fi
 		done
 	else
@@ -223,25 +240,13 @@ _GETREPOS_() {
 	fi
 }
 
-_GTGF_ () { # https://developer.github.com/v3/repos/commits/
-	printf "\\n%s\\n" "Getting $NAME/tarball/$COMMIT -o ${NAME##*/}.${COMMIT::7}.tar.gz:"
-	if [[ -z "${CULR:-}" ]]
-	then
-		if [[ "$OAUT" != "" ]] # see .conf/GAUTH file 
-		then
-			curl --fail --retry 2 -u "$OAUT" -L "$NAME/tarball/$COMMIT" -o "${NAME##*/}.${COMMIT::7}.tar.gz" || _SIGNAL_ "30" "_GTGF_ curl"
-		else
-			curl --fail --retry 2 -L "$NAME/tarball/$COMMIT" -o "${NAME##*/}.${COMMIT::7}.tar.gz" || _SIGNAL_ "32" "_GTGF_ curl"
-		fi
-	else
-		if [[ "$OAUT" != "" ]] # see .conf/GAUTH file 
-		then
-			curl --fail --retry 2 --limit-rate "$CULR" -u "$OAUT" -L "$NAME/tarball/$COMMIT" -o "${NAME##*/}.${COMMIT::7}.tar.gz" || _SIGNAL_ "40" "_GTGF_ curl"
-		else
-			curl --fail --retry 2 --limit-rate "$CULR" -L "$NAME/tarball/$COMMIT" -o "${NAME##*/}.${COMMIT::7}.tar.gz" || _SIGNAL_ "42" "_GTGF_ curl"
-		fi
-	fi
-	_FJDX_ 
+_GTGF_ () { # get git repository
+	NAME="${NAME/#https/git}"
+	printf "%s\\n" "Getting $USENAME $REPO:"
+	printf "%s\\n" "$NAME"
+	RBRANCH="$(git remote show $NAME | grep "HEAD branch" | cut -d ":" -f 2)"
+	printf "%s\\n" "Found branch $RBRANCH"
+	git clone --depth 1 "$NAME" --branch $RBRANCH --single-branch || _SIGNAL_ "30" "_GTGF_ git"
 }
 
 _MAINGITHUB_ () {
