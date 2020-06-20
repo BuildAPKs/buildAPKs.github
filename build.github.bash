@@ -246,7 +246,8 @@ _GTGF_ () { # get git repository
 	printf "%s\\n" "$NAME"
 	RBRANCH="$(git remote show $NAME | grep "HEAD branch" | cut -d ":" -f 2)"
 	printf "%s\\n" "Found branch $RBRANCH"
-	git clone --depth 1 "$NAME" --branch $RBRANCH --single-branch || _SIGNAL_ "30" "_GTGF_ git"
+	( git clone --depth 1 "$NAME" --branch $RBRANCH --single-branch && GPWD="$PWD" && cd ${NAME##*/}  && ( git fsck || _SIGNAL_ "30" "_GTGF_ git fsck" ) && cd GPWD ) || _SIGNAL_ "32" "_GTGF_ git clone"
+	_IAR_ "$JDR/$SFX" || _SIGNAL_ "34" "_GTGF_ _IAR_"
 }
 
 _MAINGITHUB_ () {
@@ -282,7 +283,7 @@ _MAINGITHUB_ () {
 		printf "\\e[7;38;5;204mUsername %s is found in %s: NOT processing download and build for username %s!  Remove the login from the corresponding file(s) and the account's build directory in %s if an empty directory was created to process %s.  Then run \` %s \` again to attempt to build %s's APK projects, if any.  File %s has more information:\\e[0m\\n" "$USENAME" "~/${RDR##*/}/var/db/[PRXYZ]NAMES" "$USENAME" "~/${RDR##*/}/sources/github/{orgs,users}" "$USENAME" "${0##*/} $USENAME" "$USENAME" "~/${RDR##*/}/var/db/README.md" 
 		awk 'NR>=20 && NR<=46' "$RDR/opt/db/README.md" || _SIGNAL_ "86" "\` awk 'NR>=16 && NR<=46' $RDR/opt/db/README.md \` _MAINGITHUB_"
 		printf "\\e[7;38;5;203m%s is found in %s: NOT processing download and build for username %s!  Remove the username from the corresponding file(s) and the account's build directory in %s if an empty directory was created to process %s.  Then run \` %s \` again to attempt to build %s's APK projects, if any.  Scroll up to read information from the %s file.\\e[0m\\n" "$USENAME" "$(grep -Hiw "$USENAME" "$RDR"/var/db/[PRXYZ]NAMES)" "$USENAME" "~/${RDR##*/}/sources/github/{orgs,users}" "$USENAME" "${0##*/} $USENAME" "$USENAME" "~/${RDR##*/}/var/db/README.md" 
-		exit 0 # and exit
+		exit 0
 	else	# check whether login is a user or an organization
 		_CUTE_
 	fi
@@ -299,12 +300,8 @@ _MAINGITHUB_ () {
 	F1AR=($(find "$JDR" -maxdepth 1 -type d)) # create array of JDR contents 
 	cd "$JDR"
 	_PRINTAS_
-	for NAME in "${JARR[@]}" # lets you delete partial downloads and repopulates a JDR directory from remote source.  Directories can be deleted, too.  They are repopulated from the downloaded tarballs.  
-	do	# This creates a "slate" within each ~/buildAPKs/sources/github/{orgs,users}/JDR folder that can be selectively reset.  This can be important on a slow connection that might yield incomplete download results on a first attempt to download and build multiple APKs from remote source code.  
-		# To populate a partially downloaded JDR folder without deleting everything that was downloaded remove the ~/buildAPKs/sources/github/{orgs,users}/JDR/var directory which this script creates.  The unpacked tarball directories which correspond to individual repositories can be deleted to reset a JDR directory as well.  This can be accomplished with one find command ` find . -maxdepth 1 -type d -exec rm -rf {} \; ` issued in the JDR folder.  Checking the integity of multiple tarballs is automated with ` ~/buildAPKs/scripts/maintenance/delete.corrupt.tars.sh ls ` which should be excecuted in the same JDR directory to check for tarball errors.  If a corrupt tarball is found by ` delete.corrupt.tars.sh `, it will be deleted.  
-		# Run ` build.github.bash login [curl rate] ` and the logins you are trying to download might download easier if you are encountering difficulties downloading.  This information regards extremely fast and very slow connections, i.e. slower than 14400 baud and 4G at max speed.  Rate limiting is also effective on very high speed connections.  See ` grep -hrC 4 sleep ~/buildAPKs/scripts ` to view how buildAPKs handles device and network latency.  Excessive latency breaks downloads. 
-		# If you have trouble while downloading APK source code repositories, better results might be found downloading the many files ` build.github.bash ` can request when searching for source code and downloading source code tarball files with rate limiting enabled than without rate limiting.
-		# An example is provided for convenience; ` build.github.bash https://github.com/BuildAPKs c 33600 ` will throttle the download rate for ` curl ` to 33600.  It will take a long time to attempt to download everything that has an AndroidManifest.xml file from BuildAPKs at GitHub at this speed as some of the repositories are quite large.  Experimenting with the rate limit speed is recommended as devices, connections and the time of day are all fairly unique and factors for a successful download and build on device.
+	for NAME in "${JARR[@]}" 
+	do
 		_CKAT_ 
 	done
 	_PRINTJD_
