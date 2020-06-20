@@ -246,7 +246,7 @@ _GTGF_ () { # get git repository
 	printf "%s\\n" "$NAME"
 	RBRANCH="$(git remote show $NAME | grep "HEAD branch" | cut -d ":" -f 2)"
 	printf "%s\\n" "Found branch $RBRANCH"
-	( git clone --depth 1 "$NAME" --branch $RBRANCH --single-branch && GPWD="$PWD" && cd ${NAME##*/}  && ( git fsck || _SIGNAL_ "30" "_GTGF_ git fsck" ) && cd GPWD ) || _SIGNAL_ "32" "_GTGF_ git clone"
+	( git clone --depth 1 "$NAME" --branch $RBRANCH --single-branch && cd ${NAME##*/}  && ( git fsck || _SIGNAL_ "30" "_GTGF_ git fsck" ) && cd $JDR ) || _SIGNAL_ "32" "_GTGF_ git clone"
 	_IAR_ "$JDR/$SFX" || _SIGNAL_ "34" "_GTGF_ _IAR_"
 }
 
