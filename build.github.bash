@@ -194,8 +194,8 @@ _CUTE_ () { # check if USENAME is an organization or a user
 }
 
 _GC_ () { 
-	if [[ "$OAUT" != "" ]] # see .conf/GAUTH file for information  
-	then # download only first few bytes of a source page
+	if [[ "$OAUT" != "" ]]	# see .conf/GAUTH file for information  
+	then	# download only first few bytes of a source page
 	 	curl --fail --retry 2 -u "$OAUT" https://api.github.com/repos/"$USER/$REPO"/commits -s 2>&1 | head -n 3 | tail -n 1 | awk '{ print $2 }' | sed 's/"//g' | sed 's/,//g' 
 	else
 	 	curl --fail --retry 2 https://api.github.com/repos/"$USER/$REPO"/commits -s 2>&1 | head -n 3 | tail -n 1 | awk '{ print $2 }' | sed 's/"//g' | sed 's/,//g' 
@@ -203,14 +203,14 @@ _GC_ () {
 }
 
 _GETREPOS_() {
-	if [[ ! -f "$JDR/repos" ]] # file repos does not exist 
+	if [[ ! -f "$JDR/repos" ]]	# file repos does not exist 
 	then	# get repository information
 		until [[ $RPCT -eq 0 ]] # there are zero pages remaining
 		do	# get a page of repository information
 			printf "%s\\n" "Downloading GitHub $USENAME page $RPCT repositories information: "
-			if [[ -z "${CULR:-}" ]] # curl --limit-rate is not set
+			if [[ -z "${CULR:-}" ]]	# curl --limit-rate is not set
 			then
-				if [[ "$OAUT" != "" ]] # see .conf/GAUTH file for information 
+				if [[ "$OAUT" != "" ]]	# see .conf/GAUTH file for information 
 				then
 					curl --fail --retry 2 -u "$OAUT" "https://api.github.com/$ISUSER/$USER/repos?per_page=100&page=$RPCT" > "$JDR/var/conf/repos.tmp" 
 					cat "$JDR/var/conf/repos.tmp" >> "$JDR/repos"  
@@ -234,10 +234,10 @@ _GETREPOS_() {
 	fi
 }
 
-_GTGF_ () { # get git repository
-	printf "%s\\n" "Getting $NAME:"
+_GTGF_ () {	# get git repository
 	NAME="${NAME/#https/git}"
 	RBRANCH="$(git remote show $NAME | grep "HEAD branch" | cut -d ":" -f 2)"
+	printf "%s\\n" "Getting branch $RBRANCH from $NAME:"
 	( git clone --depth 1 "$NAME" --branch $RBRANCH --single-branch && cd ${NAME##*/} && ( git fsck || _SIGNAL_ "30" "_GTGF_ git fsck" ) && cd $JDR ) || ( cd $JDR && _SIGNAL_ "32" "_GTGF_ git clone" )
 	_IAR_ "$JDR/${NAME##*/}" || _SIGNAL_ "34" "_GTGF_ _IAR_"
 }
