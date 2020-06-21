@@ -193,12 +193,6 @@ _CUTE_ () { # check if USENAME is an organization or a user
 	_MKJDC_ 
 }
 
-_FJDX_ () { 
-	export SFX="$(tar tf "${NAME##*/}.${COMMIT::7}.tar.gz" | awk 'NR==1' )" || _SIGNAL_ "82" "_FJDX_"
-	printf "\\e[1;38;5;148m%s\\e[0m\\n" "Running \` tar xvf ${NAME##*/}.${COMMIT::7}.tar.gz | grep AndroidManifest.xml \`:"
-	(tar xvf "${NAME##*/}.${COMMIT::7}.tar.gz" | grep AndroidManifest.xml || _SIGNAL_ "84" "_FJDX_") ; _IAR_ "$JDR/$SFX" || _SIGNAL_ "84" "_FJDX_"
-}
-
 _GC_ () { 
 	if [[ "$OAUT" != "" ]] # see .conf/GAUTH file for information  
 	then # download only first few bytes of a source page
