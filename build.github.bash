@@ -244,7 +244,7 @@ _GTGF_ () { # get git repository
 	printf "%s\\n" "Getting $USENAME $REPO:"
 	NAME="${NAME/#https/git}"
 	RBRANCH="$(git remote show $NAME | grep "HEAD branch" | cut -d ":" -f 2)"
-	printf "%s\\n" "Found branch $RBRANCH"
+	printf "Found branch%s\\n" "$RBRANCH"
 	( git clone --depth 1 "$NAME" --branch $RBRANCH --single-branch && cd ${NAME##*/} && ( git fsck || _SIGNAL_ "30" "_GTGF_ git fsck" ) && cd $JDR ) || ( cd $JDR && _SIGNAL_ "32" "_GTGF_ git clone" )
 	_IAR_ "$JDR/${NAME##*/}" || _SIGNAL_ "34" "_GTGF_ _IAR_"
 }
