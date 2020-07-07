@@ -89,7 +89,7 @@ _CKAT_ () {
 	REPO=$(awk -F/ '{print $NF}' <<< "$NAME") # redirect output to a variable 
 	if ! grep -iw "$REPO" "$RDR"/var/db/ANAMES # repository name is not found in ANAMES file
 	then	# process copy and build repository 
-		NPCK="$(find "$JDR/var/conf/" -name "$USER.${NAME##*/}.???????.ck")" ||: # check if file exists with wildcards
+		NPCK="$(find "$JDR/var/conf/" -name "$USER.${NAME##*/}.???????.ck")" || _SIGNAL_ "58" "_CKAT_ NPCK" # check if file exists with wildcards
 		for CKFILE in "$NPCK" 
 		do
 		 	if [[ $CKFILE = "" ]] # configuration file is not found
@@ -234,10 +234,18 @@ _GETREPOS_() {
 	fi
 }
 
+		NPCK="$(find "$JDR/var/conf/" -name "$USER.${NAME##*/}.???????.ck")" || _SIGNAL_ "58" "_CKAT_ NPCK" # check if file exists with wildcards
+
 _GTGF_ () {	# get git repository
 	NAME="${NAME/#https/git}"
-	printf "%s\\n" "Checking branch in $NAME..."
-	RBRANCH="$( git remote show $NAME | grep "HEAD branch" | cut -d ":" -f 2 )"
+	if [[ -f "$JDR/var/conf/$USER.${NAME##*/}.${COMMIT::7}.br" ]]
+	then
+		RBRANCH="$( head -n 1 "$JDR/var/conf/$USER.${NAME##*/}.${COMMIT::7}.br" )"
+	else
+		printf "%s\\n" "Checking branch in $NAME..."
+		RBRANCH="$( git remote show $NAME | grep "HEAD branch" | cut -d ":" -f 2 )"
+		printf "%s\\n" "$RBRANCH" > "$JDR/var/conf/$USER.${NAME##*/}.${COMMIT::7}.br"
+	fi
 	printf "%s\\n" "Getting $NAME branch$RBRANCH..."
 	( git clone --depth 1 "$NAME" --branch $RBRANCH --single-branch && cd ${NAME##*/} && ( git fsck || _SIGNAL_ "30" "_GTGF_ git fsck" ) && cd $JDR ) || ( cd $JDR && _SIGNAL_ "32" "_GTGF_ git clone" )
 	_IAR_ "$JDR/${NAME##*/}" || _SIGNAL_ "34" "_GTGF_ _IAR_"
