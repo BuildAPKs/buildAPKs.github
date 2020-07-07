@@ -240,11 +240,11 @@ _GTGF_ () {	# get git repository
 	then
 		RBRANCH="$( head -n 1 "$JDR/var/conf/$USER.${NAME##*/}.${COMMIT::7}.br" )"
 	else
-		printf "%s\\n" "Checking for HEAD branch in $NAME..."
+		printf "%s\\n" "Checking for HEAD branch name in $NAME..."
 		RBRANCH="$( git remote show $NAME | grep "HEAD branch" | cut -d ":" -f 2 )"
 		printf "%s\\n" "$RBRANCH" > "$JDR/var/conf/$USER.${NAME##*/}.${COMMIT::7}.br"
 	fi
-	printf "%s\\n" "Getting $NAME branch$RBRANCH..."
+	printf "%s\\n" "Getting $NAME branch name$RBRANCH..."
 	( git clone --depth 1 "$NAME" --branch $RBRANCH --single-branch && cd ${NAME##*/} && ( git fsck || _SIGNAL_ "30" "_GTGF_ git fsck" ) && cd $JDR ) || ( cd $JDR && _SIGNAL_ "32" "_GTGF_ git clone" )
 	_IAR_ "$JDR/${NAME##*/}" || _SIGNAL_ "34" "_GTGF_ _IAR_"
 }
