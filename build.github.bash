@@ -234,8 +234,6 @@ _GETREPOS_() {
 	fi
 }
 
-		NPCK="$(find "$JDR/var/conf/" -name "$USER.${NAME##*/}.???????.ck")" || _SIGNAL_ "58" "_CKAT_ NPCK" # check if file exists with wildcards
-
 _GTGF_ () {	# get git repository
 	NAME="${NAME/#https/git}"
 	if [[ -f "$JDR/var/conf/$USER.${NAME##*/}.${COMMIT::7}.br" ]]
