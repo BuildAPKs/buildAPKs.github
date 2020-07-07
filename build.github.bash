@@ -67,7 +67,7 @@ _ATT_ () {
 _ATTG_ () {
 	if [[ "$TCK" != 1 ]]
 	then
-		if [[ "${F1AR[@]}" =~ "${NAME##*/}" ]] # directory exists 
+		if [[ -d "$JDR/${NAME##*/}" ]] # directory exists 
 		then	# check if config file is correct
 			if grep "${NAME##*/}" "${NAME##*/}"/.git/config 1>/dev/null 
 			then
@@ -76,7 +76,7 @@ _ATTG_ () {
 				# get git repository
 				_GTGF_
 			fi
-		elif ! [[ "${F1AR[@]}" =~ "${NAME##*/}" ]] # directory does not exist
+		elif ! [[ -d "$JDR/${NAME##*/}" ]] # directory does not exist
 		then 
 			# get git repository
 			_GTGF_
@@ -236,6 +236,7 @@ _GETREPOS_() {
 
 _GTGF_ () {	# get git repository
 	NAME="${NAME/#https/git}"
+	printf "%s\\n" "Checking for branch in $NAME..."
 	RBRANCH="$( git remote show $NAME | grep "HEAD branch" | cut -d ":" -f 2 )"
 	printf "%s\\n" "Getting $NAME branch$RBRANCH..."
 	( git clone --depth 1 "$NAME" --branch $RBRANCH --single-branch && cd ${NAME##*/} && ( git fsck || _SIGNAL_ "30" "_GTGF_ git fsck" ) && cd $JDR ) || ( cd $JDR && _SIGNAL_ "32" "_GTGF_ git clone" )
