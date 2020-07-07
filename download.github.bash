@@ -22,7 +22,7 @@ _AND_ () { # write configuration file for git repository tarball if an AndroidMa
 _ATT_ () {
 	if [[ "$TCK" != 1 ]]
 	then
-		if [[ "${F1AR[@]}" =~ "${NAME##*/}" ]] # directory exists 
+		if [[ -d "$JDR/${NAME##*/}" ]] # directory exists 
 		then	# check if config file exits
 			if grep "${NAME##*/}" "${NAME##*/}"/.git/config 1>/dev/null 
 			then
@@ -31,7 +31,7 @@ _ATT_ () {
 				# get repository
 				_GTGF_
 			fi
-		elif ! [[ "${F1AR[@]}" =~ "${NAME##*/}" ]] # directory does not exist
+		elif ! [[ -d "$JDR/${NAME##*/}" ]] # directory does not exist
 		then 
 			printf "%s\\n" "Querying $USENAME $REPO ${COMMIT::7} for AndroidManifest.xml file:"
 			if [[ "$COMMIT" != "" ]] 
@@ -67,7 +67,7 @@ _ATT_ () {
 _ATTG_ () {
 	if [[ "$TCK" != 1 ]]
 	then
-		if [[ "${F1AR[@]}" =~ "${NAME##*/}" ]] # directory exists 
+		if [[ -d "$JDR/${NAME##*/}" ]] # directory exists 
 		then	# check if config file is correct
 			if grep "${NAME##*/}" "${NAME##*/}"/.git/config 1>/dev/null 
 			then
@@ -76,7 +76,7 @@ _ATTG_ () {
 				# get git repository
 				_GTGF_
 			fi
-		elif ! [[ "${F1AR[@]}" =~ "${NAME##*/}" ]] # directory does not exist
+		elif ! [[ -d "$JDR/${NAME##*/}" ]] # directory does not exist
 		then 
 			# get git repository
 			_GTGF_
@@ -152,10 +152,10 @@ _CUTE_ () { # check if USENAME is an organization or a user
 		fi
 		# array TYPE is undefined
 		(if [[ -z "${TYPE[17]}" ]] 
-		then	# echo array TYPE, print message and exit
-			echo "${TYPE[@]}"  
+		then	# print array TYPE, print message and exit
+			printf "\\n\\e[1;38;5;185m%s\\e[0m\\n\\n" "${TYPE[@]}"  
 			_SIGNAL_ "68" "${TYPE[17]} undefined!" "68"
-		fi) || (echo "${TYPE[@]}" && _SIGNAL_ "70" "TYPE[17]: unbound variable" "70") # or echo array TYPE, print message and exit
+		fi) || (printf "\\n\\e[1;38;5;185m%s\\e[0m\\n\\n" "${TYPE[@]}" && _SIGNAL_ "70" "TYPE[17]: unbound variable" "70") # or print array TYPE, print message and exit
 		export USENAME="$(printf "%s" "${TYPE[1]}" | sed 's/"//g' | sed 's/,//g' | awk '{print $2}')" || _SIGNAL_ "71" "_CUTE_ \$USENAME"
 		export GHUID="$(printf "%s" "${TYPE[2]}" | sed 's/"//g' | sed 's/,//g' | awk '{print $2}')" || _SIGNAL_ "72" "_CUTE_ \$USENAME"
 		NAPKS="$(printf "%s" "${TYPE[17]}" | sed 's/"//g' | sed 's/,//g' | awk '{print $2}')" || (_SIGNAL_ "74" "_CUTE_ \$NAPKS: create \$NAPKS failed; Exiting..." 24)
@@ -236,6 +236,7 @@ _GETREPOS_() {
 
 _GTGF_ () {	# get git repository
 	NAME="${NAME/#https/git}"
+	printf "%s\\n" "Checking for branch in $NAME..."
 	RBRANCH="$( git remote show $NAME | grep "HEAD branch" | cut -d ":" -f 2 )"
 	printf "%s\\n" "Getting $NAME branch$RBRANCH..."
 	( git clone --depth 1 "$NAME" --branch $RBRANCH --single-branch && cd ${NAME##*/} && ( git fsck || _SIGNAL_ "30" "_GTGF_ git fsck" ) && cd $JDR ) || ( cd $JDR && _SIGNAL_ "32" "_GTGF_ git clone" )
@@ -390,4 +391,4 @@ then	# check if the second argument begins with with the letter c: [[c]url rate]
 else	# process GitHub login
  	_MAINGITHUB_ "$@"
 fi
-# build.github.bash OEF
+# download.github.bash OEF
