@@ -240,7 +240,7 @@ _GTGF_ () {	# get git repository
 	then
 		RBRANCH="$( head -n 1 "$JDR/var/conf/$USER.${NAME##*/}.${COMMIT::7}.br" )"
 	else
-		printf "%s\\n" "Checking branch in $NAME..."
+		printf "%s\\n" "Checking for HEAD branch in $NAME..."
 		RBRANCH="$( git remote show $NAME | grep "HEAD branch" | cut -d ":" -f 2 )"
 		printf "%s\\n" "$RBRANCH" > "$JDR/var/conf/$USER.${NAME##*/}.${COMMIT::7}.br"
 	fi
@@ -320,6 +320,7 @@ _MKJDC_ () { # create JDR/var/conf directory which contains query for \` Android
 
 	| File Name | Purpose |
 	-----------------------
+	| *.br      | Results from check for HEAD branch. | 
 	| *.ck      | Results from query for commit and AndroidManifest.xml file. | 
 	| APKSN.db  | The names of the APKs that were built on device with BuildAPKs. | 
 	| NAMES.db  | *NAMES files processed in ~/buildAPKs/var/db/*NAMES;  Remove this file to reprocess login through ~/buildAPKs/var/db/*NAMES upon subsequent builds. | 
