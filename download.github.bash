@@ -89,7 +89,7 @@ _CKAT_ () {
 	REPO=$(awk -F/ '{print $NF}' <<< "$NAME") # redirect output to a variable 
 	if ! grep -iw "$REPO" "$RDR"/var/db/ANAMES # repository name is not found in ANAMES file
 	then	# process copy and build repository 
-		NPCK="$(find "$JDR/var/conf/" -name "$USER.${NAME##*/}.???????.ck")" ||: # check if file exists with wildcards
+		NPCK="$(find "$JDR/var/conf/" -name "$USER.${NAME##*/}.???????.ck")" || _SIGNAL_ "58" "_CKAT_ NPCK" # check if file exists with wildcards
 		for CKFILE in "$NPCK" 
 		do
 		 	if [[ $CKFILE = "" ]] # configuration file is not found
@@ -236,9 +236,15 @@ _GETREPOS_() {
 
 _GTGF_ () {	# get git repository
 	NAME="${NAME/#https/git}"
-	printf "%s\\n" "Checking for branch in $NAME..."
-	RBRANCH="$( git remote show $NAME | grep "HEAD branch" | cut -d ":" -f 2 )"
-	printf "%s\\n" "Getting $NAME branch$RBRANCH..."
+	if [[ -f "$JDR/var/conf/$USER.${NAME##*/}.${COMMIT::7}.br" ]]
+	then
+		RBRANCH="$( head -n 1 "$JDR/var/conf/$USER.${NAME##*/}.${COMMIT::7}.br" )"
+	else
+		printf "%s\\n" "Checking for HEAD branch name in $NAME..."
+		RBRANCH="$( git remote show $NAME | grep "HEAD branch" | cut -d ":" -f 2 )"
+		printf "%s\\n" "$RBRANCH" > "$JDR/var/conf/$USER.${NAME##*/}.${COMMIT::7}.br"
+	fi
+	printf "%s\\n" "Getting $NAME branch name$RBRANCH..."
 	( git clone --depth 1 "$NAME" --branch $RBRANCH --single-branch && cd ${NAME##*/} && ( git fsck || _SIGNAL_ "30" "_GTGF_ git fsck" ) && cd $JDR ) || ( cd $JDR && _SIGNAL_ "32" "_GTGF_ git clone" )
 	_IAR_ "$JDR/${NAME##*/}" || _SIGNAL_ "34" "_GTGF_ _IAR_"
 }
@@ -312,6 +318,7 @@ _MKJDC_ () { # create JDR/var/conf directory which contains query for \` Android
 
 	| File Name | Purpose |
 	-----------------------
+	| *.br      | Results from check for HEAD branch. | 
 	| *.ck      | Results from query for commit and AndroidManifest.xml file. | 
 	| APKSN.db  | The names of the APKs that were built on device with BuildAPKs. | 
 	| NAMES.db  | *NAMES files processed in ~/buildAPKs/var/db/*NAMES;  Remove this file to reprocess login through ~/buildAPKs/var/db/*NAMES upon subsequent builds. | 
