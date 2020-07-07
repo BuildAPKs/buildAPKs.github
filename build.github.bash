@@ -152,10 +152,10 @@ _CUTE_ () { # check if USENAME is an organization or a user
 		fi
 		# array TYPE is undefined
 		(if [[ -z "${TYPE[17]}" ]] 
-		then	# echo array TYPE, print message and exit
-			echo "${TYPE[@]}"  
+		then	# print array TYPE, print message and exit
+			printf "\\n\\e[1;38;5;185m%s\\e[0m\\n\\n" "${TYPE[@]}"  
 			_SIGNAL_ "68" "${TYPE[17]} undefined!" "68"
-		fi) || (echo "${TYPE[@]}" && _SIGNAL_ "70" "TYPE[17]: unbound variable" "70") # or echo array TYPE, print message and exit
+		fi) || (printf "\\n\\e[1;38;5;185m%s\\e[0m\\n\\n" "${TYPE[@]}" && _SIGNAL_ "70" "TYPE[17]: unbound variable" "70") # or print array TYPE, print message and exit
 		export USENAME="$(printf "%s" "${TYPE[1]}" | sed 's/"//g' | sed 's/,//g' | awk '{print $2}')" || _SIGNAL_ "71" "_CUTE_ \$USENAME"
 		export GHUID="$(printf "%s" "${TYPE[2]}" | sed 's/"//g' | sed 's/,//g' | awk '{print $2}')" || _SIGNAL_ "72" "_CUTE_ \$USENAME"
 		NAPKS="$(printf "%s" "${TYPE[17]}" | sed 's/"//g' | sed 's/,//g' | awk '{print $2}')" || (_SIGNAL_ "74" "_CUTE_ \$NAPKS: create \$NAPKS failed; Exiting..." 24)
