@@ -22,7 +22,7 @@ _AND_ () { # write configuration file for git repository tarball if an AndroidMa
 _ATT_ () {
 	if [[ "$TCK" != 1 ]]
 	then
-		if [[ "${F1AR[@]}" =~ "${NAME##*/}" ]] # directory exists 
+		if [[ "${F1AR[@]##*/}" =~ "${NAME##*/}" ]] # directory exists 
 		then	# check if config file exits
 			if grep "${NAME##*/}" "${NAME##*/}"/.git/config 1>/dev/null 
 			then
@@ -31,7 +31,7 @@ _ATT_ () {
 				# get repository
 				_GTGF_
 			fi
-		elif ! [[ "${F1AR[@]}" =~ "${NAME##*/}" ]] # directory does not exist
+		elif ! [[ "${F1AR[@]##*/}" =~ "${NAME##*/}" ]] # directory does not exist
 		then 
 			printf "%s\\n" "Querying $USENAME $REPO ${COMMIT::7} for AndroidManifest.xml file:"
 			if [[ "$COMMIT" != "" ]] 
