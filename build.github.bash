@@ -236,7 +236,7 @@ _GETREPOS_() {
 
 _GTGF_ () {	# get git repository
 	NAME="${NAME/#https/git}"
-	printf "%s\\n" "Checking for branch in $NAME..."
+	printf "%s\\n" "Checking branch in $NAME..."
 	RBRANCH="$( git remote show $NAME | grep "HEAD branch" | cut -d ":" -f 2 )"
 	printf "%s\\n" "Getting $NAME branch$RBRANCH..."
 	( git clone --depth 1 "$NAME" --branch $RBRANCH --single-branch && cd ${NAME##*/} && ( git fsck || _SIGNAL_ "30" "_GTGF_ git fsck" ) && cd $JDR ) || ( cd $JDR && _SIGNAL_ "32" "_GTGF_ git clone" )
