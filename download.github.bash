@@ -315,15 +315,16 @@ _MKJDC_ () { # create JDR/var/conf directory which contains query for \` Android
 		mkdir -p "$JDR/var/conf"
 		printf "%s\\n" "	README.md for $JDR/var/conf
 
-	This directory contains results for query for \` AndroidManifest.xml \` files at GitHub $USENAME repositores.  The following files are created in $JDR/var/conf and their purpose is outlined here:
+	This directory contains results for query for \` AndroidManifest.xml \` files at $USENAME\'s GitHub repositores.  The following files are created in $JDR/var/conf and their purpose is outlined here:
 
 	| File Name | Purpose |
 	-----------------------
 	| *.br      | Results from check for HEAD branch. | 
 	| *.ck      | Results from query for commit and AndroidManifest.xml file. | 
 	| APKSN.db  | The names of the APKs that were built on device with BuildAPKs. | 
-	| NAMES.db  | *NAMES files processed in ~/buildAPKs/var/db/*NAMES;  Remove this file to reprocess login through ~/buildAPKs/var/db/*NAMES upon subsequent builds. | 
-	| NAMFS.db  | The number of AndroidManifest.xml files that were found at login https://github.com/$USENAME. | 
+	| DS.db     | $USENAME\'s GitHub repositores download size. | 
+	| NAMES.db  | Files processed in ~/buildAPKs/var/db/*NAMES;  Remove this file to reprocess $USENAME through ~/buildAPKs/var/db/*NAMES upon subsequent builds. | 
+	| NAMFS.db  | How many AndroidManifest.xml files were found in $USENAME\'s git repositories. | 
 	| NAPKS.db  | The number of APKs that were built on device with BuildAPKs. | 
 
 <!-- README.md EOF -->" > "$JDR/var/conf/README.md" 
