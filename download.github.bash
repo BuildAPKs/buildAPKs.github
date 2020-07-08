@@ -7,14 +7,14 @@ shopt -s nullglob globstar
 export RDR="$HOME/buildAPKs"
 . "$RDR/scripts/bash/shlibs/trap.bash" 67 68 69 "${0##*/} build.github.bash"
 . "$RDR/scripts/bash/init/ushlibs.bash"
-_AND_ () { # write configuration file for git repository tarball if an AndroidManifest.xml file is found in a git repository
+_AND_ () { # write configuration file for git repository if an AndroidManifest.xml file is found in a git repository
 	printf "%s\\n" "$COMMIT" > "$JDR/var/conf/$USER.${NAME##*/}.${COMMIT::7}.ck"
 	printf "%s\\n" "0" >> "$JDR/var/conf/$USER.${NAME##*/}.${COMMIT::7}.ck"
 	if [[ -z "${1:-}" ]] 
 	then
 		printf "\\e[1;38;5;148m%s\\e[0m" "Found AndroidManifest.xml file in C C# C++ Haskell Java* Kotlin Lua Objective-C* Octave Pearl Python R* and/or Shell language repository $USER ${NAME##*/} ${COMMIT::7}; Writing ~/${RDR##*/}/sources/github/${JDR##*/}/var/conf/$USER.${NAME##*/}.${COMMIT::7}.ck file for git repository ${NAME##*/}; "
 	else
-		printf "\\e[1;38;5;148m%s\\e[0m" "Found AndroidManifest.xml file in C C# C++ Haskell Java* Kotlin Lua Objective-C* Octave Pearl Python R* and/or Shell language repository $USER ${NAME##*/} ${COMMIT::7}; Downloading ${NAME##*/} tarball and writing ~/${RDR##*/}/sources/github/${JDR##*/}/var/conf/$USER.${NAME##*/}.${COMMIT::7}.ck file for git repository ${NAME##*/}; "
+		printf "\\e[1;38;5;148m%s\\e[0m" "Found AndroidManifest.xml file in C C# C++ Haskell Java* Kotlin Lua Objective-C* Octave Pearl Python R* and/or Shell language repository $USER ${NAME##*/} ${COMMIT::7}; Downloading ${NAME##*/} and writing ~/${RDR##*/}/sources/github/${JDR##*/}/var/conf/$USER.${NAME##*/}.${COMMIT::7}.ck file for git repository ${NAME##*/}; "
 	fi
 	_NAMESMAINBLOCK_ QNAMES
 }
@@ -333,7 +333,7 @@ _MKJDC_ () { # create JDR/var/conf directory which contains query for \` Android
 _NAND_ () { # write configuration file for repository if AndroidManifest.xml file is NOT found in git repository
 	printf "%s\\n" "$COMMIT" > "$JDR/var/conf/$USER.${NAME##*/}.${COMMIT::7}.ck"
 	printf "%s\\n" "1" >> "$JDR/var/conf/$USER.${NAME##*/}.${COMMIT::7}.ck"
-	printf "\\n\\e[1;38;5;185m%s\\e[0m\\n\\n" "Could not find an AndroidManifest.xml file in C C# C++ Haskell Java* Kotlin Lua Objective-C* Octave Pearl Python R* and/or Shell language repository $USER ${NAME##*/} ${COMMIT::7}:  NOT downloading ${NAME##*/} tarball."
+	printf "\\n\\e[1;38;5;185m%s\\e[0m\\n\\n" "Could not find an AndroidManifest.xml file in C C# C++ Haskell Java* Kotlin Lua Objective-C* Octave Pearl Python R* and/or Shell language repository $USER ${NAME##*/} ${COMMIT::7}:  NOT downloading ${NAME##*/}."
 }
 
 _PRINTAS_ () {
