@@ -240,7 +240,7 @@ _GTGF_ () {	# get git repository
 	then
 		RBRANCH="$( tail -n 1 "$JDR/var/conf/$USER.${NAME##*/}.${COMMIT::7}.br" )"
 	else
-		printf "%s\\n" "Checking for HEAD branch name in $NAME..."
+		printf "%s\\n" "Checking for HEAD branch in $NAME..."
 		RBRANCH="$( git remote show $NAME | grep "HEAD branch" | cut -d ":" -f 2 )"
 		RBRANCH="${RBRANCH# }" # strip leading space
 		printf "%s\\n%s\\n" "$COMMIT" "$RBRANCH" > "$JDR/var/conf/$USER.${NAME##*/}.${COMMIT::7}.br"
