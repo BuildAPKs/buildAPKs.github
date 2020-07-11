@@ -24,13 +24,7 @@ _ATT_ () {
 	then
 		if [[ -d "$JDR/${NAME##*/}" ]] # directory exists 
 		then	# check if config file exits
-			if grep "${NAME##*/}" "${NAME##*/}"/.git/config 1>/dev/null 
-			then
-				printf "%s\\n" "Found git repository ${NAME##*/}: Continuing..."
-			else
-				# get repository
-				_GTGF_
-			fi
+			_IG_
 		elif ! [[ -d "$JDR/${NAME##*/}" ]] # directory does not exist
 		then 
 			printf "%s\\n" "Querying $USENAME $REPO ${COMMIT::7} for AndroidManifest.xml file:"
@@ -68,16 +62,9 @@ _ATTG_ () {
 	if [[ "$TCK" != 1 ]]
 	then
 		if [[ -d "$JDR/${NAME##*/}" ]] # directory exists 
-		then	# check if config file is correct
-			if grep "${NAME##*/}" "${NAME##*/}"/.git/config 1>/dev/null 
-			then
-				:	# do nothing
-			else
-				# clone git repository
-				_GTGF_
-			fi
-		elif ! [[ -d "$JDR/${NAME##*/}" ]] # directory does not exist
-		then 
+		then
+			_IG_
+		else 
 			# clone git repository
 			_GTGF_
 		fi
@@ -248,6 +235,15 @@ _GTGF_ () {	# clone git repository
 	printf "%s\\n" "Getting branch $RBRANCH from git repository $NAME..."
 	( git clone --depth 1 "$NAME" --branch $RBRANCH --single-branch && cd ${NAME##*/} && ( git fsck || _SIGNAL_ "30" "_GTGF_ git fsck" ) && cd $JDR ) || ( cd $JDR && _SIGNAL_ "32" "_GTGF_ git clone" )
 	_IAR_ "$JDR/${NAME##*/}" || _SIGNAL_ "34" "_GTGF_ _IAR_"
+}
+
+_IG_ () { # do nothing if config file is correct
+	if grep "${NAME##*/}" "${NAME##*/}"/.git/config 1>/dev/null 
+	then
+		printf "%s\\n" "Found git repository ${NAME##*/}: Continuing..."
+	else	# get repository
+		_GTGF_
+	fi
 }
 
 _MAINGITHUB_ () {
