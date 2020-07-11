@@ -73,12 +73,12 @@ _ATTG_ () {
 			then
 				:	# do nothing
 			else
-				# get git repository
+				# clone git repository
 				_GTGF_
 			fi
 		elif ! [[ -d "$JDR/${NAME##*/}" ]] # directory does not exist
 		then 
-			# get git repository
+			# clone git repository
 			_GTGF_
 		fi
 	fi
@@ -234,13 +234,13 @@ _GETREPOS_() {
 	fi
 }
 
-_GTGF_ () {	# get git repository
+_GTGF_ () {	# clone git repository
 	NAME="${NAME/#https/git}"
 	if [[ -f "$JDR/var/conf/$USER.${NAME##*/}.${COMMIT::7}.br" ]]
 	then
 		RBRANCH="$( tail -n 1 "$JDR/var/conf/$USER.${NAME##*/}.${COMMIT::7}.br" )"
 	else
-		printf "%s\\n" "Checking for HEAD branch in $NAME..."
+		printf "%s\\n" "Checking HEAD branch in $NAME..."
 		RBRANCH="$( git remote show $NAME | grep "HEAD branch" | cut -d ":" -f 2 )"
 		RBRANCH="${RBRANCH# }" # strip leading space
 		printf "%s\\n%s\\n" "$COMMIT" "$RBRANCH" > "$JDR/var/conf/$USER.${NAME##*/}.${COMMIT::7}.br"
@@ -305,7 +305,6 @@ _MAINGITHUB_ () {
 		_CKAT_ 
 	done
 	_PRINTJD_
-	_APKBC_
 	. "$RDR"/scripts/bash/shlibs/buildAPKs/bnchn.bash bch.gt 
 }
 
