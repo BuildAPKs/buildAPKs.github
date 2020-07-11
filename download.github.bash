@@ -26,7 +26,7 @@ _ATT_ () {
 		then	# check if config file exits
 			if grep "${NAME##*/}" "${NAME##*/}"/.git/config 1>/dev/null 
 			then
-				:	# do nothing
+				printf "%s\\n" "Found git repository ${NAME##*/}: Continuing..."
 			else
 				# get repository
 				_GTGF_
