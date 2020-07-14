@@ -95,7 +95,7 @@ _CKAT_ () {
 					sleep 0."$(shuf -i 24-72 -n 1)"	# eases network latency
 				fi
 		 	else # load configuration information from file 
-		 		printf "%s" "Loading $USENAME $REPO config from $CKFILE:  "
+		 		printf "%s" "Loading $USENAME $REPO config from ~/$(cut -d"/" -f7-99 <<< $CKFILE)  "
 		 		COMMIT=$(head -n 1 "$NPCK") || _SIGNAL_ "62" "_CKAT_ COMMIT"
 		  		TCK=$(tail -n 1  "$NPCK") || _SIGNAL_ "64" "_CKAT_ TCK"
 				_PRINTCK_ 
