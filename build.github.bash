@@ -240,7 +240,7 @@ _GTGF_ () {	# clone git repository
 _IG_ () { # do nothing if config file is correct
 	if grep "${NAME##*/}" "${NAME##*/}"/.git/config 1>/dev/null 
 	then
-		printf "%s\\n" "Found clone of git repository ${NAME##*/}: Continuing..."
+		printf "%s\\n\\n" "Found clone of git repository ${NAME##*/}: Continuing..."
 	else	# get repository
 		_GTGF_
 	fi
