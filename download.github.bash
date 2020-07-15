@@ -24,13 +24,7 @@ _ATT_ () {
 	then
 		if [[ -d "$JDR/${NAME##*/}" ]] # directory exists 
 		then	# check if config file exits
-			if grep "${NAME##*/}" "${NAME##*/}"/.git/config 1>/dev/null 
-			then
-				printf "%s\\n" "Found git repository ${NAME##*/}: Continuing..."
-			else
-				# get repository
-				_GTGF_
-			fi
+			_IG_
 		elif ! [[ -d "$JDR/${NAME##*/}" ]] # directory does not exist
 		then 
 			printf "%s\\n" "Querying $USENAME $REPO ${COMMIT::7} for AndroidManifest.xml file:"
@@ -68,16 +62,9 @@ _ATTG_ () {
 	if [[ "$TCK" != 1 ]]
 	then
 		if [[ -d "$JDR/${NAME##*/}" ]] # directory exists 
-		then	# check if config file is correct
-			if grep "${NAME##*/}" "${NAME##*/}"/.git/config 1>/dev/null 
-			then
-				:	# do nothing
-			else
-				# clone git repository
-				_GTGF_
-			fi
-		elif ! [[ -d "$JDR/${NAME##*/}" ]] # directory does not exist
-		then 
+		then
+			_IG_
+		else 
 			# clone git repository
 			_GTGF_
 		fi
@@ -108,7 +95,7 @@ _CKAT_ () {
 					sleep 0."$(shuf -i 24-72 -n 1)"	# eases network latency
 				fi
 		 	else # load configuration information from file 
-		 		printf "%s" "Loading $USENAME $REPO config from $CKFILE:  "
+		 		printf "%s" "Loading $USENAME $REPO config from ~/$(cut -d"/" -f7-99 <<< $CKFILE)  "
 		 		COMMIT=$(head -n 1 "$NPCK") || _SIGNAL_ "62" "_CKAT_ COMMIT"
 		  		TCK=$(tail -n 1  "$NPCK") || _SIGNAL_ "64" "_CKAT_ TCK"
 				_PRINTCK_ 
@@ -250,6 +237,15 @@ _GTGF_ () {	# clone git repository
 	_IAR_ "$JDR/${NAME##*/}" || _SIGNAL_ "34" "_GTGF_ _IAR_"
 }
 
+_IG_ () { # do nothing if config file is correct
+	if grep "${NAME##*/}" "${NAME##*/}"/.git/config 1>/dev/null 
+	then
+		printf "%s\\n\\n" "Found clone of git repository ${NAME##*/}: Continuing..."
+	else	# get repository
+		_GTGF_
+	fi
+}
+
 _MAINGITHUB_ () {
 	if [[ -z "${NUM:-}" ]] 
 	then
@@ -305,10 +301,10 @@ _MAINGITHUB_ () {
 		_CKAT_ 
 	done
 	_PRINTJD_
+	_RLREMING_
+	_ANDB_ 
+	_APKBC_
 	. "$RDR"/scripts/bash/shlibs/buildAPKs/bnchn.bash bch.gt 
-}
-
-_MKJDC_ () { # create JDR/var/conf directory which contains query for \` AndroidManifest.xml \` files at GitHub USENAME repositores results. 
 	if [ ! -d "$JDR/var/conf" ]
 	then
 		mkdir -p "$JDR/var/conf"
