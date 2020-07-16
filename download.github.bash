@@ -301,10 +301,10 @@ _MAINGITHUB_ () {
 		_CKAT_ 
 	done
 	_PRINTJD_
-	_RLREMING_
-	_ANDB_ 
-	_APKBC_
 	. "$RDR"/scripts/bash/shlibs/buildAPKs/bnchn.bash bch.gt 
+}
+
+_MKJDC_ () { # create JDR/var/conf directory which contains query for \` AndroidManifest.xml \` files at GitHub USENAME repositores results. 
 	if [ ! -d "$JDR/var/conf" ]
 	then
 		mkdir -p "$JDR/var/conf"

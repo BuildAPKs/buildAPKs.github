@@ -3,5 +3,6 @@
 # https://buildapks.github.io published courtesy https://pages.github.com
 #################################################################################
 set -eu
-cp build.github.bash download.github.bash && sed -i '308,310d' download.github.bash && printf "%s\\n%s\\n" "$(head -n -1 download.github.bash)" "# download.github.bash OEF" > download.github.bash
+cp build.github.bash download.github.bash && sed -i '304,306d' download.github.bash && printf "%s\\n%s\\n" "$(head -n -1 download.github.bash)" "# download.github.bash OEF" > download.github.bash
+diff build.github.bash download.github.bash 
 # cp.g2d.sh OEF
