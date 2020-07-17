@@ -360,16 +360,9 @@ _RLREMING_ () { # if connection is available, print GitHub rate limit
 	# change true to false in file RDR/.conf/DRLIM to disable rate limit check
 	if [[ $(awk 'NR==1' "$RDR/.conf/DRLIM") == "true" ]] 
 	then	# get rate limit information from GitHub
-		RATEARRAY=($(curl -is https://api.github.com/rate_limit | grep Rate)) || printf "\\e[2;7;38;5;51m%s\\e[0m\\n\\n" "The Internet connection is not available; Continuing..." # create array with rate information https://developer.github.com/v3/rate_limit/ from GitHub without incurring an API hit
-		if [[ ! -z "${RATEARRAY:-}" ]] # if RATEARRAY is set
-		then	# print GitHub rate limit information to screen
-			printf "%s\\n" "GitHub rate limit information:"
-			printf "\\e[2;7;38;5;144m%s\\e[0m\\n" "${RATEARRAY[0]} ${RATEARRAY[1]}"
-			printf "\\e[2;7;38;5;146m%s\\e[0m\\n" "${RATEARRAY[2]} ${RATEARRAY[3]}"
-			printf "\\e[2;7;38;5;148m%s\\e[0m\\n" "${RATEARRAY[4]} ${RATEARRAY[5]}"
-			[ "$OAUT" != "" ]  && printf "\\e[1;7;38;5;185m%s\\e[0m\\n\\n" "OAUTH token $OAUT is enabled; Continuing..." || printf "\\e[2;7;38;5;150m%s\\e[0m\\n\\n" "File ~/${RDR##*/}/.conf/GAUTH has more information about rate limit; Continuing..." # print information about the RDR/.conf/GAUTH file
-		unset RATEARRAY
-		fi
+		printf "\\e[2;7;38;5;144m%s\\e[0m\\n" "GitHub rate limit information:"
+		printf "%s\\e[0m\\n" "$(curl -is https://api.github.com/rate_limit | grep Ratelimit)"
+		[ "$OAUT" != "" ]  && printf "\\e[2;7;38;5;148m%s\\e[0m\\n\\n" "OAUTH token $OAUT is enabled; Continuing..." || printf "\\e[2;7;38;5;150m%s\\e[0m\\n\\n" "File ~/${RDR##*/}/.conf/GAUTH has more information about rate limit; Continuing..." # print information about the RDR/.conf/GAUTH file
 	fi
 }
 
