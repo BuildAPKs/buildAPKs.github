@@ -357,7 +357,7 @@ _RLREMING_ () { # print GitHub rate limit
 	if [[ $(awk 'NR==1' "$RDR/.conf/DRLIM") == "true" ]] 
 	then	# get rate limit information from GitHub
 		printf "\\e[2;7;38;5;144m%s\\e[0m\\n" "GitHub rate limit information:"
-		printf "%s\\e[0m\\n" "$(curl -is https://api.github.com/rate_limit | grep Ratelimit)"
+		printf "%s\\e[0m\\n" "$(curl -is https://api.github.com/rate_limit | grep Ratelimit)" || printf "%s\\n" "Could not get rate limit information from GitHub."
 		[ "$OAUT" != "" ]  && printf "\\e[2;7;38;5;148m%s\\e[0m\\n\\n" "OAUTH token $OAUT is enabled; Continuing..." || printf "\\e[2;7;38;5;150m%s\\e[0m\\n\\n" "Change true to false in file ~/${RDR##*/}/.conf/DRLIM to disable rate limit check.  File ~/${RDR##*/}/.conf/GAUTH has more information about rate limit; Continuing..." # print information about the RDR/.conf/GAUTH file
 	fi
 }
