@@ -49,7 +49,7 @@ _ATT_ () {
 			 	if grep AndroidManifest.xml <<< "$ISAND" 
 				then
 					_AND_ 0
-					_GTGF_
+					_CLAGR_
 				else
 					_NAND_
 				fi
@@ -66,7 +66,7 @@ _ATTG_ () {
 			_IG_
 		else 
 			# clone git repository
-			_GTGF_
+			_CLAGR_
 		fi
 	fi
 }
@@ -221,7 +221,7 @@ _GETREPOS_() {
 	fi
 }
 
-_GTGF_ () {	# clone git repository
+_CLAGR_ () {	# clone a git repository
 	NAME="${NAME/#https/git}"
 	if [[ -f "$JDR/var/conf/$USER.${NAME##*/}.${COMMIT::7}.br" ]]
 	then
@@ -230,10 +230,10 @@ _GTGF_ () {	# clone git repository
 		printf "%s\\n" "Checking HEAD branch in $NAME..."
 		RBRANCH="$( git remote show $NAME | grep "HEAD branch" | cut -d ":" -f 2 )"
 	fi
-	# if the remote git branch was not found then clone git repository, else clone the specific branch from this repository
-	[[ $RBRANCH == "" ]] && (( printf "\\e[0;32m%s\\e[0m\\n" "Getting git repository $NAME..." && git clone --depth 1 "$NAME" --single-branch ; cd ${NAME##*/} ; git fsck ; cd $JDR ) || ( cd $JDR && _SIGNAL_ "32" "_GTGF_ git clone" )) || (( printf "%s\\n%s\\n" "$COMMIT" "$RBRANCH" > "$JDR/var/conf/$USER.${NAME##*/}.${COMMIT::7}.br" && printf "\\e[0;32m%s\\e[0m\\n" "Getting branch$RBRANCH from git repository $NAME..." && git clone --depth 1 "$NAME" --branch $RBRANCH --single-branch ; cd ${NAME##*/} ; git fsck ; cd $JDR ) || ( cd $JDR && _SIGNAL_ "32" "_GTGF_ git clone" ))
+	# if the remote git HEAD branch was not found, then clone a single branch from this git repository, else clone the HEAD branch from this repository
+	[[ $RBRANCH == "" ]] && (( printf "\\e[0;32m%s\\e[0m\\n" "Getting git repository $NAME..." && git clone --depth 1 "$NAME" --single-branch ; cd ${NAME##*/} ; git fsck ; cd $JDR ) || ( cd $JDR && _SIGNAL_ "32" "_CLAGR_ git clone" )) || (( printf "%s\\n%s\\n" "$COMMIT" "$RBRANCH" > "$JDR/var/conf/$USER.${NAME##*/}.${COMMIT::7}.br" && printf "\\e[0;32m%s\\e[0m\\n" "Getting branch$RBRANCH from git repository $NAME..." && git clone --depth 1 "$NAME" --branch $RBRANCH --single-branch ; cd ${NAME##*/} ; git fsck ; cd $JDR ) || ( cd $JDR && _SIGNAL_ "32" "_CLAGR_ git clone" ))
 	# delete surplus directories and files from cloned git repository
-	_IAR_ "$JDR/${NAME##*/}" || _SIGNAL_ "34" "_GTGF_ _IAR_"
+	_IAR_ "$JDR/${NAME##*/}" || _SIGNAL_ "34" "_CLAGR_ _IAR_"
 }
 
 _IG_ () { # do nothing if config file is correct
@@ -241,7 +241,7 @@ _IG_ () { # do nothing if config file is correct
 	then
 		printf "%s\\n\\n" "Found clone of git repository ${NAME##*/}: Continuing..."
 	else	# get repository
-		_GTGF_
+		_CLAGR_
 	fi
 }
 
