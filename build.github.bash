@@ -229,11 +229,10 @@ _GTGF_ () {	# clone git repository
 	else
 		printf "%s\\n" "Checking HEAD branch in $NAME..."
 		RBRANCH="$( git remote show $NAME | grep "HEAD branch" | cut -d ":" -f 2 )"
-		RBRANCH="${RBRANCH# }" # strip leading space
-		printf "%s\\n%s\\n" "$COMMIT" "$RBRANCH" > "$JDR/var/conf/$USER.${NAME##*/}.${COMMIT::7}.br"
 	fi
-	printf "%s\\n" "Getting branch $RBRANCH from git repository $NAME..."
-	( git clone --depth 1 "$NAME" --branch $RBRANCH --single-branch ; cd ${NAME##*/} ; git fsck ; cd $JDR ) || ( cd $JDR && _SIGNAL_ "32" "_GTGF_ git clone" )
+	# if the remote git branch was not found then clone git repository, else clone the specific branch from this repository
+	[[ $RBRANCH == "" ]] && (( printf "\\e[0;32m%s\\e[0m\\n" "Getting git repository $NAME..." && git clone --depth 1 "$NAME" --single-branch ; cd ${NAME##*/} ; git fsck ; cd $JDR ) || ( cd $JDR && _SIGNAL_ "32" "_GTGF_ git clone" )) || (( printf "%s\\n%s\\n" "$COMMIT" "$RBRANCH" > "$JDR/var/conf/$USER.${NAME##*/}.${COMMIT::7}.br" && printf "\\e[0;32m%s\\e[0m\\n" "Getting branch$RBRANCH from git repository $NAME..." && git clone --depth 1 "$NAME" --branch $RBRANCH --single-branch ; cd ${NAME##*/} ; git fsck ; cd $JDR ) || ( cd $JDR && _SIGNAL_ "32" "_GTGF_ git clone" ))
+	# delete surplus directories and files from cloned git repository
 	_IAR_ "$JDR/${NAME##*/}" || _SIGNAL_ "34" "_GTGF_ _IAR_"
 }
 
@@ -295,7 +294,7 @@ _MAINGITHUB_ () {
 	fi
 	F1AR=($(find "$JDR" -maxdepth 1 -type d)) # create array of JDR contents 
 	cd "$JDR"
-	[ ! -d .git ]&&git init
+ 	[ ! -d .git ] && git init
 	_PRINTAS_
 	for NAME in "${JARR[@]}" 
 	do
