@@ -295,6 +295,7 @@ _MAINGITHUB_ () {
 	fi
 	F1AR=($(find "$JDR" -maxdepth 1 -type d)) # create array of JDR contents 
 	cd "$JDR"
+	[ ! -d .git ]&&git init
 	_PRINTAS_
 	for NAME in "${JARR[@]}" 
 	do
