@@ -222,7 +222,6 @@ _GETREPOS_() {
 }
 
 _CLAGR_ () {	# clone a git repository
-	NAME="${NAME/#https/git}"
 	if [[ -f "$JDR/var/conf/$USER.${NAME##*/}.${COMMIT::7}.br" ]]
 	then
 		RBRANCH="$( tail -n 1 "$JDR/var/conf/$USER.${NAME##*/}.${COMMIT::7}.br" )"
