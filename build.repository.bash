@@ -9,7 +9,6 @@ if [ $# != 1 ]
 then
 printf "%s\\n\\n" "EXAMPLE USAGE:  '${0##*/} https://github.com/BuildAPKs/buildAPKs.entertainment'" && exit
 fi
-. "$RDR/scripts/bash/init/ushlibs.bash"
 printf "%s\\n" "Processing $@:"
 REPONAME="${@##*/}"
 LOGINAME="${@%/*}"
