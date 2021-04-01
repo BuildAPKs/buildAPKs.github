@@ -14,12 +14,12 @@ LOGINAME="${LOGINAME##*/}"
 SITENAME="${@#*//}"
 SITENAME="${SITENAME%/*}"
 SITENAME="${SITENAME%/*}"
-if [ -d "$RDR/sources/$SITENAME" ]
+if [ -d "$RDR/sources/$SITENAME/$LOGINAME" ]
 then
-cd "$RDR/sources/$SITENAME"
+cd "$RDR/sources/$SITENAME/$LOGINAME"
 else
-mkdir -p "$RDR/sources/$SITENAME"
-cd "$RDR/sources/$SITENAME"
+mkdir -p "$RDR/sources/$SITENAME/$LOGINAME"
+cd "$RDR/sources/$SITENAME/$LOGINAME"
 fi
 git clone --depth 1 "$@" --single-branch && cd "$REPONAME" && "$RDR/scripts/bash/build/build.in.dir.bash" || cd "$REPONAME" && "$RDR/scripts/bash/build/build.in.dir.bash"
-# build.github.repository.bash OEF
+# build.repository.bash OEF
