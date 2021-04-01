@@ -7,15 +7,15 @@ shopt -s nullglob globstar
 export RDR="$HOME/buildAPKs"
 if [ $# != 1 ]
 then
-printf "%s\\n\\n" "EXAMPLE USAGE:  '${0##*/} https://github.com/BuildAPKs/buildAPKs.entertainment'" && exit
+printf "\\n%s\\n\\n" "EXAMPLE USAGE:  '${0##*/} https://github.com/BuildAPKs/buildAPKs.entertainment'" && exit
 fi
-printf "%s\\n" "Processing $@:"
-REPONAME="${@##*/}"
-LOGINAME="${@%/*}"
-LOGINAME="${LOGINAME##*/}"
-SITENAME="${@#*//}"
-SITENAME="${SITENAME%/*}"
-SITENAME="${SITENAME%/*}"
+BASENAME="${@%/}" # strip trailing slash
+REPONAME="${BASENAME##*/}" # strip before last slash
+LOGINAME="${BASENAME%/*}" # strip after last slash
+LOGINAME="${LOGINAME##*/}" # strip before last slash
+BASENAME="${BASENAME#*//}" # strip before double slash
+SITENAME="${BASENAME%%/*}" # strip after first slash
+printf "%s\\n" "Processing $@ in directory ~/${RDR##*/}/sources/$SITENAME/$LOGINAME/$REPONAME:"
 if [ -d "$RDR/sources/$SITENAME/$LOGINAME" ]
 then
 cd "$RDR/sources/$SITENAME/$LOGINAME"
