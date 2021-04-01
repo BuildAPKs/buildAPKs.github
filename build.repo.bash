@@ -7,7 +7,7 @@ shopt -s nullglob globstar
 export RDR="$HOME/buildAPKs"
 if [ $# != 1 ]
 then
-printf "\\n%s\\n\\n" "EXAMPLE USAGE:  '${0##*/} https://github.com/BuildAPKs/buildAPKs.entertainment'" && exit
+printf "\\n%s\\n\\n%s\\n\\n" "The '${0##*/}' command has been tested with https://github.com/search and https://gitlab.com/explore successfully.  Please share addresses to sourcecode at https://github.com/BuildAPKs in order to help develop this topic if you find repo candidates for inclusion." "EXAMPLE USAGE:  '${0##*/} https://github.com/BuildAPKs/buildAPKs.entertainment'" && exit
 fi
 BASENAME="${@%/}" # strip trailing slash
 REPONAME="${BASENAME##*/}" # strip before last slash
