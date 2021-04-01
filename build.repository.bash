@@ -23,5 +23,5 @@ else
 mkdir -p "$RDR/sources/$SITENAME/$LOGINAME"
 cd "$RDR/sources/$SITENAME/$LOGINAME"
 fi
-git clone --depth 1 "$@" --single-branch && cd "$REPONAME" && "$RDR/scripts/bash/build/build.in.dir.bash" || cd "$REPONAME" && "$RDR/scripts/bash/build/build.in.dir.bash"
+(git clone --depth 1 "$@" --single-branch && cd "$REPONAME" && "$RDR/scripts/bash/build/build.in.dir.bash") || (cd "$REPONAME" && "$RDR/scripts/bash/build/build.in.dir.bash")
 # build.repository.bash OEF
