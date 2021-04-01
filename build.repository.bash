@@ -2,10 +2,13 @@
 # Copyright 2021 (c) all rights reserved by BuildAPKs; see LICENSE
 # https://buildapks.github.io published courtesy https://pages.github.com
 ################################################################################
-set -Eeuo pipefail
+set -eu
 shopt -s nullglob globstar
 export RDR="$HOME/buildAPKs"
-. "$RDR/scripts/bash/shlibs/trap.bash" 67 68 69 "${0##*/} build.github.bash" wake.idle
+if [ $# != 1 ]
+then
+printf "%s\\n\\n" "EXAMPLE USAGE: '${0##*/} https://github.com/BuildAPKs/buildAPKs.entertainment': DONE" && exit
+fi
 . "$RDR/scripts/bash/init/ushlibs.bash"
 printf "%s\\n" "Processing $@:"
 REPONAME="${@##*/}"
