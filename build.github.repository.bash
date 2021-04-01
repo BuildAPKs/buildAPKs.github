@@ -5,15 +5,21 @@
 set -Eeuo pipefail
 shopt -s nullglob globstar
 export RDR="$HOME/buildAPKs"
-. "$RDR/scripts/bash/shlibs/trap.bash" 67 68 69 "${0##*/} build.github.bash"
+. "$RDR/scripts/bash/shlibs/trap.bash" 67 68 69 "${0##*/} build.github.bash" wake.idle
 . "$RDR/scripts/bash/init/ushlibs.bash"
-if [ -d "$RDR/sources/github/repos" ]
+printf "%s\\n" "Processing $@:"
+REPONAME="${@##*/}"
+LOGINAME="${@%/*}"
+LOGINAME="${LOGINAME##*/}"
+SITENAME="${@#*//}"
+SITENAME="${SITENAME%/*}"
+SITENAME="${SITENAME%/*}"
+if [ -d "$RDR/sources/$SITENAME" ]
 then
-cd "$RDR/sources/github/repos"
+cd "$RDR/sources/$SITENAME"
 else
-mkdir -p "$RDR/sources/github/repos"
-cd "$RDR/sources/github/repos"
+mkdir -p "$RDR/sources/$SITENAME"
+cd "$RDR/sources/$SITENAME"
 fi
-git clone --depth 1 "$@" --single-branch || "$RDR/scripts/bash/build/build.in.dir.bash"
-"$RDR/scripts/bash/build/build.in.dir.bash"
+git clone --depth 1 "$@" --single-branch && cd "$REPONAME" && "$RDR/scripts/bash/build/build.in.dir.bash" || cd "$REPONAME" && "$RDR/scripts/bash/build/build.in.dir.bash"
 # build.github.repository.bash OEF
