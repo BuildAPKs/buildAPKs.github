@@ -7,7 +7,8 @@ shopt -s nullglob globstar
 export RDR="$HOME/buildAPKs"
 if [ $# != 1 ]
 then # print help
-	printf "\\n%s\\n\\n%s\\n\\n" "The '${0##*/}' command has been tested with https://github.com/search and https://gitlab.com/explore successfully.  Please share addresses to sourcecode at https://github.com/BuildAPKs in order to help develop this topic if you find repo candidates for inclusion." "EXAMPLE USAGE:  ${0##*/} https://github.com/BuildAPKs/buildAPKs.entertainment" && exit
+	printf "\\n%s\\n\\n%s\\n\\n%s\\n\\n" "The '${0##*/}' command has been tested with https://github.com/search and https://gitlab.com/explore successfully.  Share addresses to sourcecode at https://github.com/BuildAPKs in order to help develop this software if you find APK repo candidates for inclusion." "EXAMPLE USAGE:  ${0##*/} https://github.com/BuildAPKs/buildAPKs.entertainment" "If you find repo candidates for inclusion, please share addresses to sourcecode at https://github.com/BuildAPKs in order to help develop this software.  Thank you for using ${0##*/};  Enjoy🎵🎶"
+	exit
 fi
 _CLONEBUILD_() {
 	cd "$RDR/sources/$SITENAME/$LOGINAME" && git clone --depth 1 "$@" --single-branch && cd "$REPONAME" && "$RDR/scripts/bash/build/build.in.dir.bash"
