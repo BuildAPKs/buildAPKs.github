@@ -28,9 +28,9 @@ cd "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME"
 "$RDR/scripts/bash/build/build.in.dir.bash"
 elif [ -d "$RDR/sources/$SITENAME/$LOGINAME" ]
 then
-_CLONEBUILD_
+_CLONEBUILD_ "$@"
 else
 mkdir -p "$RDR/sources/$SITENAME/$LOGINAME"
-_CLONEBUILD_
+_CLONEBUILD_ "$@"
 fi
 # build.repo.bash OEF
