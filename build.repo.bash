@@ -11,7 +11,7 @@ then # print help
 	exit
 fi
 _CLONEBUILD_() {
-	cd "$RDR/sources/$SITENAME/$LOGINAME" && git clone --depth 1 "$@" --single-branch && cd "$REPONAME" && "$RDR/scripts/bash/shlibs/buildAPKs/prep.bash" && "$RDR/scripts/bash/build/build.in.dir.bash"
+	cd "$RDR/sources/$SITENAME/$LOGINAME" && git clone --depth 1 "$@" --single-branch && cd "$REPONAME" && . "$RDR/scripts/bash/shlibs/buildAPKs/prep.bash" && "$RDR/scripts/bash/build/build.in.dir.bash"
 }
 BASENAME="${@%/}" # strip trailing slash
 BASENAME="${BASENAME#*//}" # strip before double slash
@@ -29,7 +29,7 @@ sleep 1.6
 if [ -d "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" ]
 then
 	cd "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME"
-	"$RDR/scripts/bash/shlibs/buildAPKs/prep.bash"
+	. "$RDR/scripts/bash/shlibs/buildAPKs/prep.bash"
 	"$RDR/scripts/bash/build/build.in.dir.bash"
 elif [ -d "$RDR/sources/$SITENAME/$LOGINAME" ]
 then
