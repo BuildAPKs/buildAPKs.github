@@ -11,7 +11,7 @@ then # print help
 	exit
 fi
 _CLONEBUILD_() {
-	cd "$RDR/sources/$SITENAME/$LOGINAME" && git clone --depth 1 "$@" --single-branch && cd "$REPONAME" && "$RDR/scripts/bash/build/build.in.dir.bash"
+	cd "$RDR/sources/$SITENAME/$LOGINAME" && git clone --depth 1 "$@" --single-branch && cd "$REPONAME" && (_IAR_ "$(pwd)" || _SIGNAL_ "135" "${0##*/} _CLONEBUILD_ _IAR_") && "$RDR/scripts/bash/build/build.in.dir.bash"
 }
 BASENAME="${@%/}" # strip trailing slash
 BASENAME="${BASENAME#*//}" # strip before double slash
@@ -25,11 +25,11 @@ then # exit
 	exit 101
 fi
 printf "%s\\n" "Processing $@ in directory ~/${RDR##*/}/sources/$SITENAME/$LOGINAME/$REPONAME:"
+. "$RDR"/scripts/bash/shlibs/buildAPKs/prep.bash
 sleep 1.6
 if [ -d "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" ]
 then
-	cd "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME"
-	"$RDR/scripts/bash/build/build.in.dir.bash"
+	cd "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" && (_IAR_ "$(pwd)" || _SIGNAL_ "134" "${0##*/} _IAR_") && "$RDR/scripts/bash/build/build.in.dir.bash"
 elif [ -d "$RDR/sources/$SITENAME/$LOGINAME" ]
 then
 	_CLONEBUILD_ "$@"
