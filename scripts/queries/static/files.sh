@@ -8,6 +8,6 @@ DATA=$(curl -H "Authorization: token $GITHUB_TOKEN" -s -d @- https://api.github.
 GQL
 )
 
-printf "%s\\n" "$DATA" 
+printf "%s\\n" "$DATA"
 # printf "%s\\n" "$DATA" | jq -r .data.viewer.bio
 # bio.sh ZEOF

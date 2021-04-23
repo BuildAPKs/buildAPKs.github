@@ -15,4 +15,4 @@ DATA=$(curl -H "Authorization: token $GITHUB_TOKEN" -s -d @- https://api.github.
 GQL
 )
 
-echo $DATA 
+echo $DATA

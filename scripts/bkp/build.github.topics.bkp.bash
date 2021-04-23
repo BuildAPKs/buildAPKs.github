@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Copyright 2019-2020 (c) all rights reserved 
+# Copyright 2019-2020 (c) all rights reserved
 # by BuildAPKs https://buildapks.github.io/buildAPKs/
 #####################################################################
 set -Eeuo pipefail
@@ -9,8 +9,8 @@ export RDR="$HOME/buildAPKs"
 . "$RDR"/scripts/bash/shlibs/trap.bash 77 78 79 "${0##*/}"
 [ -z "${1:-}" ] && printf "\\e[1;7;38;5;203m%s\\e[1;7;38;5;201m%s\\e[1;7;38;5;203m%s\\e[1;7;38;5;201m%s\\e[1;7;38;5;203m%s\\e[1;7;38;5;201m%s\\e[1;7;38;5;203m%s\\n\\e[0m\\n" "GitHub topic name must be provided;  See " "~/${RDR##*/}/var/conf/TNAMES" " for topic names that build APKs on device with BuildAPKs!  To build all the topic names contained in this file run " "for NAME in \$(cat ~/${RDR##*/}/var/conf/TNAMES) ; do ~/${RDR##*/}/scripts/bash/build/${0##*/} \$NAME ; done" ".  File " "~/${RDR##*/}/var/conf/GAUTH" " has important information should you choose to run this command regarding bandwidth supplied by GitHub. " && exit 4
 [ -z "${NUM:-}" ] && export NUM="$(date +%s)"
-. "$RDR"/scripts/bash/shlibs/lock.bash wake.lock 
-. "$RDR"/scripts/bash/shlibs/buildAPKs/bnchn.bash bch.st 
+. "$RDR"/scripts/bash/shlibs/lock.bash wake.lock
+. "$RDR"/scripts/bash/shlibs/buildAPKs/bnchn.bash bch.st
 export TOPI="${1%/}"
 export TOPIC="${TOPI##*/}"
 export TOPNAME="${TOPIC,,}"
@@ -20,45 +20,45 @@ export OAUT="$(cat "$RDR/.conf/GAUTH" | awk 'NR==1')"
 export RDR="$HOME/buildAPKs"
 export STRING="ERROR FOUND; build.github.topics.bash $1:  CONTINUING... "
 _RPCT_() {
-	RCT="$(sed 's/\,//g' <<< "${THD[1]##*:}")" 
+	RCT="$(sed 's/\,//g' <<< "${THD[1]##*:}")"
 	RPCT="$(($RCT/100))" # repository page count
 	if [[ $(($RCT%100)) -gt 0 ]] # there is a remainder
 	then	# add one more page to total requested
 		export RPCT="$(($RPCT+1))"
 	fi
-	printf "%s\\n" "Found $RPCT pages of results." 
-	if [[ $RPCT -gt 10 ]] # the repository count is greater than 1000 search results, which is 10 pages at 100 results per page 
+	printf "%s\\n" "Found $RPCT pages of results."
+	if [[ $RPCT -gt 10 ]] # the repository count is greater than 1000 search results, which is 10 pages at 100 results per page
 	then	# enforce the https://developer.github.com/v3/search/ search limit of 1000 search results per query
-		printf "%s\\n" "Limiting to 10 pages of results per query." 
+		printf "%s\\n" "Limiting to 10 pages of results per query."
 		export RPCT=10
 	fi
 }
 printf "\\n\\e[1;38;5;116m%s\\n\\e[0m" "${0##*/}: Beginning BuildAPKs with build.github.topics.bash $@:"
 [ ! -d "$JDR" ] && mkdir -p "$JDR"
-if [[ ! -f "$JDR"/topic ]] 
+if [[ ! -f "$JDR"/topic ]]
 then
 	if [[ ! -z "$OAUT" ]] # see .conf/GAUTH file for information
 	then	# use https://github.com/settings/tokens to create tokens
 		mapfile -t THD < <(curl -u "$OAUT" -sH "Accept: application/vnd.github.mercy-preview+json" "https://api.github.com/search/repositories?q=topic:$TOPIC+language:Java" | head -n 2 ) # total count
-		RCT="$(sed 's/\,//g' <<< "${THD[1]##*:}")" 
+		RCT="$(sed 's/\,//g' <<< "${THD[1]##*:}")"
  		_RPCT_
 		until [[ $RPCT -eq 0 ]] # there are zero pages remaining
 		do	# get a page of repository information
 			printf "%s\\n" "Downloading GitHub $TOPNAME page $RPCT topic repositories information: "
 			curl -u "$OAUT" -H "Accept: application/vnd.github.mercy-preview+json" "https://api.github.com/search/repositories?per_page=100&page=$RPCT&q=topic:$TOPIC+language:Java&sort=forks&order=desc" > "$JDR/topic.tmp"
-			cat "$JDR/topic.tmp" >> "$JDR/topic"  
+			cat "$JDR/topic.tmp" >> "$JDR/topic"
 			RPCT="$(($RPCT-1))"
 			sleep "0.${RANDOM::3}"
 		done
 	else
 		mapfile -t THD < <(curl -sH "Accept: application/vnd.github.mercy-preview+json" "https://api.github.com/search/repositories?q=topic:$TOPIC+language:Java" | head -n 2 ) # total count
-		RCT="$(sed 's/\,//g' <<< "${THD[1]##*:}")" 
+		RCT="$(sed 's/\,//g' <<< "${THD[1]##*:}")"
  		_RPCT_
 		until [[ $RPCT -eq 0 ]] # there are zero pages remaining
 		do	# get a page of repository information
 			printf "%s\\n" "Downloading GitHub $TOPNAME page $RPCT topic repositories information: "
 			curl -H "Accept: application/vnd.github.mercy-preview+json" "https://api.github.com/search/repositories?per_page=100&page=$RPCT&q=topic:$TOPIC+language:Java&sort=stars&order=desc" > "$JDR/topic.tmp"
-			cat "$JDR/topic.tmp" >> "$JDR/topic"  
+			cat "$JDR/topic.tmp" >> "$JDR/topic"
 			RPCT="$(($RPCT-1))"
 			sleep "0.${RANDOM::3}"
 		done
@@ -66,10 +66,10 @@ then
 	rm -f "$JDR/topic.tmp"
 fi
 TARR=($(grep -B 5 -e Java -e JavaScript -e Shell -e Kotlin "$JDR/topic" | grep svn_url | awk -v x=2 '{print $x}' | sed 's/\,//g' | sed 's/\"//g' | sed 's/https\:\/\/github.com\///g' | cut -d\/ -f1)) ||: # create array of Java, JavaScript, Shell and Kotlin Java language repositories	
-for NAME in "${TARR[@]}" 
-do 
+for NAME in "${TARR[@]}"
+do
  	"$RDR"/scripts/bash/build/build.github.bash "$NAME"
 done
 . "$RDR"/scripts/bash/shlibs/lock.bash wake.stop
-. "$RDR"/scripts/bash/shlibs/buildAPKs/bnchn.bash bch.gt 
+. "$RDR"/scripts/bash/shlibs/buildAPKs/bnchn.bash bch.gt
 # build.github.topics.bash EOF

@@ -32,5 +32,5 @@ starredRepositories {
 GQL
 )
 
-printf "%s\\n" "$DATA" 
+printf "%s\\n" "$DATA"
 # star3.sh EOF

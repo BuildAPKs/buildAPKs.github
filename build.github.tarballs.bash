@@ -10,7 +10,7 @@ export RDR="$HOME/buildAPKs"
 _AND_ () { # write configuration file for git repository tarball if an AndroidManifest.xml file is found in a git repository
 	printf "%s\\n" "$COMMIT" > "$JDR/var/conf/$USER.${NAME##*/}.${COMMIT::7}.ck"
 	printf "%s\\n" "0" >> "$JDR/var/conf/$USER.${NAME##*/}.${COMMIT::7}.ck"
-	if [[ -z "${1:-}" ]] 
+	if [[ -z "${1:-}" ]]
 	then
 		printf "\\e[1;38;5;148m%s\\e[0m" "Found AndroidManifest.xml file in C C# C++ Haskell Java* Kotlin Lua Objective-C* Octave Pearl Python R* and/or Shell language repository $USER ${NAME##*/} ${COMMIT::7}; Writing ~/${RDR##*/}/sources/github/${JDR##*/}/var/conf/$USER.${NAME##*/}.${COMMIT::7}.ck file for git repository ${NAME##*/}; "
 	else
@@ -22,31 +22,31 @@ _AND_ () { # write configuration file for git repository tarball if an AndroidMa
 _ATT_ () {
 	if [[ "$TCK" != 1 ]]
 	then
-		if [[ ! -f "${NAME##*/}.${COMMIT::7}.tar.gz" ]] && [[ "${F1AR[@]}" =~ "${NAME##*/}" ]] # tarfile does NOT exist and directory exists 
+		if [[ ! -f "${NAME##*/}.${COMMIT::7}.tar.gz" ]] && [[ "${F1AR[@]}" =~ "${NAME##*/}" ]] # tarfile does NOT exist and directory exists
 		then
 			_GTGF_
 		elif 	[[ ! -f "${NAME##*/}.${COMMIT::7}.tar.gz" ]] # tar file does not exist
-		then 
+		then
 			printf "%s\\n" "Querying $USENAME $REPO ${COMMIT::7} for AndroidManifest.xml file:"
-			if [[ "$COMMIT" != "" ]] 
+			if [[ "$COMMIT" != "" ]]
 			then
 				if [[ -z "${CULR:-}" ]]
 				then
-					if [[ "$OAUT" != "" ]] 
+					if [[ "$OAUT" != "" ]]
 					then
 						ISAND="$(curl --fail --retry 2 -s -u "$OAUT" -i "https://api.github.com/repos/$USENAME/$REPO/git/trees/$COMMIT?recursive=1")" ||:
 					else
 	 					ISAND="$(curl --fail --retry 2 -s -i "https://api.github.com/repos/$USENAME/$REPO/git/trees/$COMMIT?recursive=1")" ||:
 					fi
 				else
-					if [[ "$OAUT" != "" ]] 
+					if [[ "$OAUT" != "" ]]
 					then
 						ISAND="$(curl --fail --retry 2 --limit-rate "$CULR" -s -u "$OAUT" -i "https://api.github.com/repos/$USENAME/$REPO/git/trees/$COMMIT?recursive=1")" ||:
 					else
 	 					ISAND="$(curl --fail --retry 2 --limit-rate "$CULR" -s -i "https://api.github.com/repos/$USENAME/$REPO/git/trees/$COMMIT?recursive=1")" ||:
 					fi
 				fi
-			 	if grep AndroidManifest.xml <<< "$ISAND" 
+			 	if grep AndroidManifest.xml <<< "$ISAND"
 				then
 					_AND_ 0
 					_GTGF_
@@ -58,7 +58,7 @@ _ATT_ () {
 		elif [[ -f "${NAME##*/}.${COMMIT::7}.tar.gz" ]] && [[ ! "${F1AR[@]}" =~ "${NAME##*/}" ]] # tarfile exists and directory does NOT exist
 		then
 			_AND_
-			_FJDX_ 
+			_FJDX_
 		elif [[ -f "${NAME##*/}.${COMMIT::7}.tar.gz" ]] && [[ "${F1AR[@]}" =~ "${NAME##*/}" ]] # tarfile and directory exist
 		then
 			_AND_
@@ -69,15 +69,15 @@ _ATT_ () {
 
 _CKAT_ () {
 	TCK=0
-	REPO=$(awk -F/ '{print $NF}' <<< "$NAME") # redirect output to a variable 
+	REPO=$(awk -F/ '{print $NF}' <<< "$NAME") # redirect output to a variable
 	if ! grep -iw "$REPO" "$RDR"/var/db/ANAMES # repository name is not found in ANAMES file
-	then	# process copy and build repository 
+	then	# process copy and build repository
 		NPCK="$(find "$JDR/var/conf/" -name "$USER.${NAME##*/}.???????.ck")" ||: # check if file exists with wildcards
-		for CKFILE in "$NPCK" 
+		for CKFILE in "$NPCK"
 		do
 		 	if [[ $CKFILE = "" ]] # configuration file is not found
 		 	then
-		 		printf "%s" "Checking $USENAME $REPO for last commit:  " 
+		 		printf "%s" "Checking $USENAME $REPO for last commit:  "
 		  		COMMIT="$(_GC_)" ||:
 
 				if [[ -z "${COMMIT:-}" ]]
@@ -90,38 +90,38 @@ _CKAT_ () {
 			 		_ATT_ || _SIGNAL_ "60" "_CKAT_ _ATT_"
 					sleep 0."$(shuf -i 24-72 -n 1)"	# eases network latency
 				fi
-		 	else # load configuration information from file 
+		 	else # load configuration information from file
 		 		printf "%s" "Loading $USENAME $REPO config from $CKFILE:  "
 		 		COMMIT=$(head -n 1 "$NPCK") || _SIGNAL_ "62" "_CKAT_ COMMIT"
 		  		TCK=$(tail -n 1  "$NPCK") || _SIGNAL_ "64" "_CKAT_ TCK"
-				_PRINTCK_ 
+				_PRINTCK_
 		 		_ATT_ || _SIGNAL_ "62" "_CKAT_ _ATT_"
 		 	fi
 		done
 	else
-		printf "%s" "Not processing $REPO; listing found in ~/"${RDR##*/}"/var/db/ANAMES file. " 
+		printf "%s" "Not processing $REPO; listing found in ~/"${RDR##*/}"/var/db/ANAMES file. "
  	fi
 }
 
 _CUTE_ () { # check if USENAME is an organization or a user
-	. "$RDR"/scripts/bash/shlibs/buildAPKs/bnchn.bash bch.st 
+	. "$RDR"/scripts/bash/shlibs/buildAPKs/bnchn.bash bch.st
 	_RLREMING_
 	if [[ $(grep -iw "$USENAME" "$RDR/var/db/log/GNAMES" | awk '{print $2}') == User ]] && [[ -f "$RDR/sources/github/users/$USER/profile" ]] && [[ -f "$RDR/sources/github/users/$USER/repos" ]] # found in GNAMES and is a user and files exist
-	then	# assign user attributes to USENAME 
+	then	# assign user attributes to USENAME
 		export ISUSER=users
 		export ISOTUR=users
 		export USENAME="$(grep -iw "$USENAME" "$RDR/var/db/log/GNAMES" | awk '{print $1}')"
 		export JDR="$RDR/sources/github/$ISOTUR/$USER"
 		export JID="github.$ISOTUR.$USER"
 	elif [[ $(grep -iw "$USENAME" "$RDR/var/db/log/GNAMES" | awk '{print $2}') == Organization ]] && [[ -f "$RDR/sources/github/orgs/$USER/profile" ]] && [[ -f "$RDR/sources/github/orgs/$USER/repos" ]] # found in GNAMES and is an organization and files exist
-	then 	# assign organization attributes to USENAME 
+	then 	# assign organization attributes to USENAME
 		export ISUSER=users
 		export ISOTUR=orgs
 		export USENAME="$(grep -iw "$USENAME" "$RDR/var/db/log/GNAMES" | awk '{print $1}')"
 		export JDR="$RDR/sources/github/$ISOTUR/$USER"
 		export JID="github.$ISOTUR.$USER"
 	else	# get login and type of login from GitHub
-		if [[ "$OAUT" != "" ]] # see file .conf/GAUTH file for information 
+		if [[ "$OAUT" != "" ]] # see file .conf/GAUTH file for information
 		then	# create array TYPE
 			mapfile -t TYPE < <(curl -u "$OAUT" "https://api.github.com/users/$USENAME")
 		else
@@ -134,9 +134,9 @@ _CUTE_ () { # check if USENAME is an organization or a user
 			exit 44
 		fi
 		# array TYPE is undefined
-		(if [[ -z "${TYPE[17]}" ]] 
+		(if [[ -z "${TYPE[17]}" ]]
 		then	# echo array TYPE, print message and exit
-			echo "${TYPE[@]}"  
+			echo "${TYPE[@]}"
 			_SIGNAL_ "68" "${TYPE[17]} undefined!" "68"
 		fi) || (echo "${TYPE[@]}" && _SIGNAL_ "70" "TYPE[17]: unbound variable" "70") # or echo array TYPE, print message and exit
 		export USENAME="$(printf "%s" "${TYPE[1]}" | sed 's/"//g' | sed 's/,//g' | awk '{print $2}')" || _SIGNAL_ "71" "_CUTE_ \$USENAME"
@@ -152,18 +152,18 @@ _CUTE_ () { # check if USENAME is an organization or a user
 		fi
 		export JDR="$RDR/sources/github/$ISOTUR/$USER"
 		export JID="github.$ISOTUR.$USER"
-		if [[ ! -d "$JDR" ]] 
+		if [[ ! -d "$JDR" ]]
 		then
 			mkdir -p "$JDR"
 		fi
 		printf "%s\\n" "${TYPE[@]}" > "$JDR"/profile
-		_MKJDC_ 
+		_MKJDC_
 		_NAMESMAINBLOCK_ GNAMES log/GNAMES
 		unset NAPKS
 	fi
 	printf "%s\\n" "Processing $USENAME:"
 	KEYT=("\"login\"" "\"id\"" "\"type\"" "\"name\"" "\"company\"" "\"blog\"" "\"location\"" "\"hireable\"" "\"bio\"" "\"public_repos\"" "\"public_gists\"" "\"followers\"" "\"following\"" "\"created_at\"" )
-	for KEYS in "${KEYT[@]}" # print selected information from profile file 
+	for KEYS in "${KEYT[@]}" # print selected information from profile file
 	do
 		grep "$KEYS" "$JDR/profile" | sed 's/\,//g' | sed 's/\"//g'
 	done
@@ -173,48 +173,48 @@ _CUTE_ () { # check if USENAME is an organization or a user
 	then	# add one more page to total reqest
 		RPCT="$(($RPCT+1))"
 	fi
-	_MKJDC_ 
+	_MKJDC_
 }
 
-_FJDX_ () { 
+_FJDX_ () {
 	export SFX="$(tar tf "${NAME##*/}.${COMMIT::7}.tar.gz" | awk 'NR==1' )" || _SIGNAL_ "82" "_FJDX_"
 	printf "\\e[1;38;5;148m%s\\e[0m\\n" "Running \` tar xvf ${NAME##*/}.${COMMIT::7}.tar.gz | grep AndroidManifest.xml \`:"
 	(tar xvf "${NAME##*/}.${COMMIT::7}.tar.gz" | grep AndroidManifest.xml || _SIGNAL_ "84" "_FJDX_") ; _IAR_ "$JDR/$SFX" || _SIGNAL_ "84" "_FJDX_"
 }
 
-_GC_ () { 
-	if [[ "$OAUT" != "" ]] # see .conf/GAUTH file for information  
+_GC_ () {
+	if [[ "$OAUT" != "" ]] # see .conf/GAUTH file for information
 	then # download only first few bytes of a source page
-	 	curl --fail --retry 2 -u "$OAUT" https://api.github.com/repos/"$USER/$REPO"/commits -s 2>&1 | head -n 3 | tail -n 1 | awk '{ print $2 }' | sed 's/"//g' | sed 's/,//g' 
+	 	curl --fail --retry 2 -u "$OAUT" https://api.github.com/repos/"$USER/$REPO"/commits -s 2>&1 | head -n 3 | tail -n 1 | awk '{ print $2 }' | sed 's/"//g' | sed 's/,//g'
 	else
-	 	curl --fail --retry 2 https://api.github.com/repos/"$USER/$REPO"/commits -s 2>&1 | head -n 3 | tail -n 1 | awk '{ print $2 }' | sed 's/"//g' | sed 's/,//g' 
+	 	curl --fail --retry 2 https://api.github.com/repos/"$USER/$REPO"/commits -s 2>&1 | head -n 3 | tail -n 1 | awk '{ print $2 }' | sed 's/"//g' | sed 's/,//g'
 	fi
 }
 
 _GETREPOS_() {
-	if [[ ! -f "$JDR/repos" ]] # file repos does not exist 
+	if [[ ! -f "$JDR/repos" ]] # file repos does not exist
 	then	# get repository information
 		until [[ $RPCT -eq 0 ]] # there are zero pages remaining
 		do	# get a page of repository information
 			printf "%s\\n" "Downloading GitHub $USENAME page $RPCT repositories information: "
 			if [[ -z "${CULR:-}" ]] # curl --limit-rate is not set
 			then
-				if [[ "$OAUT" != "" ]] # see .conf/GAUTH file for information 
+				if [[ "$OAUT" != "" ]] # see .conf/GAUTH file for information
 				then
-					curl --fail --retry 2 -u "$OAUT" "https://api.github.com/$ISUSER/$USER/repos?per_page=100&page=$RPCT" > "$JDR/var/conf/repos.tmp" 
-					cat "$JDR/var/conf/repos.tmp" >> "$JDR/repos"  
+					curl --fail --retry 2 -u "$OAUT" "https://api.github.com/$ISUSER/$USER/repos?per_page=100&page=$RPCT" > "$JDR/var/conf/repos.tmp"
+					cat "$JDR/var/conf/repos.tmp" >> "$JDR/repos"
 				else
 					curl --fail --retry 2 "https://api.github.com/$ISUSER/$USER/repos?per_page=100&page=$RPCT" > "$JDR/var/conf/repos.tmp"
-					cat "$JDR/var/conf/repos.tmp" >> "$JDR/repos"  
+					cat "$JDR/var/conf/repos.tmp" >> "$JDR/repos"
 				fi
 			else
-				if [[ "$OAUT" != "" ]] 
+				if [[ "$OAUT" != "" ]]
 				then
 					curl --fail --retry 2 --limit-rate "$CULR" -u "$OAUT" "https://api.github.com/$ISUSER/$USER/repos?per_page=100&page=$RPCT" > "$JDR/var/conf/repos.tmp"
-					cat "$JDR/var/conf/repos.tmp" >> "$JDR/repos"  
+					cat "$JDR/var/conf/repos.tmp" >> "$JDR/repos"
 				else
 					curl --fail --retry 2 --limit-rate "$CULR" "https://api.github.com/$ISUSER/$USER/repos?per_page=100&page=$RPCT" > "$JDR/var/conf/repos.tmp"
-					cat "$JDR/var/conf/repos.tmp" >> "$JDR/repos"  
+					cat "$JDR/var/conf/repos.tmp" >> "$JDR/repos"
 				fi
 			fi
 			rm -f "$JDR"/var/conf/repos.tmp
@@ -227,25 +227,25 @@ _GTGF_ () { # https://developer.github.com/v3/repos/commits/
 	printf "\\n%s\\n" "Getting $NAME/tarball/$COMMIT -o ${NAME##*/}.${COMMIT::7}.tar.gz:"
 	if [[ -z "${CULR:-}" ]]
 	then
-		if [[ "$OAUT" != "" ]] # see .conf/GAUTH file 
+		if [[ "$OAUT" != "" ]] # see .conf/GAUTH file
 		then
 			curl --fail --retry 2 -u "$OAUT" -L "$NAME/tarball/$COMMIT" -o "${NAME##*/}.${COMMIT::7}.tar.gz" || _SIGNAL_ "30" "_GTGF_ curl"
 		else
 			curl --fail --retry 2 -L "$NAME/tarball/$COMMIT" -o "${NAME##*/}.${COMMIT::7}.tar.gz" || _SIGNAL_ "32" "_GTGF_ curl"
 		fi
 	else
-		if [[ "$OAUT" != "" ]] # see .conf/GAUTH file 
+		if [[ "$OAUT" != "" ]] # see .conf/GAUTH file
 		then
 			curl --fail --retry 2 --limit-rate "$CULR" -u "$OAUT" -L "$NAME/tarball/$COMMIT" -o "${NAME##*/}.${COMMIT::7}.tar.gz" || _SIGNAL_ "40" "_GTGF_ curl"
 		else
 			curl --fail --retry 2 --limit-rate "$CULR" -L "$NAME/tarball/$COMMIT" -o "${NAME##*/}.${COMMIT::7}.tar.gz" || _SIGNAL_ "42" "_GTGF_ curl"
 		fi
 	fi
-	_FJDX_ 
+	_FJDX_
 }
 
 _MAINGITHUB_ () {
-	if [[ -z "${NUM:-}" ]] 
+	if [[ -z "${NUM:-}" ]]
 	then
 		export NUM="$(date +%s)"
 	fi
@@ -272,11 +272,11 @@ _MAINGITHUB_ () {
 			JDR="$RDR/sources/github/users/$USER"
 		fi
 		mkdir -p "$JDR" # create null directory
-		touch "$JDR"/profile # create null profile file 
-		touch "$JDR"/repos # create null repos file 
-		printf "\\e[7;38;5;204mUsername %s is found in %s: NOT processing download and build for username %s!  Remove the login from the corresponding file(s) and the account's build directory in %s if an empty directory was created to process %s.  Then run \` %s \` again to attempt to build %s's APK projects, if any.  File %s has more information:\\e[0m\\n" "$USENAME" "~/${RDR##*/}/var/db/[PRXYZ]NAMES" "$USENAME" "~/${RDR##*/}/sources/github/{orgs,users}" "$USENAME" "${0##*/} $USENAME" "$USENAME" "~/${RDR##*/}/var/db/README.md" 
+		touch "$JDR"/profile # create null profile file
+		touch "$JDR"/repos # create null repos file
+		printf "\\e[7;38;5;204mUsername %s is found in %s: NOT processing download and build for username %s!  Remove the login from the corresponding file(s) and the account's build directory in %s if an empty directory was created to process %s.  Then run \` %s \` again to attempt to build %s's APK projects, if any.  File %s has more information:\\e[0m\\n" "$USENAME" "~/${RDR##*/}/var/db/[PRXYZ]NAMES" "$USENAME" "~/${RDR##*/}/sources/github/{orgs,users}" "$USENAME" "${0##*/} $USENAME" "$USENAME" "~/${RDR##*/}/var/db/README.md"
 		awk 'NR>=20 && NR<=46' "$RDR/opt/db/README.md" || _SIGNAL_ "86" "\` awk 'NR>=16 && NR<=46' $RDR/opt/db/README.md \` _MAINGITHUB_"
-		printf "\\e[7;38;5;203m%s is found in %s: NOT processing download and build for username %s!  Remove the username from the corresponding file(s) and the account's build directory in %s if an empty directory was created to process %s.  Then run \` %s \` again to attempt to build %s's APK projects, if any.  Scroll up to read information from the %s file.\\e[0m\\n" "$USENAME" "$(grep -Hiw "$USENAME" "$RDR"/var/db/[PRXYZ]NAMES)" "$USENAME" "~/${RDR##*/}/sources/github/{orgs,users}" "$USENAME" "${0##*/} $USENAME" "$USENAME" "~/${RDR##*/}/var/db/README.md" 
+		printf "\\e[7;38;5;203m%s is found in %s: NOT processing download and build for username %s!  Remove the username from the corresponding file(s) and the account's build directory in %s if an empty directory was created to process %s.  Then run \` %s \` again to attempt to build %s's APK projects, if any.  Scroll up to read information from the %s file.\\e[0m\\n" "$USENAME" "$(grep -Hiw "$USENAME" "$RDR"/var/db/[PRXYZ]NAMES)" "$USENAME" "~/${RDR##*/}/sources/github/{orgs,users}" "$USENAME" "${0##*/} $USENAME" "$USENAME" "~/${RDR##*/}/var/db/README.md"
 		exit 0 # and exit
 	else	# check whether login is a user or an organization
 		_CUTE_
@@ -291,25 +291,25 @@ _MAINGITHUB_ () {
 		_NAMESMAINBLOCK_ ZNAMES
 		_SIGNAL_ "90" "search for ERROR in JARR ${0##*/} build.github.bash" "90"
 	fi
-	F1AR=($(find "$JDR" -maxdepth 1 -type d)) # create array of JDR contents 
+	F1AR=($(find "$JDR" -maxdepth 1 -type d)) # create array of JDR contents
 	cd "$JDR"
 	_PRINTAS_
-	for NAME in "${JARR[@]}" # lets you delete partial downloads and repopulates a JDR directory from remote source.  Directories can be deleted, too.  They are repopulated from the downloaded tarballs.  
-	do	# This creates a "slate" within each ~/buildAPKs/sources/github/{orgs,users}/JDR folder that can be selectively reset.  This can be important on a slow connection that might yield incomplete download results on a first attempt to download and build multiple APKs from remote source code.  
-		# To populate a partially downloaded JDR folder without deleting everything that was downloaded remove the ~/buildAPKs/sources/github/{orgs,users}/JDR/var directory which this script creates.  The unpacked tarball directories which correspond to individual repositories can be deleted to reset a JDR directory as well.  This can be accomplished with one find command ` find . -maxdepth 1 -type d -exec rm -rf {} \; ` issued in the JDR folder.  Checking the integity of multiple tarballs is automated with ` ~/buildAPKs/scripts/maintenance/delete.corrupt.tars.sh ls ` which should be excecuted in the same JDR directory to check for tarball errors.  If a corrupt tarball is found by ` delete.corrupt.tars.sh `, it will be deleted.  
-		# Run ` build.github.bash login [curl rate] ` and the logins you are trying to download might download easier if you are encountering difficulties downloading.  This information regards extremely fast and very slow connections, i.e. slower than 14400 baud and 4G at max speed.  Rate limiting is also effective on very high speed connections.  See ` grep -hrC 4 sleep ~/buildAPKs/scripts ` to view how buildAPKs handles device and network latency.  Excessive latency breaks downloads. 
+	for NAME in "${JARR[@]}" # lets you delete partial downloads and repopulates a JDR directory from remote source.  Directories can be deleted, too.  They are repopulated from the downloaded tarballs.
+	do	# This creates a "slate" within each ~/buildAPKs/sources/github/{orgs,users}/JDR folder that can be selectively reset.  This can be important on a slow connection that might yield incomplete download results on a first attempt to download and build multiple APKs from remote source code.
+		# To populate a partially downloaded JDR folder without deleting everything that was downloaded remove the ~/buildAPKs/sources/github/{orgs,users}/JDR/var directory which this script creates.  The unpacked tarball directories which correspond to individual repositories can be deleted to reset a JDR directory as well.  This can be accomplished with one find command ` find . -maxdepth 1 -type d -exec rm -rf {} \; ` issued in the JDR folder.  Checking the integity of multiple tarballs is automated with ` ~/buildAPKs/scripts/maintenance/delete.corrupt.tars.sh ls ` which should be excecuted in the same JDR directory to check for tarball errors.  If a corrupt tarball is found by ` delete.corrupt.tars.sh `, it will be deleted.
+		# Run ` build.github.bash login [curl rate] ` and the logins you are trying to download might download easier if you are encountering difficulties downloading.  This information regards extremely fast and very slow connections, i.e. slower than 14400 baud and 4G at max speed.  Rate limiting is also effective on very high speed connections.  See ` grep -hrC 4 sleep ~/buildAPKs/scripts ` to view how buildAPKs handles device and network latency.  Excessive latency breaks downloads.
 		# If you have trouble while downloading APK source code repositories, better results might be found downloading the many files ` build.github.bash ` can request when searching for source code and downloading source code tarball files with rate limiting enabled than without rate limiting.
 		# An example is provided for convenience; ` build.github.bash https://github.com/BuildAPKs c 33600 ` will throttle the download rate for ` curl ` to 33600.  It will take a long time to attempt to download everything that has an AndroidManifest.xml file from BuildAPKs at GitHub at this speed as some of the repositories are quite large.  Experimenting with the rate limit speed is recommended as devices, connections and the time of day are all fairly unique and factors for a successful download and build on device.
-		_CKAT_ 
+		_CKAT_
 	done
 	_PRINTJD_
 	_RLREMING_
-	_ANDB_ 
+	_ANDB_
 	_APKBC_
-	. "$RDR"/scripts/bash/shlibs/buildAPKs/bnchn.bash bch.gt 
+	. "$RDR"/scripts/bash/shlibs/buildAPKs/bnchn.bash bch.gt
 }
 
-_MKJDC_ () { # create JDR/var/conf directory which contains query for \` AndroidManifest.xml \` files at GitHub USENAME repositores results. 
+_MKJDC_ () { # create JDR/var/conf directory which contains query for \` AndroidManifest.xml \` files at GitHub USENAME repositores results.
 	if [ ! -d "$JDR/var/conf" ]
 	then
 		mkdir -p "$JDR/var/conf"
@@ -319,13 +319,13 @@ _MKJDC_ () { # create JDR/var/conf directory which contains query for \` Android
 
 	| File Name | Purpose |
 	-----------------------
-	| *.ck      | Results from query for commit and AndroidManifest.xml file. | 
-	| APKSN.db  | The names of the APKs that were built on device with BuildAPKs. | 
-	| NAMES.db  | *NAMES files processed in ~/buildAPKs/var/db/*NAMES;  Remove this file to reprocess login through ~/buildAPKs/var/db/*NAMES upon subsequent builds. | 
-	| NAMFS.db  | The number of AndroidManifest.xml files that were found at login https://github.com/$USENAME. | 
-	| NAPKS.db  | The number of APKs that were built on device with BuildAPKs. | 
+	| *.ck      | Results from query for commit and AndroidManifest.xml file. |
+	| APKSN.db  | The names of the APKs that were built on device with BuildAPKs. |
+	| NAMES.db  | *NAMES files processed in ~/buildAPKs/var/db/*NAMES;  Remove this file to reprocess login through ~/buildAPKs/var/db/*NAMES upon subsequent builds. |
+	| NAMFS.db  | The number of AndroidManifest.xml files that were found at login https://github.com/$USENAME. |
+	| NAPKS.db  | The number of APKs that were built on device with BuildAPKs. |
 
-<!-- README.md EOF -->" > "$JDR/var/conf/README.md" 
+<!-- README.md EOF -->" > "$JDR/var/conf/README.md"
 	fi
 }
 
@@ -356,9 +356,9 @@ _PRINTJS_ () {
 	printf "\\n\\e[1;34mSearching for C C# C++ Haskell Java* Kotlin Lua Objective-C* Octave Pearl Python R* and Shell language repositories: "'\033]2;Searching for C C# C++ Haskell Java* Kotlin Lua Objective-C* Octave Pearl Python R* and Shell language repositories: OK\007'
 }
 
-_RLREMING_ () { # if connection is available, print GitHub rate limit 
+_RLREMING_ () { # if connection is available, print GitHub rate limit
 	# change true to false in file RDR/.conf/DRLIM to disable rate limit check
-	if [[ $(awk 'NR==1' "$RDR/.conf/DRLIM") == "true" ]] 
+	if [[ $(awk 'NR==1' "$RDR/.conf/DRLIM") == "true" ]]
 	then	# get rate limit information from GitHub
 		RATEARRAY=($(curl -is https://api.github.com/rate_limit | grep Rate)) || printf "\\e[2;7;38;5;51m%s\\e[0m\\n\\n" "The Internet connection is not available; Continuing..." # create array with rate information https://developer.github.com/v3/rate_limit/ from GitHub without incurring an API hit
 		if [[ ! -z "${RATEARRAY:-}" ]] # if RATEARRAY is set
