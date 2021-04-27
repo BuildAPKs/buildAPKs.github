@@ -265,7 +265,7 @@ _MAINGITHUB_ () {
 	# create directories in RDR if not exist
 	_MKDIRS_ "bin" "opt" "tmp" "var/cache/lib" "var/cache/lib/res-appcompat" "var/cache/lib/res-cardview" "var/cache/lib/res-design" "var/cache/lib/res-recyclerview" "var/cache/stash" "var/cache/tarballs" "var/db" "var/db/log" "var/lock" "var/log/github/orgs" "var/log/github/users" "var/log/messages" "var/log/messages" "var/run/lock/auth" "var/run/lock/wake" "var/tmp"
 	# create files in RDR/var if not exist
-	_MKFILES_ "db/ANAMES" "db/BNAMES" "db/B10NAMES" "db/B100NAMES" "db/GNAMES" "db/ONAMES" "db/QNAMES" "db/RNAMES" "db/XNAMES" "db/YNAMES" "db/ZNAMES" "db/log/BNAMES" "db/log/B10NAMES" "db/log/B100NAMES" "db/log/GNAMES"
+	_MKVFILES_ "db/ANAMES" "db/BNAMES" "db/B10NAMES" "db/B100NAMES" "db/GNAMES" "db/ONAMES" "db/QNAMES" "db/RNAMES" "db/XNAMES" "db/YNAMES" "db/ZNAMES" "db/log/BNAMES" "db/log/B10NAMES" "db/log/B100NAMES" "db/log/GNAMES"
 	if grep -i "^$USENAME$" "$RDR"/var/db/[PRXYZ]NAMES
 	then	# create null directory, profile, repos files, and exit
 		if grep -i "^$USENAME$" "$RDR"/var/db/ONAMES 1>/dev/null
