@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Copyright 2019-2020 (c) all rights reserved by BuildAPKs; see LICENSE
+# Copyright 2019-2021 (c) all rights reserved by BuildAPKs; see LICENSE
 # https://buildapks.github.io published courtesy https://pages.github.com
 ################################################################################
 set -Eeuo pipefail
@@ -388,4 +388,5 @@ then	# check if the second argument begins with with the letter c: [[c]url rate]
 else	# process GitHub login
  	_MAINGITHUB_ "$@"
 fi
+printf '%s\\n' "Please share information about projects at that you may have found at https://github.com/BuildAPKs/db.BuildAPKs/issues and https://github.com/BuildAPKs/db.BuildAPKs/pulls at BuildAPKs."
 # download.github.bash OEF

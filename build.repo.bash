@@ -37,4 +37,5 @@ else
 	mkdir -p "$RDR/sources/$SITENAME/$LOGINAME"
 	_CLONEBUILD_ "$@"
 fi
+printf '%s\\n' "Please share information about projects at that you may have found at https://github.com/BuildAPKs/db.BuildAPKs/issues and https://github.com/BuildAPKs/db.BuildAPKs/pulls at BuildAPKs."
 # build.repo.bash OEF

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Copyright 2019-2020 (c) all rights reserved
+# Copyright 2019-2021 (c) all rights reserved
 # by BuildAPKs https://buildapks.github.io/buildAPKs/
 #####################################################################
 set -Eeuo pipefail
@@ -72,4 +72,5 @@ do
 done
 . "$RDR"/scripts/bash/shlibs/lock.bash wake.stop
 . "$RDR"/scripts/bash/shlibs/buildAPKs/bnchn.bash bch.gt
+printf '%s\\n' "Please share information about projects at that you may have found at https://github.com/BuildAPKs/db.BuildAPKs/issues and https://github.com/BuildAPKs/db.BuildAPKs/pulls at BuildAPKs."
 # build.github.sequential.bash EOF

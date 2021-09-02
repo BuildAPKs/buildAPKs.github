@@ -26,4 +26,5 @@ unzip "$CGREPONAME.archive.zip"
 fi
 cd "$CGREPONAME"
 "$RDR/bin/build.in.dir.bash"
+printf '%s\n' "Please share information about projects at that you have found at https://github.com/BuildAPKs/db.BuildAPKs/issues and https://github.com/BuildAPKs/db.BuildAPKs/pulls at BuildAPKs."
 # build.code.google.com.bash EOF
