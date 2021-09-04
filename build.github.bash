@@ -390,5 +390,5 @@ then	# check if the second argument begins with with the letter c: [[c]url rate]
 else	# process GitHub login
  	_MAINGITHUB_ "$@"
 fi
-printf '%s\n' "Please share information about projects at that you have found at https://github.com/BuildAPKs/db.BuildAPKs/issues and https://github.com/BuildAPKs/db.BuildAPKs/pulls at BuildAPKs."
+printf '%s\n' "You can share information about projects that build at https://github.com/BuildAPKs/db.BuildAPKs/issues and https://github.com/BuildAPKs/db.BuildAPKs/pulls to help develop this project."
 # build.github.bash OEF
