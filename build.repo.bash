@@ -10,27 +10,27 @@ then # print help
 	printf "\\n%s\\n\\n%s\\n\\n%s\\n\\n" "The ${0##*/} command has been tested with https://github.com/search and https://gitlab.com/explore successfully.  Share addresses to sourcecode at https://github.com/BuildAPKs in order to help develop this software if you find APK repo candidates for inclusion." "EXAMPLE USAGE:  ${0##*/} https://github.com/BuildAPKs/buildAPKs.entertainment" "If you find repo candidates for inclusion, please share addresses to sourcecode at https://github.com/BuildAPKs in order to help develop this software.  Thank you for using ${0##*/};  Enjoy🎵🎶"
 	exit
 fi
+_ANTBUILD_() {
+ANTBUILD="$(find "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" -type f -name build.xml)"
+if [[ -n "${ANTBUILD:-}" ]]
+then
+	for BUILDXML in $ANTBUILD
+	do
+		cd "${BUILDXML%/*}" ; pwd ; ant
+	done
+fi
+}
+_COMBUILD_() {
+COMPILSH="$(find "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" -type f -name compile.sh)"
+if [[ -n "${COMPILSH:-}" ]]
+then
+	for COMPFILE in $COMPILSH
+	do
+		cd "${COMPFILE%/*}" ; pwd ; sh "$COMPFILE"
+	done
+fi
+}
 _CLONEBUILD_() {
-	_ANTBUILD_() {
-	ANTBUILD="$(find "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" -type f -name build.xml)"
-	if [[ -z "${ANTBUILD:-}" ]]
-	then
-		for BUILDXML in $ANTBUILD
-		do
-			cd "${BUILDXML%/*}" ; pwd ; ant
-		done
-	fi
-	}
-	_COMBUILD_() {
-	COMPILSH="$(find "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" -type f -name compile.sh)"
-	if [[ -z "${COMPILSH:-}" ]]
-	then
-		for COMPFILE in $COMPILSH
-		do
-			cd "${COMPFILE%/*}" ; pwd ; "$COMPFILE"
-		done
-	fi
-	}
 	cd "$RDR/sources/$SITENAME/$LOGINAME" && git clone --depth 1 "$@" --single-branch && cd "$REPONAME" && (_IAR_ "$(pwd)" || _SIGNAL_ "135" "${0##*/} _CLONEBUILD_ _IAR_") && _COMBUILD_ && _ANTBUILD_ && "$RDR/scripts/bash/build/build.in.dir.bash"
 }
 BASENAME="${@%/}" # strip trailing slash
@@ -49,7 +49,7 @@ printf "%s\\n" "Processing $@ in directory ~/${RDR##*/}/sources/$SITENAME/$LOGIN
 sleep 1.6
 if [ -d "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" ]
 then
-	cd "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" && (_IAR_ "$(pwd)" || _SIGNAL_ "134" "${0##*/} _IAR_") && "$RDR/scripts/bash/build/build.in.dir.bash"
+	cd "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" && (_IAR_ "$(pwd)" || _SIGNAL_ "135" "${0##*/} _CLONEBUILD_ _IAR_") && _COMBUILD_ && _ANTBUILD_ # && "$RDR/scripts/bash/build/build.in.dir.bash"
 elif [ -d "$RDR/sources/$SITENAME/$LOGINAME" ]
 then
 	_CLONEBUILD_ "$@"
