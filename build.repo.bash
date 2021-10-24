@@ -49,7 +49,7 @@ printf "%s\\n" "Processing $@ in directory ~/${RDR##*/}/sources/$SITENAME/$LOGIN
 sleep 1.6
 if [ -d "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" ]
 then
-	cd "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" && (_IAR_ "$(pwd)" || _SIGNAL_ "135" "${0##*/} _CLONEBUILD_ _IAR_") && _COMBUILD_ && _ANTBUILD_ # && "$RDR/scripts/bash/build/build.in.dir.bash"
+	cd "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" && (_IAR_ "$(pwd)" || _SIGNAL_ "135" "${0##*/} _CLONEBUILD_ _IAR_") && _COMBUILD_ && _ANTBUILD_ && "$RDR/scripts/bash/build/build.in.dir.bash"
 elif [ -d "$RDR/sources/$SITENAME/$LOGINAME" ]
 then
 	_CLONEBUILD_ "$@"
