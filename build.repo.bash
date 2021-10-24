@@ -11,35 +11,39 @@ then # print help
 	exit
 fi
 _ANTBUILD_() {
-ANTBUILD="$(find "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" -type f -name build.xml)"
-if [[ -n "${ANTBUILD:-}" ]]
-then
-	for BUILDXML in $ANTBUILD
-	do
-		printf '%s\n' "ant build in directory ${BUILDXML%/*} begun"
-		cd "${BUILDXML%/*}" ; pwd ; ant ||:
-		printf '%s\n' "ant build in directory $(pwd) done"
-	done
-fi
+	ANTBUILD="$(find "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" -type f -name build.xml)"
+	if [[ -n "${ANTBUILD:-}" ]]
+	then
+		for BUILDXML in $ANTBUILD
+		do
+			printf '%s\n' "ant build in directory ${BUILDXML%/*} begun"
+			cd "${BUILDXML%/*}" ; pwd ; ant ||:
+			printf '%s\n' "ant build in directory $PWD done"
+		done
+	fi
 }
 _COMBUILD_() {
-COMPILSH="$(find "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" -type f -name compile.sh)"
-if [[ -n "${COMPILSH:-}" ]]
-then
-	for COMPFILE in $COMPILSH
-	do
-		printf '%s\n' "compile.sh in directory ${COMPFILE%/*} begun"
-		cd "${COMPFILE%/*}" ; pwd ; sh "$COMPFILE" ||:
-		printf '%s\n' "compile.sh in directory $(pwd) done"
-	done
-fi
+	COMPILSH="$(find "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" -type f -name compile.sh)"
+	if [[ -n "${COMPILSH:-}" ]]
+	then
+		for COMPFILE in $COMPILSH
+		do
+			printf '%s\n' "compile.sh in directory ${COMPFILE%/*} begun"
+			cd "${COMPFILE%/*}" ; sh "$COMPFILE" ||:
+			printf '%s\n' "compile.sh in directory $PWD done"
+		done
+	fi
 }
-_CLONEBUILD_() {
-	cd "$RDR/sources/$SITENAME/$LOGINAME" && git clone --depth 1 "$@" --single-branch && cd "$REPONAME" && (_IAR_ "$(pwd)" || _SIGNAL_ "135" "${0##*/} _CLONEBUILD_ _IAR_")
+_DOBUILD_() {
+ 	cd "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" && (_IAR_ "$PWD" || _SIGNAL_ "135" "${0##*/} _CLONEBUILD_ _IAR_")
 	cd "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" && printf "\\e[1;38;5;151mFound %s APK files in ~/%s/.\\n\\n\\e[0m" "$(find "$PWD" -type f -name "*apk" | wc -l)" "$(cut -d"/" -f7-99 <<< "$PWD")" && _COMBUILD_
 	cd "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" && printf "\\e[1;38;5;151mFound %s APK files in ~/%s/.\\n\\n\\e[0m" "$(find "$PWD" -type f -name "*apk" | wc -l)" "$(cut -d"/" -f7-99 <<< "$PWD")" && _ANTBUILD_
 	cd "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" && printf "\\e[1;38;5;151mFound %s APK files in ~/%s/.\\n\\n\\e[0m" "$(find "$PWD" -type f -name "*apk" | wc -l)" "$(cut -d"/" -f7-99 <<< "$PWD")" && "$RDR/scripts/bash/build/build.in.dir.bash"
 	cd "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" && printf "\\e[1;38;5;151mFound %s APK files in ~/%s/.\\n\\n\\e[0m" "$(find "$PWD" -type f -name "*apk" | wc -l)" "$(cut -d"/" -f7-99 <<< "$PWD")"
+}
+_CLONEBUILD_() {
+	cd "$RDR/sources/$SITENAME/$LOGINAME" && git clone --depth 1 "$@" --single-branch || _SIGNAL_ "135" "${0##*/} _CLONEBUILD_ git clone"
+	_DOBUILD_
 }
 BASENAME="${@%/}" # strip trailing slash
 BASENAME="${BASENAME#*//}" # strip before double slash
@@ -56,12 +60,7 @@ printf "%s\\n" "Processing $@ in directory ~/${RDR##*/}/sources/$SITENAME/$LOGIN
 . "$RDR"/scripts/bash/shlibs/buildAPKs/prep.bash
 if [ -d "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" ]
 then
- 	cd "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" && (_IAR_ "$(pwd)" || _SIGNAL_ "135" "${0##*/} _CLONEBUILD_ _IAR_")
-
-cd "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" && printf "\\e[1;38;5;151mFound %s APK files in ~/%s/.\\n\\n\\e[0m" "$(find "$PWD" -type f -name "*apk" | wc -l)" "$(cut -d"/" -f7-99 <<< "$PWD")" && _COMBUILD_
-cd "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" && printf "\\e[1;38;5;151mFound %s APK files in ~/%s/.\\n\\n\\e[0m" "$(find "$PWD" -type f -name "*apk" | wc -l)" "$(cut -d"/" -f7-99 <<< "$PWD")" && _ANTBUILD_
-cd "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" && printf "\\e[1;38;5;151mFound %s APK files in ~/%s/.\\n\\n\\e[0m" "$(find "$PWD" -type f -name "*apk" | wc -l)" "$(cut -d"/" -f7-99 <<< "$PWD")" && "$RDR/scripts/bash/build/build.in.dir.bash"
-cd "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" && printf "\\e[1;38;5;151mFound %s APK files in ~/%s/.\\n\\n\\e[0m" "$(find "$PWD" -type f -name "*apk" | wc -l)" "$(cut -d"/" -f7-99 <<< "$PWD")"
+_DOBUILD_
 elif [ -d "$RDR/sources/$SITENAME/$LOGINAME" ]
 then
 	_CLONEBUILD_ "$@"
