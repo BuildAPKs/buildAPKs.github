@@ -16,9 +16,9 @@ if [[ -n "${ANTBUILD:-}" ]]
 then
 	for BUILDXML in $ANTBUILD
 	do
-		printf '%s\\' "ant build in directory ${BUILDXML%/*} begun"
+		printf '%s\n' "ant build in directory ${BUILDXML%/*} begun"
 		cd "${BUILDXML%/*}" ; pwd ; ant ||:
-		printf '%s\\' "ant build in directory $(pwd) done"
+		printf '%s\n' "ant build in directory $(pwd) done"
 	done
 fi
 }
@@ -28,9 +28,9 @@ if [[ -n "${COMPILSH:-}" ]]
 then
 	for COMPFILE in $COMPILSH
 	do
-		printf '%s\\' "compile.sh in directory ${COMPFILE%/*} begun"
+		printf '%s\n' "compile.sh in directory ${COMPFILE%/*} begun"
 		cd "${COMPFILE%/*}" ; pwd ; sh "$COMPFILE" ||:
-		printf '%s\\' "compile.sh in directory $(pwd) done"
+		printf '%s\n' "compile.sh in directory $(pwd) done"
 	done
 fi
 }
