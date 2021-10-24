@@ -16,7 +16,9 @@ if [[ -n "${ANTBUILD:-}" ]]
 then
 	for BUILDXML in $ANTBUILD
 	do
-		cd "${BUILDXML%/*}" ; pwd ; ant
+		printf '%s\\' "ant build in directory ${BUILDXML%/*} begun"
+		cd "${BUILDXML%/*}" ; pwd ; ant ||:
+		printf '%s\\' "ant build in directory $(pwd) done"
 	done
 fi
 }
@@ -26,7 +28,9 @@ if [[ -n "${COMPILSH:-}" ]]
 then
 	for COMPFILE in $COMPILSH
 	do
-		cd "${COMPFILE%/*}" ; pwd ; sh "$COMPFILE"
+		printf '%s\\' "compile.sh in directory ${BUILDXML%/*} begun"
+		cd "${COMPFILE%/*}" ; pwd ; sh "$COMPFILE" ||:
+		printf '%s\\' "compile.sh in directory $(pwd) done"
 	done
 fi
 }
@@ -46,10 +50,12 @@ then # exit
 fi
 printf "%s\\n" "Processing $@ in directory ~/${RDR##*/}/sources/$SITENAME/$LOGINAME/$REPONAME:"
 . "$RDR"/scripts/bash/shlibs/buildAPKs/prep.bash
-sleep 1.6
 if [ -d "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" ]
 then
-	cd "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" && (_IAR_ "$(pwd)" || _SIGNAL_ "135" "${0##*/} _CLONEBUILD_ _IAR_") && _COMBUILD_ && _ANTBUILD_ && "$RDR/scripts/bash/build/build.in.dir.bash"
+	cd "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" && (_IAR_ "$(pwd)" || _SIGNAL_ "135" "${0##*/} _CLONEBUILD_ _IAR_")
+	cd "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" && _COMBUILD_
+	cd "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" && _ANTBUILD_
+	cd "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" && "$RDR/scripts/bash/build/build.in.dir.bash"
 elif [ -d "$RDR/sources/$SITENAME/$LOGINAME" ]
 then
 	_CLONEBUILD_ "$@"
