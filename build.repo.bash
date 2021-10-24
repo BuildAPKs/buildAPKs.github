@@ -28,7 +28,7 @@ if [[ -n "${COMPILSH:-}" ]]
 then
 	for COMPFILE in $COMPILSH
 	do
-		printf '%s\\' "compile.sh in directory ${BUILDXML%/*} begun"
+		printf '%s\\' "compile.sh in directory ${COMPFILE%/*} begun"
 		cd "${COMPFILE%/*}" ; pwd ; sh "$COMPFILE" ||:
 		printf '%s\\' "compile.sh in directory $(pwd) done"
 	done
