@@ -11,27 +11,7 @@ then # print help
 	exit
 fi
 _CLONEBUILD_() {
-	_ANTBUILD_() {
-	ANTBUILD="$(find "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" -type f -name build.xml)"
-	if [[ -z "${ANTBUILD:-}" ]]
-	then
-		for BUILDXML in $ANTBUILD
-		do
-			cd ${BUILDXML%/*} ; pwd ; ant
-		done
-	fi
-	}
-	_COMBUILD_() {
-	COMPILSH="$(find "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" -type f -name compile.sh)"
-	if [[ -z "${COMPILSH:-}" ]]
-	then
-		for COMPFILE in $COMPILSH
-		do
-			cd ${COMPFILE%/*} ; pwd ; $COMPFILE
-		done
-	fi
-	}
-	cd "$RDR/sources/$SITENAME/$LOGINAME" && git clone --depth 1 "$@" --single-branch && cd "$REPONAME" && (_IAR_ "$(pwd)" || _SIGNAL_ "135" "${0##*/} _CLONEBUILD_ _IAR_") && _COMBUILD_ && _ANTBUILD_ && "$RDR/scripts/bash/build/build.in.dir.bash"
+	cd "$RDR/sources/$SITENAME/$LOGINAME" && git clone --depth 1 "$@" --single-branch && cd "$REPONAME" && (_IAR_ "$(pwd)" || _SIGNAL_ "135" "${0##*/} _CLONEBUILD_ _IAR_") && "$RDR/scripts/bash/build/build.in.dir.bash"
 }
 BASENAME="${@%/}" # strip trailing slash
 BASENAME="${BASENAME#*//}" # strip before double slash
@@ -39,7 +19,7 @@ REPONAME="${BASENAME##*/}" # strip before last slash
 LOGINAME="${BASENAME%/*}" # strip after last slash
 LOGINAME="${LOGINAME##*/}" # strip before last slash
 SITENAME="${BASENAME%%/*}" # strip after first slash
-if [ -z "${LOGINAME:-}" ] || [ -z "${REPONAME:-}" ] || [ -z "${SITENAME:-}" ] # any variable or more is empty
+if [ ! -n "${LOGINAME:-}" ] || [ ! -n "${REPONAME:-}" ] || [ ! -n "${SITENAME:-}" ] # any variable or more is empty
 then # exit
 	printf "%s\\n" "EXCEPTION processing $@ in directory ~/${RDR##*/}/sources/$SITENAME/$LOGINAME/$REPONAME:  EXITING..."
 	exit 101
