@@ -10,9 +10,21 @@ then # print help
 	printf "\\n%s\\n\\n%s\\n\\n%s\\n\\n" "The ${0##*/} command has been tested with https://github.com/search and https://gitlab.com/explore successfully.  Share addresses to sourcecode at https://github.com/BuildAPKs in order to help develop this software if you find APK repo candidates for inclusion." "EXAMPLE USAGE:  ${0##*/} https://github.com/BuildAPKs/buildAPKs.entertainment" "If you find repo candidates for inclusion, please share addresses to sourcecode at https://github.com/BuildAPKs in order to help develop this software.  Thank you for using ${0##*/};  Enjoy🎵🎶"
 	exit
 fi
+_ANTBUILD_() {
+	ANTBUILD="$(find "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" -type f -name build.xml)"
+	if [[ -n "${ANTBUILD:-}" ]]
+	then
+		for BUILDXML in $ANTBUILD
+		do
+			printf '%s\n' "ant build in directory ${BUILDXML%/*} begun"
+			cd "${BUILDXML%/*}" ; pwd ; ant ||:
+			printf '%s\n' "ant build in directory $PWD done"
+		done
+	fi
+}
 _DOBUILD_() {
  	cd "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" && (_IAR_ "$PWD" || _SIGNAL_ "135" "${0##*/} _CLONEBUILD_ _IAR_")
-	cd "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" && printf "\\e[1;38;5;151mFound %s APK files in ~/%s/.\\n\\n\\e[0m" "$(find "$PWD" -type f -name "*apk" | wc -l)" "$(cut -d"/" -f7-99 <<< "$PWD")" && "$RDR/scripts/bash/build/build.in.dir.bash"
+	cd "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" && printf "\\e[1;38;5;151mFound %s APK files in ~/%s/.\\n\\n\\e[0m" "$(find "$PWD" -type f -name "*apk" | wc -l)" "$(cut -d"/" -f7-99 <<< "$PWD")" && _ANTBUILD_
 	cd "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" && printf "\\e[1;38;5;151mFound %s APK files in ~/%s/.\\n\\n\\e[0m" "$(find "$PWD" -type f -name "*apk" | wc -l)" "$(cut -d"/" -f7-99 <<< "$PWD")"
 }
 _CLONEBUILD_() {
@@ -44,4 +56,4 @@ else
 fi
 
 printf '\n%s\n\n' "Please share information about new projects found at https://github.com/BuildAPKs/db.BuildAPKs/issues and https://github.com/BuildAPKs/db.BuildAPKs/pulls in order to help this project out."
-# build.repo.bash OEF
+# build.repo.ant.bash OEF
