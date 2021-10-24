@@ -35,7 +35,11 @@ then
 fi
 }
 _CLONEBUILD_() {
-	cd "$RDR/sources/$SITENAME/$LOGINAME" && git clone --depth 1 "$@" --single-branch && cd "$REPONAME" && (_IAR_ "$(pwd)" || _SIGNAL_ "135" "${0##*/} _CLONEBUILD_ _IAR_") && _COMBUILD_ && _ANTBUILD_ && "$RDR/scripts/bash/build/build.in.dir.bash"
+	cd "$RDR/sources/$SITENAME/$LOGINAME" && git clone --depth 1 "$@" --single-branch && cd "$REPONAME" && (_IAR_ "$(pwd)" || _SIGNAL_ "135" "${0##*/} _CLONEBUILD_ _IAR_")
+	cd "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" && printf "\\e[1;38;5;151mFound %s APK files in ~/%s/.\\n\\n\\e[0m" "$(find "$PWD" -type f -name "*apk" | wc -l)" "$(cut -d"/" -f7-99 <<< "$PWD")" && _COMBUILD_
+	cd "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" && printf "\\e[1;38;5;151mFound %s APK files in ~/%s/.\\n\\n\\e[0m" "$(find "$PWD" -type f -name "*apk" | wc -l)" "$(cut -d"/" -f7-99 <<< "$PWD")" && _ANTBUILD_
+	cd "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" && printf "\\e[1;38;5;151mFound %s APK files in ~/%s/.\\n\\n\\e[0m" "$(find "$PWD" -type f -name "*apk" | wc -l)" "$(cut -d"/" -f7-99 <<< "$PWD")" && "$RDR/scripts/bash/build/build.in.dir.bash"
+	cd "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" && printf "\\e[1;38;5;151mFound %s APK files in ~/%s/.\\n\\n\\e[0m" "$(find "$PWD" -type f -name "*apk" | wc -l)" "$(cut -d"/" -f7-99 <<< "$PWD")"
 }
 BASENAME="${@%/}" # strip trailing slash
 BASENAME="${BASENAME#*//}" # strip before double slash
@@ -52,10 +56,12 @@ printf "%s\\n" "Processing $@ in directory ~/${RDR##*/}/sources/$SITENAME/$LOGIN
 . "$RDR"/scripts/bash/shlibs/buildAPKs/prep.bash
 if [ -d "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" ]
 then
-	cd "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" && (_IAR_ "$(pwd)" || _SIGNAL_ "135" "${0##*/} _CLONEBUILD_ _IAR_")
-	cd "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" && _COMBUILD_
-	cd "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" && _ANTBUILD_
-	cd "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" && "$RDR/scripts/bash/build/build.in.dir.bash"
+ 	cd "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" && (_IAR_ "$(pwd)" || _SIGNAL_ "135" "${0##*/} _CLONEBUILD_ _IAR_")
+
+cd "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" && printf "\\e[1;38;5;151mFound %s APK files in ~/%s/.\\n\\n\\e[0m" "$(find "$PWD" -type f -name "*apk" | wc -l)" "$(cut -d"/" -f7-99 <<< "$PWD")" && _COMBUILD_
+cd "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" && printf "\\e[1;38;5;151mFound %s APK files in ~/%s/.\\n\\n\\e[0m" "$(find "$PWD" -type f -name "*apk" | wc -l)" "$(cut -d"/" -f7-99 <<< "$PWD")" && _ANTBUILD_
+cd "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" && printf "\\e[1;38;5;151mFound %s APK files in ~/%s/.\\n\\n\\e[0m" "$(find "$PWD" -type f -name "*apk" | wc -l)" "$(cut -d"/" -f7-99 <<< "$PWD")" && "$RDR/scripts/bash/build/build.in.dir.bash"
+cd "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" && printf "\\e[1;38;5;151mFound %s APK files in ~/%s/.\\n\\n\\e[0m" "$(find "$PWD" -type f -name "*apk" | wc -l)" "$(cut -d"/" -f7-99 <<< "$PWD")"
 elif [ -d "$RDR/sources/$SITENAME/$LOGINAME" ]
 then
 	_CLONEBUILD_ "$@"
@@ -63,7 +69,6 @@ else
 	mkdir -p "$RDR/sources/$SITENAME/$LOGINAME"
 	_CLONEBUILD_ "$@"
 fi
-printf "\\e[1;38;5;151mFound %s APK files in ~/%s/.\\n\\n\\e[0m" "$(find $PWD -type f -name *apk | wc -l 33)" "$(cut -d"/" -f7-99 <<< "$PWD")"
 
 printf '\n%s\n\n' "Please share information about new projects found at https://github.com/BuildAPKs/db.BuildAPKs/issues and https://github.com/BuildAPKs/db.BuildAPKs/pulls in order to help this project out."
 # build.repo.bash OEF
