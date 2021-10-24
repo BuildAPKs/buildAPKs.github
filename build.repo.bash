@@ -63,5 +63,7 @@ else
 	mkdir -p "$RDR/sources/$SITENAME/$LOGINAME"
 	_CLONEBUILD_ "$@"
 fi
+printf "\\e[1;38;5;151mFound %s APK files in ~/%s/.\\n\\n\\e[0m" "$(find $PWD -type f -name *apk | wc -l 33)" "$(cut -d"/" -f7-99 <<< "$PWD")"
+
 printf '\n%s\n\n' "Please share information about new projects found at https://github.com/BuildAPKs/db.BuildAPKs/issues and https://github.com/BuildAPKs/db.BuildAPKs/pulls in order to help this project out."
 # build.repo.bash OEF
