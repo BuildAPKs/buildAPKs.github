@@ -17,7 +17,7 @@ _CLONEBUILD_() {
 	then
 		for BUILDXML in $ANTBUILD
 		do
-			cd ${BUILDXML%/*} ; pwd ; ant
+			cd "${BUILDXML%/*}" ; pwd ; ant
 		done
 	fi
 	}
@@ -27,7 +27,7 @@ _CLONEBUILD_() {
 	then
 		for COMPFILE in $COMPILSH
 		do
-			cd ${COMPFILE%/*} ; pwd ; $COMPFILE
+			cd "${COMPFILE%/*}" ; pwd ; "$COMPFILE"
 		done
 	fi
 	}
