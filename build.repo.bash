@@ -16,7 +16,7 @@ _DOBUILD_() {
 	cd "$RDR/sources/$SITENAME/$LOGINAME/$REPONAME" && printf "\\e[1;38;5;151mFound %s APK files in ~/%s/.\\n\\n\\e[0m" "$(find "$PWD" -type f -name "*apk" | wc -l)" "$(cut -d"/" -f7-99 <<< "$PWD")"
 }
 _CLONEBUILD_() {
-	cd "$RDR/sources/$SITENAME/$LOGINAME" && git clone --depth 1 "$@" --single-branch || _SIGNAL_ "135" "${0##*/} _CLONEBUILD_ git clone"
+	cd "$RDR/sources/$SITENAME/$LOGINAME" && git clone --depth 1 "$@" --single-branch || _SIGNAL_ "135" "${0##*/} _CLONEBUILD_ git clone" "79"
 	_DOBUILD_
 }
 BASENAME="${@%/}" # strip trailing slash
