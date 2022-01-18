@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Copyright 2021 (c) all rights reserved by BuildAPKs; see LICENSE
+# Copyright 2021-2022 (c) all rights reserved by BuildAPKs; see LICENSE
 # https://buildapks.github.io published courtesy https://pages.github.com
 ################################################################################
 set -eu
@@ -7,7 +7,7 @@ shopt -s nullglob globstar
 export RDR="$HOME/buildAPKs"
 if [ $# != 1 ]
 then # print help
-	printf "\\n%s\\n\\n%s\\n\\n%s\\n\\n" "The ${0##*/} command has been tested with https://github.com/search and https://gitlab.com/explore successfully." "EXAMPLE USAGE:  ${0##*/} https://github.com/BuildAPKs/buildAPKs.entertainment" "If you find repo candidates that merrit inclusion, please share addresses to sourcecode repositories that work with this command at https://github.com/BuildAPKs in order to help develop this software.  Thank you for using ${0##*/};  Enjoy🎵🎶"
+	printf "\\n%s\\n\\n%s\\n\\n%s\\n\\n" "The ${0##*/} command has been tested with https://github.com/search and https://gitlab.com/explore successfully." "EXAMPLE USAGE:  ${0##*/} https://github.com/BuildAPKs/buildAPKs.entertainment" "If you find repo candidates that merit inclusion, please share addresses to sourcecode repositories that work with this command at https://github.com/BuildAPKs in order to help develop this software.  Thank you for using ${0##*/};  Enjoy🎵🎶"
 	exit
 fi
 _DOBUILD_() {
